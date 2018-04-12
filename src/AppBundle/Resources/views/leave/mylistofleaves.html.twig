@@ -1,0 +1,85 @@
+<html>
+    <head>        
+            {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
+            <script src="{{ asset('js/jquery.min.js') }}"></script>
+            <script src="{{ asset('js/bootstrap.js') }}"></script>
+            {% endblock %}
+            <style>.table td,th{text-align: center;}</style>
+        <!--link href="{{ asset('css/navbar.css') }}" type="text/css" rel="stylesheet" /-->
+    </head>
+    <body>
+
+    <div class="col-sm-3 col-sm-offset-11">
+        <a href="#" class="btn btn-primary btn-lg top-button position-absolute " role="button" >{{ app.user.username }}</a>
+    </div>  
+     
+    <div class="container">        
+        <h1 >mes demandes de congé / d'absence </h1>
+        <div class="container">
+          <table class="table active">
+            <thead>
+              <tr class = "info">
+                <th>Type</th>
+                <th>Date début</th>
+                <th>Date fin</th>
+                <th>état</th>
+                <th>motif</th>
+              </tr>
+            </thead>
+        {% for Leave in listLeave %}     
+            <tbody>
+              <tr>
+                <td>{{ Leave.type }}</td>
+                <td>{{ Leave.startDate | date("m/d/Y")}}</td>
+                <td>{{ Leave.endDate | date("m/d/Y")}}</td>
+
+                {% if Leave.validationStatus==null %}
+                <td class = "warning"> pas encore traitée</td>
+                {% elseif Leave.validationStatus=='n' %}
+                <td class = "danger"> demande refué</td>
+                {% elseif Leave.validationStatus=='y' %}
+                <td class = "success"> demande accepté</td>
+                {% endif %}
+                <td > {{ Leave.refuseReason }} </td>
+                </form>
+              </tr>
+
+            </tbody>
+        {% endfor %}
+          </table>
+        </div>
+    </div>
+  </body>
+</html>
+
+
+
+
+<!--
+            {{ include("AppBundle:general:navbar.html.twig") }}
+            {{ include("AppBundle:general:sidebar.html.twig") }}
+
+
+      <div class="core">  
+                <h1 >mes demandes d'absence / congé </h1>
+                    <ul >
+
+                        {% for Leave in listLeave %}    
+                            {% if not is_granted('ROLE_ADMIN') %}
+                            <li><h2>Mon congé d'id: {{ Leave.id }}</h2>
+                                    {% if Leave.validationStatus==null %}
+                                        La demande n'est pas encore traitée 
+                                    {% elseif Leave.validationStatus=='n' %}
+                                        La demande a été refusé pour le motif suivant:  {{ Leave.refuseReason }}
+                                    {% elseif Leave.validationStatus=='y' %}
+                                        La demande a été acceptée
+                                    {% endif %}
+                            </li>
+                            {% endif %}
+                        {% endfor %}  
+                    </ul>  
+        </div>
+-->
+    </body>
+</html>

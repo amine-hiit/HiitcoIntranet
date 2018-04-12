@@ -1,0 +1,19 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="{{ asset('css/navbar.css') }}" />
+</head>
+	<body>
+		<div class="fix-navbar">
+			<ul class ="navbar-ul" >
+			    <li  class ="navbar-li" ><a class="active navbar-a navbar-a-hover" href="/intranet/home">home</a></li>
+			    {% if app.user %}
+			    <li  class ="navbar-li" ><a class="active navbar-a navbar-a-hover" href="/intranet/home">{{ app.user.username }}</a></li>
+				{% endif %}
+				<li  class ="navbar-li"><a class ="navbar-a navbar-a-hover" href="/logout">se déconnecter</a></li>
+
+			</ul>
+		</div>
+	</body>
+</html>

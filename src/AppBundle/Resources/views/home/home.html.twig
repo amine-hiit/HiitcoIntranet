@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+			<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+			<script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" crossorigin="anonymous"></script>
+			<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+			<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+			{% block stylesheets %}
+			
+			<link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
+			<script src="{{ asset('js/jquery.min.js') }}"></script>
+			<script src="{{ asset('js/bootstrap.js') }}"></script>
+			{% endblock %}
+
+			<link href="{{ asset('css/sidebar.css') }}" rel="stylesheet" id="bootstrap-css">
+
+			<style>            
+				.core {overflow: auto;position: absolute;top: 50px;left : 25%;background-color: black;width: 75%;height: 100%;text-align: center; vertical-align: middle;
+}
+			   	.core-container{position: relative;top-margin: 50px;margin: auto;width: 90%;height: 90%;background-color: white;}
+			</style>
+    </head>	
+    <body>
+
+	{{ include("AppBundle:general:navbar2.html.twig") }}
+    {{ include("AppBundle:general:sidebar2.html.twig") }}
+	<div class="core">	<div class="core-container">
+
+		<div class="container">
+
+			<div class="col-md-4 col-md-offset-3">
+		    	<h1>Aplication name</h1>
+	       	</div>
+	    	<div class="container">
+		    	<div class="col-md-2 col-md-offset-5">
+		        	<a href="/intranet/ask-for-leave" class="btn btn-primary btn-lg top-button position-absolute " role="button" >Demander congé</a>
+		       	</div>
+	       	</div>
+	     </div>
+	 </div>
+	</div>
+	    <!---->
+
+
+
+	</body>
+</html>

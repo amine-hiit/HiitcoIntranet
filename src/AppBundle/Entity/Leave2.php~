@@ -1,0 +1,68 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Leave
+ *
+ * @ORM\Table(name="leaves")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\LeaveRepository")
+ */
+class Leave2
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+
+    /**
+     * @var string
+     * @ORM\Column(name="type", type="string")
+     */
+    private $type;
+
+    /**
+     * @var string
+     * @ORM\Column(name="reason", type="text" , nullable=true)
+     */
+    private $reason;
+
+    /**
+     * @var string
+     * @ORM\Column(name="refuse_reason", type="text" , nullable=true)
+     */
+    private $refuseReason;
+
+    /**
+     * @var \DateTime|null
+     * @ORM\Column(name="start_date", type="datetime", nullable=true)
+     */
+    private $startDate;
+
+    /**
+     * @var \DateTime|null
+     * @ORM\Column(name="end_date", type="datetime", nullable=true)
+     */
+    private $endDate;
+
+    /**
+     * @var Employee
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Employee", cascade={"persist"})
+     * @ORM\JoinColumn(name ="employee_id", nullable=true)
+     */
+    private $employee;
+   
+    /**
+     * @var Employee
+     * @ORM\Column(name ="validation_status", type="text", nullable=true)
+     */
+    private $validationStatus;
+
+}

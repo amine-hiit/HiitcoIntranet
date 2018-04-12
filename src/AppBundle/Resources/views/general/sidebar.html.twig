@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="{{ asset('css/navbar.css') }}" />
+
+	</head>
+	</body>
+		<div class="w3-sidebar w3-bar-block w3-card" style="width:25%;left:0;top:50px;">
+		  <h3 class="w3-bar-item">Menu</h3>
+		  <h4 class="w3-bar-item">Congés</h4>
+		        <ul style="list-style-type: none">
+
+		              {% if  is_granted('ROLE_HR') %}
+		              <li><a href="/intranet/asked-leave-list" class="w3-bar-item w3-button">valider les demandes de congé </a></li>
+		              {% endif %} 
+		              <li><a href="/intranet/ask-for-leave" class="w3-bar-item w3-button">Demander un congé</a></li>
+		              <li><a href="/intranet/my-asked-leave-list" class="w3-bar-item w3-button">mes demandes de congé</a></li>
+		        </ul>
+
+		 <h4 class="w3-bar-item">dossier du personnel</h4>
+		 <h4 class="w3-bar-item">autre</h4> <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+
+		</div>
+	</body>
+</html>

@@ -1,0 +1,61 @@
+
+      <div class="nav-side-menu">
+          <div class="brand">
+              <div class="profile-userpic">
+                <img src="{{ asset('img/avatar/1.png') }}" class="img-responsive" >
+              </div>
+
+
+              <div class="profile-usertitle">
+                <div class="profile-usertitle-name">
+                        
+                        <a class="collapsed" href="/intranet/home">amine</a>
+                </div>
+                <div class="profile-usertitle-job">
+                  Back-end Developer
+                </div>
+              </div>
+          </div>
+
+              <li>
+              <a href="#">
+              <i class="fa fa-user fa-lg"></i> Profile
+              </a>
+              </li>
+
+          <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
+              <div class="menu-list">
+                  <ul id="menu-content" class="menu-content collapse out">
+                      <li data-toggle="collapse" data-target="#products" class="collapsed active">
+                        <a href="#">
+                        <i class="fa fa-users fa-lg"></i> Espace RH
+                        </a> <span class="arrow"></span>
+                      </li>
+
+
+                      <ul class="sub-menu collapse" id="products">
+                          <li><a href="#">Congé</a></li>
+                          <li><a href="#">Calendrier</a></li>
+                          <li><a href="#">Papiers administratifs</a></li>
+                          {% if is_granted('ROLE_HR') %}
+                          <li><a href="#">liste des employés</a></li>
+                          {% endif %}
+                          <li><a href="#">Cooptation</a></li>
+                      </ul>
+
+
+                      <li data-toggle="collapse" data-target="#service" class="collapsed">
+                        <a href="#"><i class="fas fa-graduation-cap"></i> Espace formation <span class="arrow"></span></a>
+                      </li>  
+                      <ul class="sub-menu collapse" id="service">
+                        <li>Demander</li>
+                        <li>Recherche</li>
+                        <li>Mes formations</li>
+                      </ul>
+
+
+
+
+                  </ul>
+           </div>
+      </div>

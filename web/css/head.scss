@@ -1,0 +1,26 @@
+$fendersblue: #165578;
+
+
+h1 fancy {
+  color: black;
+  display: inline; 
+  border-bottom: 3px solid darken($fendersblue, 10);
+  padding-bottom: 8px;
+  line-height: 1.75em;
+}
+
+h1 fancy:after,
+h1 fancy:before {
+  content: "";
+  display:block;
+  margin: 1em 0;
+}
+
+//Maybe make it fancy with border image
+.fancy {
+  border-width: 0 0 5px;
+  border-style: solid;
+}
+
+
+
