@@ -121,7 +121,6 @@ class LeaveController extends Controller
         
         $lm = $this->get('app.leave.manager');
                 $listLeave = $lm->findAll();
-                dump(count($listLeave));die;
                 return $this->render('@App/leave/requests.html.twig', array(
                     'listLeave' => $listLeave,
                 ));
@@ -143,7 +142,6 @@ class LeaveController extends Controller
         ));
 
     }
-
 
     /**
      * @Route("/intranet/leave-validation", name="validate")

@@ -18,7 +18,7 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        return $this->redirect('/intranet/home');
+        return $this->redirect('/intranet/request-a-leave');
     }
 
 

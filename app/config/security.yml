@@ -24,7 +24,6 @@ security:
             anonymous:    true
 
     access_control:
-        - { path: ^/intranet/asked-leave-list, role: ROLE_HR }
         - { path: ^/intranet/hrm/, role: ROLE_HR }
         - { path: ^/intranet, role: ROLE_USER }
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }

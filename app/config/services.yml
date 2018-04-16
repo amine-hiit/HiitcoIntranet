@@ -40,5 +40,5 @@ services:
     #         $someArgument: 'some_value'
     
     app.xls.manager:
-        class:'AppBundle\File\Manager\ExcelManager'
+        class: 'AppBundle\File\Manager\ExcelManager'
         public: true

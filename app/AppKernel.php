@@ -21,7 +21,10 @@ class AppKernel extends Kernel
             new AppBundle\AppBundle(),
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
 
+            new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
+
             new JMS\SerializerBundle\JMSSerializerBundle(),
+            new Yectep\PhpSpreadsheetBundle\PhpSpreadsheetBundle(),
 
 
         ];
