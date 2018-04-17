@@ -30,7 +30,6 @@
   {% block stylesheet %}{% endblock %}
 
 
-
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <!-- Site wrapper -->
@@ -141,14 +140,20 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MENU</li>
+
+        <li>
+          <a href="/">
+            <i class="fa fa-home"></i>
+            <span>Accueil</span>
+          </a>
+        </li>
+
         <li class="treeview">
           <a href="#">
             <i class="fa fa-user"></i>
             <span>Profil</span>
-
           </a>
-
-
+        </li>
 
         <li class="treeview">
           <a href="#">
@@ -159,7 +164,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="/intranet/leaves"><i class="fa fa-circle-o"></i>Congés</a></li>
+            <li><a href="/intranet/my-leave-requests"><i class="fa fa-circle-o"></i>Congés</a></li>
             <li><a href="/intranet/request-a-doc"><i class="fa fa-circle-o"></i> Demander document</a></li>
             <li><a href="/intranet/cooptation"><i class="fa fa-circle-o"></i> Cooptations</a></li>
             {% if is_granted('ROLE_HR') %}
@@ -220,7 +225,10 @@
   <!-- /.content-wrapper -->
 
   <footer class="main-footer">
-
+    <div class="container">
+      <p align="center">HiitConsulting | 6, Rue Ahmed El Brihi, ben Jdia, Casablanca | contact@hiitconsulting.com |
+        (+212)6 00 06-97-74</p>
+    </div>
   </footer>
 
 

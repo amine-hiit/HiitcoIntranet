@@ -1,0 +1,62 @@
+{% extends "default/layout.html.twig" %}
+
+{% set title = "Liste des congés" %}
+{% set profile = "profile" %}
+
+{% block content %}
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+
+        <div class="callout callout-danger flat">
+            <a href="/"> Veuillez Remplir votre fiche Collaborateur</a>
+        </div>
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                Accueil
+                <small></small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa  fa-home"></i> Accueil</a></li>
+            </ol>
+        </section>
+
+        <!-- Main content -->
+
+        <section class="content">
+
+            <!-- Default box -->
+            <div class="box">
+                <center>
+                    <h1> Bienvenue à  </h1>
+
+                    <img  src="http://www.rekrute.com/rekrute/file/jobOfferLogo/jobOfferId/77872"
+                          width="500" height="300"/>
+                </center>
+            </div>
+            <!-- /.box -->
+
+        </section>
+    </div>
+
+    <!-- /.content -->
+    <!-- /.content-wrapper -->
+
+
+
+{% endblock %}
+
+
+{% block script %}
+
+{% endblock %}
+
+  {% block javascript %}
+  $(document).ready(function () {
+      $('.sidebar-menu').tree()
+  })
+
+  {% endblock %}
+
+

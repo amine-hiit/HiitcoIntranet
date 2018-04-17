@@ -22,6 +22,15 @@ class TestdesignController extends Controller
 
     }
 
+    /**
+     * @Route("/intranet/stepform", name="step-form")
+     */
+    public function stepFormAction(Request $request)
+    {
+        return $this->render('@App/profil/employee_form.html.twig');
+
+    }
+
 
     /**
      * @Route("/layout", name="layout")

@@ -47,9 +47,13 @@
           <div class="box">
             <div class="box-header"> 
              <center>
-              <button type="button" class="btn btn-default btn-flat">   Mes congés       </button>
-              <button type="button" class="btn btn-default btn-flat">   Mon solde        </button>
-              <button type="button" class="btn btn-default btn-flat disabled">   Demander congé   </button>
+              <a type="button" class="btn btn-default btn-flat" href="/intranet/my-leave-requests">   Mes congés       </a>
+              <a type="button" class="btn btn-default btn-flat">   Mon solde        </a>
+              <a type="button" class="btn btn-default btn-flat disabled">   Demander congé   </a>
+                 {% if is_granted('ROLE_HR') %}
+                     <a type="button" class="btn btn-default btn-flat " href="/intranet/hrm/leave-requests">  Liste des demandes   </a>
+                 {% endif %}
+
              </center>
             </div>         
 
