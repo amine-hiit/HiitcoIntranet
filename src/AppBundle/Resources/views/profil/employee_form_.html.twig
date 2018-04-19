@@ -75,7 +75,7 @@
                             <div class="tab">
                                 <div class="row">
                                     <div class="col-sm-4 col-xs-12">
-                                        <div class="form-group " style="width: 90%;">
+                                        <div class="form-group ">
                                             {{ form_label(form.startDate) }}
                                             <div class="input-group date">
                                                 <div class="input-group-addon">
@@ -90,7 +90,7 @@
                                     </div>
                                     <div class="col-sm-4 col-xs-12">
 
-                                        <div class="form-group" style="width: 90%;">
+                                        <div class="form-group">
                                             {{ form_label(form.currentPosition) }}
                                             {{ form_widget(form.currentPosition, {'attr':{
                                                 'oninput':'"this.className = \'\'"',
@@ -99,7 +99,7 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-4 col-xs-12">
-                                        <div class="form-group" style="width: 90%;">
+                                        <div class="form-group">
                                             {{ form_label(form.status) }}
                                             {{ form_widget(form.status, {'attr':{
                                                 'oninput':'"this.className = \'\'"',
@@ -108,7 +108,29 @@
                                         </div>
                                     </div>
                                 </div>
-                                {{ form_label(form.employeeformation) }}
+
+
+                                {{ form_label(form.employee_formations) }}
+                                <div class="row">
+                                    <div class="col-sm-12 col-xs-12" id="formation-fields-list"
+
+                                            data-prototype=
+                                            "
+                                                {% filter escape %}
+                                                {% include '@App/profil/prototype.html.twig' with { 'item': form.employee_formations.vars.prototype }%}
+                                                {% endfilter %}
+                                            "
+                                            data-widget-tags="{{ '<div class="formation"></div>'|e }}">
+                                    </div>
+                                </div>
+
+                                <a href="#" class="add-another-collection-widget"
+                                   data-list="#formation-fields-list">Ajouter formation</a>
+
+
+
+
+                                {#{ form_label(form.employeeformation) }
                                 <div class='row'>
                                     <div class='col-sm-3 col-xs-12'>
                                         <div class='form-group'>
@@ -165,9 +187,8 @@
                                             }}) }}
                                         </div>
                                     </div>
-                                </div>
-                                <a id ="addFormation" href="#">Ajouter formation</a>
-                            </div>
+                                </div>#}
+
                         </div>
                         <!-- end tab-->
                     </div>
@@ -206,7 +227,7 @@
 
 
 {% block script %}
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 {% endblock %}
 
   {% block javascript %}
@@ -286,7 +307,6 @@
       x[n].className += " active";
   }
   $(document).ready(function () {
-      $('.sidebar-menu').tree();
       $('.select2').select2();
 
       $('.datepicker').datepicker({
@@ -296,6 +316,67 @@
           $("#newFormation").append("<li>Appended item</li>");
       });
   })
+
+
+
+      jQuery(document).ready(function () {
+          jQuery('.add-another-collection-widget').click(function (e) {
+              e.preventDefault();
+
+              var list = jQuery(jQuery(this).attr('data-list'));
+              // Try to find the counter of the list
+              var counter = list.data('widget-counter') | list.children().length;
+              // If the counter does not exist, use the length of the list
+              if (!counter) { counter = list.children().length; }
+
+              // grab the prototype template
+              var newWidget = list.attr('data-prototype');
+              // replace the "__name__" used in the id and name of the prototype
+              // with a number that's unique to your emails
+              // end name attribute looks like name="contact[emails][2]"
+              newWidget = newWidget.replace(/__name__/g, counter);
+              // Increase the counter
+              counter++;
+              // And store it, the length cannot be used if deleting widgets is allowed
+              list.data(' widget-counter', counter);
+
+              // create a new list element and add it to the list
+              var newElem = jQuery(list.attr('data-widget-tags')).html(newWidget);
+              newElem.appendTo(list);
+
+              // Get the ul that holds the collection of tags
+              $collectionHolder = $('row#formation-fields-list');
+
+              // add a delete link to all of the existing tag form li elements
+              $collectionHolder.find('.formation').each(function() {
+                  if (!$(this).hasClass("dirty")) {
+                      addTagFormDeleteLink($(this));
+                  }
+              });
+
+              function addTagForm() {
+
+                  // add a delete link to the new form
+                  addTagFormDeleteLink($newFormLi);
+              }
+          });
+
+          function addTagFormDeleteLink($tagFormLi) {
+              var $removeFormA = $('<div align ="center" class="col-sm-3"><label>t</label><div class="row"><a class="btn btn-default" href="#" role="button">X</a></div>');
+
+
+              $tagFormLi.append($removeFormA)
+              $tagFormLi.addClass("dirty");
+              $removeFormA.on('click', function(e) {
+                  // prevent the link from creating a "#" on the URL
+                  e.preventDefault();
+
+                  // remove the li for the tag form
+                  $tagFormLi.remove();
+              });
+          }
+
+      });
 
 {% endblock %}
 

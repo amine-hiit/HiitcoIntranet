@@ -185,48 +185,4 @@ class Formation
     {
         return $this->counrty;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->employeeFormation = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->employee_formation = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Add employeeFormation.
-     *
-     * @param \AppBundle\Entity\EmployeeFormation $employeeFormation
-     *
-     * @return Formation
-     */
-    public function addEmployeeFormation(\AppBundle\Entity\EmployeeFormation $employeeFormation)
-    {
-        $this->employeeFormation[] = $employeeFormation;
-
-        return $this;
-    }
-
-    /**
-     * Remove employeeFormation.
-     *
-     * @param \AppBundle\Entity\EmployeeFormation $employeeFormation
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
-     */
-    public function removeEmployeeFormation(\AppBundle\Entity\EmployeeFormation $employeeFormation)
-    {
-        return $this->employeeFormation->removeElement($employeeFormation);
-    }
-
-    /**
-     * Get employeeFormation.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getEmployeeFormation()
-    {
-        return $this->employeeFormation;
-    }
 }
