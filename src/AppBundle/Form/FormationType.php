@@ -13,13 +13,14 @@ class FormationType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('diploma')
+        $builder
+            ->add('diploma')
             ->add('organization')
             ->add('speciality')
             ->add('counrty');
     }/**
-     * {@inheritdoc}
-     */
+ * {@inheritdoc}
+ */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
