@@ -7,7 +7,9 @@ use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * Employee
+ *
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\EmployeeRepository")
  * @ORM\Table(name="employee")
  */
 class Employee extends BaseUser
@@ -94,28 +96,36 @@ class Employee extends BaseUser
 
 
     /**
-     * @var EmployeeFormation
-     * @ORM\OneToMany(targetEntity="EmployeeFormation", mappedBy="employee")
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @ORM\OneToMany(targetEntity="EmployeeFormation", mappedBy="employee", cascade={"persist"})
      */
     private $employeeFormations;
 
-
     /**
-     * @ORM\ManyToMany(targetEntity="Project")
-     * @ORM\JoinTable(name="employees_project",
-     *      joinColumns={@ORM\JoinColumn(name="employee_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="project_id", referencedColumnName="id")}
-     *      )
+     * @var EmployeeLanguage
+     * @ORM\OneToMany(targetEntity="EmployeeLanguage", mappedBy="employee", cascade={"persist","remove"})
      */
-    private $projects;
-
+    private $employeeLanguages;
 
 
     /**
+     * @var Experience
+     * @ORM\OneToMany(targetEntity="Experience", mappedBy="employee",cascade={"persist","remove"})
      *
-     * @ORM\ManyToMany(targetEntity="Language", mappedBy="employees")
      */
-    private $languages;
+    private $experiences;
+
+    /**
+     * @var Avatar
+     *
+     * @ORM\OneToOne(targetEntity="Avatar", cascade={"persist","remove"})
+     *
+     */
+    private $avatar;
+
+
+
+
 
 
     public function __construct()
@@ -123,7 +133,6 @@ class Employee extends BaseUser
         parent::__construct();
         // your own logic
     }
-
 
     /**
      * Set firstName.
@@ -422,6 +431,7 @@ class Employee extends BaseUser
      */
     public function addEmployeeFormation(\AppBundle\Entity\EmployeeFormation $employeeFormation)
     {
+        $employeeFormation->setEmployee($this);
         $this->employeeFormation[] = $employeeFormation;
 
         return $this;
@@ -529,5 +539,106 @@ class Employee extends BaseUser
     public function getEmployeeFormations()
     {
         return $this->employeeFormations;
+    }
+
+    /**
+     * Set avatar.
+     *
+     * @param \AppBundle\Entity\Avatar $avatar
+     *
+     * @return Employee
+     */
+    public function setAvatar(\AppBundle\Entity\Avatar $avatar)
+    {
+        $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    /**
+     * Get avatar.
+     *
+     * @return \AppBundle\Entity\Avatar
+     */
+    public function getAvatar()
+    {
+        return $this->avatar;
+    }
+
+
+
+
+
+
+    /**
+     * Add employeeLanguage.
+     *
+     * @param \AppBundle\Entity\EmployeeLanguage $employeeLanguage
+     *
+     * @return Employee
+     */
+    public function addEmployeeLanguage(\AppBundle\Entity\EmployeeLanguage $employeeLanguage)
+    {
+        $this->employeeLanguages[] = $employeeLanguage;
+
+        return $this;
+    }
+
+    /**
+     * Remove employeeLanguage.
+     *
+     * @param \AppBundle\Entity\EmployeeLanguage $employeeLanguage
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeEmployeeLanguage(\AppBundle\Entity\EmployeeLanguage $employeeLanguage)
+    {
+        return $this->employeeLanguages->removeElement($employeeLanguage);
+    }
+
+    /**
+     * Get employeeLanguages.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEmployeeLanguages()
+    {
+        return $this->employeeLanguages;
+    }
+
+    /**
+     * Add experience.
+     *
+     * @param \AppBundle\Entity\Experience $experience
+     *
+     * @return Employee
+     */
+    public function addExperience(\AppBundle\Entity\Experience $experience)
+    {
+        $this->experiences[] = $experience;
+
+        return $this;
+    }
+
+    /**
+     * Remove experience.
+     *
+     * @param \AppBundle\Entity\Experience $experience
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeExperience(\AppBundle\Entity\Experience $experience)
+    {
+        return $this->experiences->removeElement($experience);
+    }
+
+    /**
+     * Get experiences.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getExperiences()
+    {
+        return $this->experiences;
     }
 }
