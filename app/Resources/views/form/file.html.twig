@@ -1,0 +1,11 @@
+{% block file_label %}
+    <label for="{{ id }}">
+
+        <i class="fa  fa-upload"></i>
+        <span id="avatar-upload-label">{{ attr.label_text }}&hellip;</span>
+        {#% do form.avatar.setRendered %#}
+    </label>
+{% endblock %}
+{% block file_widget %}
+    <input type={{ type }} name={{ full_name }} id={{ id }} class="inputfile" />
+{% endblock %}
