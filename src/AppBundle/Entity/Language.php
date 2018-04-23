@@ -28,11 +28,15 @@ class Language
      */
     private $label;
 
+
     /**
-     * @ORM\ManyToMany(targetEntity="Employee", inversedBy="languages")
-     * @ORM\JoinTable(name="languages_employees")
+     * @var EmployeeLanguage
+     * @ORM\OneToMany(targetEntity="EmployeeLanguage", mappedBy="language", cascade={"persist","remove"})
      */
-    private $employees;
+    private $employeeLanguages;
+
+
+
 
     /**
      * Get id.
@@ -66,5 +70,48 @@ class Language
     public function getLabel()
     {
         return $this->label;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->employees = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add employee.
+     *
+     * @param \AppBundle\Entity\Employee $employee
+     *
+     * @return Language
+     */
+    public function addEmployee(\AppBundle\Entity\Employee $employee)
+    {
+        $this->employees[] = $employee;
+
+        return $this;
+    }
+
+    /**
+     * Remove employee.
+     *
+     * @param \AppBundle\Entity\Employee $employee
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeEmployee(\AppBundle\Entity\Employee $employee)
+    {
+        return $this->employees->removeElement($employee);
+    }
+
+    /**
+     * Get employees.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEmployees()
+    {
+        return $this->employees;
     }
 }
