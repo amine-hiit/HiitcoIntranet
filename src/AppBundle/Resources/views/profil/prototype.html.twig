@@ -1,19 +1,25 @@
-<div class="box box-success box-solid">
+<div class="box box-success box-solid flat ">
     <div class="box-header with-border">
-        <h3 class="box-title">Removable</h3>
+        <h3 class="box-title">Nouvelle formation</h3>
 
         <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+            <a  class="removing btn btn-box-tool" ></a>
         </div>
         <!-- /.box-tools -->
     </div>
     <!-- /.box-header -->
+    <input class="hidden"
+           id={{ item.vars.id }}
+           name={{ item.vars.form.children.employee.vars.full_name }}
+           value={{ app.user.id }}
+    />
+
     <div class="box-body">
+
         <div class='col-sm-4 col-xs-12'>
             <div class='form-group'>
                 {{ form_label(item.formation) }}<a href='#'> Autre?</a>
                 {{ form_widget(item.formation, {'attr':{
-                    'oninput':'this.className = \'\'',
                     'class':'form-control'
                 }}) }}
             </div>
@@ -22,7 +28,6 @@
             <div class='form-group' >
                 {{ form_label(item.organization) }}
                 {{ form_widget(item.organization, {'attr':{
-                    'oninput':'this.className = \'\'',
                     'class':'form-control'
                 }}) }}
             </div>
@@ -31,7 +36,6 @@
             <div class='form-group' >
                 {{ form_label(item.country) }}
                 {{ form_widget(item.country, {'attr':{
-                    'oninput':'this.className = \'\'',
                     'class':'form-control'
                 }}) }}
             </div>
@@ -44,7 +48,7 @@
                         <i class='fa fa-calendar'></i>
                     </div>
                     {{ form_widget(item.startDate, {'attr':{
-                        'oninput':'this.className = \'\'',
+
                         'class':'form-control pull-right datepicker'
                     }}) }}
                 </div>
@@ -58,7 +62,7 @@
                         <i class='fa fa-calendar'></i>
                     </div>
                     {{ form_widget(item.endDate, {'attr':{
-                        'oninput':'this.className = \'\'',
+
                         'class':'form-control pull-right datepicker'
                     }}) }}
                 </div>
@@ -67,7 +71,3 @@
 
     </div>
 </div>
-
-
-
-
