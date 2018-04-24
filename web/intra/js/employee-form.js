@@ -68,12 +68,13 @@ jQuery(document).ready(function () {
 
         var list = jQuery(jQuery(this).attr('data-list'));
         // Try to find the counter of the list
-        var counter = list.data('widget-counter') | list.children().length;
+        var counter = list.children().length;
         // If the counter does not exist, use the length of the list
         if (!counter) { counter = list.children().length; }
 
         // grab the prototype template
         var newWidget = list.attr('data-prototype');
+        alert(list.tagName);
         // replace the "__name__" used in the id and name of the prototype
         // with a number that's unique to your emails
         // end name attribute looks like name="contact[emails][2]"
@@ -81,27 +82,20 @@ jQuery(document).ready(function () {
         // Increase the counter
         counter++;
         // And store it, the length cannot be used if deleting widgets is allowed
-        list.data(' widget-counter', counter);
+        //list.data(' widget-counter', counter);
 
         // create a new list element and add it to the list
         var newElem = jQuery(list.attr('data-widget-tags')).html(newWidget);
         newElem.appendTo(list);
 
-        // Get the ul that holds the collection of tags
         $collectionHolder = $('#formation-fields-list');
 
-        // add a delete link to all of the existing tag form li elements
         $collectionHolder.find('.formation').each(function() {
             if (!$(this).hasClass("dirty")) {
                 addTagFormDeleteLink($(this));
             }
         });
 
-        function addTagForm() {
-
-            // add a delete link to the new form
-            addTagFormDeleteLink($newFormLi);
-        }
     });
 
     function addTagFormDeleteLink($tagFormLi) {
@@ -132,8 +126,5 @@ jQuery(document).ready(function () {
     $(".inputfile").change(function(){
         readURL(this);
     });
-
-
-
 });
 (function(e,t,n){var r=e.querySelectorAll("#avatar-upload-box")[0];r.className=r.className.replace(/(^|\s)no-js(\s|$)/,"$1js$2")})(document,window,0);
