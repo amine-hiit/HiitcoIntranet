@@ -1,5 +1,3 @@
-
-
 {% extends "default/layout.html.twig" %}
 
 {% set title = "Fiche collaborateur" %}
@@ -24,7 +22,7 @@
                     <h5 class="widget-user-desc">Développeur Back end</h5>
                 </div>
                 <div class="widget-user-image">
-                    <img class="img-circle" alt="User Avatar" src="{{ asset('/uploads/img/avatar/15242503481470806301.png') }}">
+                    <img class="img-circle" alt="User Avatar" src={{asset(avatar_url) }}>
                 </div>
                 <div class="box-footer">
                     <div class="row">
@@ -46,153 +44,153 @@
 
 
 
-                    <ul class="timeline">
+            <ul class="timeline">
 
-                        <li>
-                            <i class="fa fa-black-tie bg-black"></i>
+                <li>
+                    <i class="fa fa-black-tie bg-black"></i>
 
-                            <div class="timeline-item flat">
-
-
-                                {% for formation in formations %}
-
-                                    <h3 class="timeline-header ">{{ formation.organization }} </h3>
-
-                                    <div class="timeline-body">
-                                        <p><span>{{ formation.formation.diploma }}</span> . <span>{{ formation.formation.speciality }}</span></p>
-                                        <p><span>{{ formation.startDate|date("Y") }}</span> - <span>{{ formation.endDate|date("Y") }}</span></p>
-
-                                    </div>
-                                    <div class="timeline-footer">
-                                        <a class="btn btn-primary btn-xs flat">Modifier</a>
-                                        <a class="btn btn-danger btn-xs flat">Supprimer</a>
-                                    </div>
-
-                                {% endfor %}
-
-                                <div id= "experience-form-holder" class="hidden">
-                                    {{ form_start(experienceForm, {'id': 'experienceForm'}) }}
-                                    {{ form_widget(experienceForm) }}
-
-                                    <button type="submit" class="btn btn-default flat col-sm-12 col-xs-12 "
-                                    >
-                                        Envoyer
-                                    </button>
-                                    {{ form_end(experienceForm) }}
-                                </div>
+                    <div class="timeline-item flat">
 
 
-                                <a class="btn btn-default flat col-sm-12 col-xs-12 "
-                                   id="add-experience"
-                                >Ajouter Experience</a>
+                        {% for formation in formations %}
 
+                            <h3 class="timeline-header ">{{ formation.organization }} </h3>
 
-
-
+                            <div class="timeline-body">
+                                <p><span>{{ formation.formation.diploma }}</span> . <span>{{ formation.formation.speciality }}</span></p>
+                                <p><span>{{ formation.startDate|date("Y") }}</span> - <span>{{ formation.endDate|date("Y") }}</span></p>
 
                             </div>
-                        </li>
+                            <div class="timeline-footer">
+                                <a class="btn btn-primary btn-xs flat">Modifier</a>
+                                <a class="btn btn-danger btn-xs flat">Supprimer</a>
+                            </div>
 
-                        <li>
-                            <i class="fa fa-graduation-cap bg-blue"></i>
+                        {% endfor %}
 
-                            <div class="timeline-item flat">
+                        <div id= "experience-form-holder" class="hidden">
+                            {{ form_start(experienceForm, {'id': 'experienceForm'}) }}
+                            {{ form_widget(experienceForm) }}
 
-                                {% for formation in formations %}
-                                    <h3 class="timeline-header ">{{ formation.organization }} </h3>
-
-                                    <div class="timeline-body">
-                                        <p><span>{{ formation.formation.diploma }}</span> . <span>{{ formation.formation.speciality }}</span></p>
-                                        <p><span>{{ formation.startDate|date("Y") }}</span> - <span>{{ formation.endDate|date("Y") }}</span></p>
-
-                                    </div>
-                                    <div class="timeline-footer">
-                                        <a class="btn btn-primary btn-xs flat">Modifier</a>
-                                        <a class="btn btn-danger btn-xs flat">Supprimer</a>
-                                    </div>
-
-                                {% endfor %}
-                                <div id= "formation-form-holder" class="hidden">
-                                    {{ form_start(formationForm, {'attr': {'id': 'formationForm'}}) }}
-                                    <div class="box-header with-border">
-                                        <h3 class="timeline-header"> Nouvelle formation </h3>
-                                    </div>
-                                    <input class="hidden"
-                                           id={{ formationForm.vars.id }}
-                                           name={{ formationForm.vars.form.children.employee.vars.full_name }}
-                                           value={{ app.user.id }}
-                                    />
-
-                                    <div class="box-body">
-
-                                        <div class='col-sm-4 col-xs-12'>
-                                            <div class='form-group'>
-                                                {{ form_label(formationForm.formation) }}<a href='#'> Autre?</a>
-                                                {{ form_widget(formationForm.formation, {'attr':{
-                                                    'class':'form-control'
-                                                }}) }}
-                                            </div>
-                                        </div>
-                                        <div class='col-sm-4 col-xs-12'>
-                                            <div class='form-group' >
-                                                {{ form_label(formationForm.organization) }}
-                                                {{ form_widget(formationForm.organization, {'attr':{
-                                                    'class':'form-control'
-                                                }}) }}
-                                            </div>
-                                        </div>
-                                        <div class='col-sm-4 col-xs-12'>
-                                            <div class='form-group' >
-                                                {{ form_label(formationForm.country) }}
-                                                {{ form_widget(formationForm.country, {'attr':{
-                                                    'class':'form-control'
-                                                }}) }}
-                                            </div>
-                                        </div>
-                                        <div class='col-sm-4 col-xs-12'>
-                                            <div class='form-group'>
-                                                {{ form_label(formationForm.startDate) }}
-                                                <div class='input-group date'>
-                                                    <div class='input-group-addon'>
-                                                        <i class='fa fa-calendar'></i>
-                                                    </div>
-                                                    {{ form_widget(formationForm.startDate, {'attr':{
-
-                                                        'class':'form-control pull-right datepicker'
-                                                    }}) }}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class='col-sm-4 col-xs-12'>
-                                            <div class='form-group'>
-                                                {{ form_label(formationForm.endDate) }}
-                                                <div class='input-group date'>
-                                                    <div class='input-group-addon'>
-                                                        <i class='fa fa-calendar'></i>
-                                                    </div>
-                                                    {{ form_widget(formationForm.endDate, {'attr':{
-
-                                                        'class':'form-control pull-right datepicker'
-                                                    }}) }}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <button type="submit" class="btn btn-default flat col-sm-12 col-xs-12 "
-                                    >Envoyer</button>
-                                    {% do formationForm.employee.setRendered %}
-                                    {{ form_end(formationForm) }}
-                                </div>
+                            <button type="submit" class="btn btn-default flat col-sm-12 col-xs-12 "
+                            >
+                                Envoyer
+                            </button>
+                            {{ form_end(experienceForm) }}
+                        </div>
 
 
-                                <a class="btn btn-default flat col-sm-12 col-xs-12 "
-                                   id="add-formation"
-                                >Ajouter formation</a>
+                        <a class="btn btn-default flat col-sm-12 col-xs-12 "
+                           id="add-experience"
+                        >Ajouter Experience</a>
+
+
+
+
+
+                    </div>
+                </li>
+
+                <li>
+                    <i class="fa fa-graduation-cap bg-blue"></i>
+
+                    <div class="timeline-item flat">
+
+                        {% for formation in formations %}
+                            <h3 class="timeline-header ">{{ formation.organization }} </h3>
+
+                            <div class="timeline-body">
+                                <p><span>{{ formation.formation.diploma }}</span> . <span>{{ formation.formation.speciality }}</span></p>
+                                <p><span>{{ formation.startDate|date("Y") }}</span> - <span>{{ formation.endDate|date("Y") }}</span></p>
 
                             </div>
-                        </li>
+                            <div class="timeline-footer">
+                                <a class="btn btn-primary btn-xs flat">Modifier</a>
+                                <a class="btn btn-danger btn-xs flat">Supprimer</a>
+                            </div>
 
-                    </ul>
+                        {% endfor %}
+                        <div id= "formation-form-holder" class="hidden">
+                            {{ form_start(formationForm, {'attr': {'id': 'formationForm'}}) }}
+                            <div class="box-header with-border">
+                                <h3 class="timeline-header"> Nouvelle formation </h3>
+                            </div>
+                            <input class="hidden"
+                                   id={{ formationForm.vars.id }}
+                                   name={{ formationForm.vars.form.children.employee.vars.full_name }}
+                                   value={{ app.user.id }}
+                            />
+
+                            <div class="box-body">
+
+                                <div class='col-sm-4 col-xs-12'>
+                                    <div class='form-group'>
+                                        {{ form_label(formationForm.formation) }}<a href='#'> Autre?</a>
+                                        {{ form_widget(formationForm.formation, {'attr':{
+                                            'class':'form-control'
+                                        }}) }}
+                                    </div>
+                                </div>
+                                <div class='col-sm-4 col-xs-12'>
+                                    <div class='form-group' >
+                                        {{ form_label(formationForm.organization) }}
+                                        {{ form_widget(formationForm.organization, {'attr':{
+                                            'class':'form-control'
+                                        }}) }}
+                                    </div>
+                                </div>
+                                <div class='col-sm-4 col-xs-12'>
+                                    <div class='form-group' >
+                                        {{ form_label(formationForm.country) }}
+                                        {{ form_widget(formationForm.country, {'attr':{
+                                            'class':'form-control'
+                                        }}) }}
+                                    </div>
+                                </div>
+                                <div class='col-sm-4 col-xs-12'>
+                                    <div class='form-group'>
+                                        {{ form_label(formationForm.startDate) }}
+                                        <div class='input-group date'>
+                                            <div class='input-group-addon'>
+                                                <i class='fa fa-calendar'></i>
+                                            </div>
+                                            {{ form_widget(formationForm.startDate, {'attr':{
+
+                                                'class':'form-control pull-right datepicker'
+                                            }}) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class='col-sm-4 col-xs-12'>
+                                    <div class='form-group'>
+                                        {{ form_label(formationForm.endDate) }}
+                                        <div class='input-group date'>
+                                            <div class='input-group-addon'>
+                                                <i class='fa fa-calendar'></i>
+                                            </div>
+                                            {{ form_widget(formationForm.endDate, {'attr':{
+
+                                                'class':'form-control pull-right datepicker'
+                                            }}) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-default flat col-sm-12 col-xs-12 "
+                            >Envoyer</button>
+                            {% do formationForm.employee.setRendered %}
+                            {{ form_end(formationForm) }}
+                        </div>
+
+
+                        <a class="btn btn-default flat col-sm-12 col-xs-12 "
+                           id="add-formation"
+                        >Ajouter formation</a>
+
+                    </div>
+                </li>
+
+            </ul>
 
 
 
@@ -215,25 +213,21 @@
 {% endblock %}
 
   {% block javascript %}
-  jQuery(document).ready(function () {
+      jQuery(document).ready(function () {
       $('.select2').select2();
 
       $('.datepicker').datepicker({
-          autoclose: true
+      autoclose: true
       });
 
       jQuery('#add-formation').click(function (e) {
-          jQuery('#formation-form-holder').removeClass('hidden')
-          jQuery(this).addClass('hidden');
+      jQuery('#formation-form-holder').removeClass('hidden')
+      jQuery(this).addClass('hidden');
       });
 
       jQuery('#add-experience').click(function (e) {
-          jQuery('#experience-form-holder').removeClass('hidden')
-          jQuery(this).addClass('hidden');
+      jQuery('#experience-form-holder').removeClass('hidden')
+      jQuery(this).addClass('hidden');
       });
-  });
+      });
   {% endblock %}
-
-
-
-
