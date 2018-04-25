@@ -23,11 +23,10 @@ use AppBundle\Form\ExperienceType;
 class EmployeeController extends Controller
 {
     /**
-     * @Route("/intranet/fiche", name="intranet-fiche")
+     * @Route("/intranet/form", name="employee-form")
      */
     public function ficheAction(Request $request)
     {
-
 
         $user = $this->get('security.token_storage')->getToken()->getUser();
         $form = $this->get('form.factory')->create(EmployeeType::class, $user);
@@ -68,8 +67,9 @@ class EmployeeController extends Controller
         ));
     }
 
+
     /**
-     * @Route("/intranet/employee/{employee}", name="intranet-employee")
+     * @Route("/intranet/employee/{employee}", name="employee-profil")
      */
     public function emplyeeProfileAction(Request $request, Employee $employee)
     {

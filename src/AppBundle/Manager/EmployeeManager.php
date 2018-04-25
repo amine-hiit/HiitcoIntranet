@@ -33,6 +33,8 @@ class EmployeeManager
     {
         $user->getAvatar()->upload();
         $user->getAvatar()->setAlt($user->getUserName().'_Avatar');
+
+        $user->setValid(true);
         $this->em->persist($user);
         $this->em->flush();
     }

@@ -37,7 +37,6 @@ class Employee extends BaseUser
     private $firstName;
 
 
-
     /**
      * @var string
      * @ORM\Column(name="last_name" , type="string", nullable=true)

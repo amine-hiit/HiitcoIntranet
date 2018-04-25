@@ -51,5 +51,6 @@ services:
     employee.subscriber:
         class: 'AppBundle\EventListener\EmployeeSubscriber'
         public: true
+        arguments : ['@security.token_storage','@security.authorization_checker','@router']
         tags:
             - { name : kernel.event_subscriber }
