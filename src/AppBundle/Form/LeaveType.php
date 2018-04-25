@@ -18,32 +18,24 @@ class LeaveType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder        
+        $builder
             ->add('type', ChoiceType::class, array(
                 'label'    => 'Type',
                 'required' => true,
                 'choices' => array(
-                        'leave' => 'leave',
-                        'absence' => 'absence',
-                    ),
+                    'leave' => 'leave',
+                    'absence' => 'absence',
+                ),
             ))
-        	->add('reason',TextType::class, array(
+            ->add('reason',TextType::class, array(
                 'required' => false
             ))
             ->add('refuseReason',TextareaType::class)
             ->add('startDate',DateType::class, array('format' => 'MM/dd/yyyy',
-               'widget' => 'single_text'))
+                'widget' => 'single_text'))
             ->add('endDate',DateType::class, array('format' => 'MM/dd/yyyy',
-               'widget' => 'single_text'));
+                'widget' => 'single_text'));
 
-
-
-/*add('type', ChoiceType::class, array(
-                'choices'  => array(
-                'congé' => 'leave',
-                'absence' => 'absence',
-                ),))
-*/
     }
     /**
      * {@inheritdoc}
