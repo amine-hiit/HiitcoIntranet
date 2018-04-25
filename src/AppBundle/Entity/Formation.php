@@ -28,6 +28,12 @@ class Formation
      */
     private $diploma;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="level", type="string", length=255)
+     */
+    private $level;
 
 
     /**
@@ -44,13 +50,6 @@ class Formation
      * @ORM\OneToMany(targetEntity="EmployeeFormation", mappedBy="formation")
      */
     private $employeeFormation;
-
-    /**
-     * var EmployeeFormation
-     * @ORM\OneToMany(targetEntity="EmployeeFormation", mappedBy="formation")
-     */
-    private $employee_formation;
-
 
 
 
@@ -228,5 +227,33 @@ class Formation
     public function getEmployeeFormation()
     {
         return $this->employeeFormation;
+    }
+
+    /**
+     * Set level.
+     *
+     * @param string $level
+     *
+     * @return Formation
+     */
+    public function setLevel($level)
+    {
+        $this->level = $level;
+
+        return $this;
+    }
+
+    /**
+     * Get level.
+     *
+     * @return string
+     */
+    public function getLevel()
+    {
+        return $this->level;
+    }
+
+    public function getFullName(){
+        return $this->level.', '.$this->diploma.', '.$this->speciality;
     }
 }

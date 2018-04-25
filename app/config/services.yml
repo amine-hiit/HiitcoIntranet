@@ -42,3 +42,8 @@ services:
     app.xls.manager:
         class: 'AppBundle\File\Manager\ExcelManager'
         public: true
+
+    app.employee.manager:
+        class: 'AppBundle\Manager\EmployeeManager'
+        public: true
+        arguments: ['@doctrine.orm.entity_manager']

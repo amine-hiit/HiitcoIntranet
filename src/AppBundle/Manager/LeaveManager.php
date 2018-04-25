@@ -82,6 +82,7 @@ class LeaveManager
         return $errors;
     }
 
+
     public function persist($task)
     {
         $this->em->persist($task);

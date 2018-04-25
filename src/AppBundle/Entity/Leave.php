@@ -68,12 +68,13 @@ class Leave
      * @ORM\Column(name ="leave_days_left", nullable=true)
      */
     private $leaveDaysLeft;
-   
+
     /**
      * @var string
      * @ORM\Column(name ="validation_status", type="text", nullable=true)
      */
     private $validationStatus;
+
 
 
     /**

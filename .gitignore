@@ -15,5 +15,20 @@
 !var/SymfonyRequirements.php
 /vendor/
 /web/bundles/
+<<<<<<< HEAD
 /.idea/workspace.xml
 /.idea/tasks.xml
+=======
+/web/uploads/
+/web/assetic/
+/web/css/
+/web/js/
+/web/fonts/
+/web/components
+/web/design
+/.idea/
+/.DS_Store
+*/.DS_Store
+.DS_Store
+/web/bower_components/
+>>>>>>> 53f2cf017ef0783cf4117e57940b10f9061c9055

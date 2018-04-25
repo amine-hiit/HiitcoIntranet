@@ -68,10 +68,17 @@ class Experience
 
     /**
      * var Employee
-     * @ORM\ManyToOne(targetEntity="Employee", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Employee", inversedBy="experiences")
      * @ORM\JoinColumn(name ="employee_id",referencedColumnName="id", nullable=false)
      */
     private $employee;
+
+    /**
+     * var string
+     * @ORM\Column(name="employer", type="string", length=255)
+     */
+    private $employer;
+
 
 
 
@@ -228,5 +235,53 @@ class Experience
     public function getCountry()
     {
         return $this->country;
+    }
+
+    /**
+     * Set employer.
+     *
+     * @param string $employer
+     *
+     * @return Experience
+     */
+    public function setEmployer($employer)
+    {
+        $this->employer = $employer;
+
+        return $this;
+    }
+
+    /**
+     * Get employer.
+     *
+     * @return string
+     */
+    public function getEmployer()
+    {
+        return $this->employer;
+    }
+
+    /**
+     * Set employee.
+     *
+     * @param \AppBundle\Entity\Employee $employee
+     *
+     * @return Experience
+     */
+    public function setEmployee(\AppBundle\Entity\Employee $employee)
+    {
+        $this->employee = $employee;
+
+        return $this;
+    }
+
+    /**
+     * Get employee.
+     *
+     * @return \AppBundle\Entity\Employee
+     */
+    public function getEmployee()
+    {
+        return $this->employee;
     }
 }
