@@ -23,11 +23,11 @@ class EmployeeSubscriber implements EventSubscriberinterface
 {
 
     const INVALID_EMPLOYEE_ALLOWED_ROUTES = array(
-    'employee-form',
-    'fos_user_security_login',
-    'homepage',
-    'intranet-homepage',
-    'intranet'
+        'employee-form',
+        'fos_user_security_login',
+        'homepage',
+        'intranet-homepage',
+        'intranet'
     );
     /**
      * @var TokenStorageInterface
@@ -61,48 +61,17 @@ class EmployeeSubscriber implements EventSubscriberinterface
     public function onKernelController(GetResponseEvent $event)
     {
 
-        //$user = $this->tokenStorage->getToken()->getUser();
-        //dump($this->authorizationChecker);die;
-
-        //$this->tokenStorage->getToken()->getUser();
-        //$response = new RedirectResponse('/');
-
-
-        //$event->setResponse($response);
-        //getRequest()->get('_route');
-
-        /*$hostName = $event->getRequest()->headers->get('host');
-        $url = $event->getRequest()->headers->get('referer');
-        $split = explode($hostName,$url);
-        $route = $split[1];
-        //get('security.token_storage')->getToken()->getUser();
-
-        $this->tokenStorage->getToken()->getUser()
-        */
-
         $currentRoute = $event->getRequest()->get('_route');
 
-
-        if(null===$token=$this->tokenStorage->getToken())
-            $event->setResponse(new RedirectResponse($this->router->generate('employee-form')));
-
-
-        $currentRoute = $event->getRequest()->get('_route');
-
-
-        if(null===$token=$this->tokenStorage->getToken())
-            $event->setResponse(new RedirectResponse($this->router->generate('employee-form')));
+        if (null === $token = $this->tokenStorage->getToken())
+            $event->setResponse(new RedirectResponse($this->router->generate('homepage')));
 
         $user = $token->getUser();
 
 
-
-        if ($this->authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY'))
-        {
-            if (!$user->isValid())
-            {
-                if ($currentRoute && !in_array($currentRoute, self::INVALID_EMPLOYEE_ALLOWED_ROUTES))
-                {
+        if ($this->authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
+            if (!$user->isValid()) {
+                if ($currentRoute && !in_array($currentRoute, self::INVALID_EMPLOYEE_ALLOWED_ROUTES)) {
                     $event->setResponse(new RedirectResponse($this->router->generate('homepage')));
                 }
             }
