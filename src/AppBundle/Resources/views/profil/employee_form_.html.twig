@@ -11,6 +11,9 @@
 
     <style>
 
+
+
+
         /*upload file*/
         .upload-btn-wrapper {
             position: relative;
@@ -63,14 +66,21 @@
         .step.finish {
             background-color: #c9d5ea;
         }
+
+        /* if the input is invalid */
+        input.invalid {
+            background-color: #ffdddd;
+        }
+        select.invalid {
+            background-color: #ffdddd;
+        }
+
     </style>
 {% endblock %}
 
 
 {% block content %}
 
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
 
 
         <!-- Content Header (Page header) -->
@@ -261,16 +271,15 @@
                                              "
                                              data-widget-tags="{{ '<div class="formation"></div>'|e }}">
                                         </div>
+
+                                        <a href="#"
+                                           class="add-another-collection-widget"
+                                           data-list="#formation-fields-list"
+                                        >
+                                            Ajouter formation
+                                        </a>
                                     </div>
                                 </div>
-
-                                <a href="#"
-                                   class="add-another-collection-widget"
-                                   data-list="#formation-fields-list"
-                                >
-                                    Ajouter formation
-                                </a>
-
                             </div>
                             <!-- end tab-->
                         </div>

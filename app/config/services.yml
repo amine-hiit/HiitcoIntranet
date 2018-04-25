@@ -47,3 +47,9 @@ services:
         class: 'AppBundle\Manager\EmployeeManager'
         public: true
         arguments: ['@doctrine.orm.entity_manager']
+
+    employee.subscriber:
+        class: 'AppBundle\EventListener\EmployeeSubscriber'
+        public: true
+        tags:
+            - { name : kernel.event_subscriber }
