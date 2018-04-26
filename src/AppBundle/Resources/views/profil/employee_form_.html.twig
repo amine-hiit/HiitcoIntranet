@@ -85,6 +85,7 @@
 
         <!-- Content Header (Page header) -->
         <section class="content-header">
+
             <h1>
                 Fiche Collaborateur:
                 <small></small>
@@ -103,7 +104,9 @@
                 <div class="box-body">
                     <!--form id="regForm" action="/action_page.php"-->
                     {{ form_start(form, {'attr': {'id': 'regForm'}}) }}
-
+                    <div class="callout callout-danger flat">
+                        <p> {{ form_errors(form) }}</p>
+                    </div>
                     <div class="box-header">
                         <div class=" col-sm-6 ">
                             <h3 class="box-title">Personnal info</h3>

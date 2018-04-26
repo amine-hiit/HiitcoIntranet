@@ -96,5 +96,4 @@ class EmployeeType extends AbstractType
         return 'appbundle_employee';
     }
 
-
 }

@@ -85,8 +85,8 @@ class Employee extends BaseUser
     private $cnssNumber;
 
     /**
-     * @var int
-     * @ORM\Column(name="phone_number" , type="integer", nullable=true)
+     * @var string
+     * @ORM\Column(name="phone_number" , type="string", nullable=true)
      */
     private $phoneNumber;
 
@@ -682,6 +682,16 @@ class Employee extends BaseUser
      * @return bool
      */
     public function isValid()
+    {
+        return $this->valid;
+    }
+
+    /**
+     * Get valid.
+     *
+     * @return bool
+     */
+    public function getValid()
     {
         return $this->valid;
     }

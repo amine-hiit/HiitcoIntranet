@@ -37,7 +37,6 @@ class Employee extends BaseUser
     private $firstName;
 
 
-
     /**
      * @var string
      * @ORM\Column(name="last_name" , type="string", nullable=true)
@@ -86,8 +85,8 @@ class Employee extends BaseUser
     private $cnssNumber;
 
     /**
-     * @var int
-     * @ORM\Column(name="phone_number" , type="integer", nullable=true)
+     * @var string
+     * @ORM\Column(name="phone_number" , type="string", nullable=true)
      */
     private $phoneNumber;
 
@@ -661,5 +660,29 @@ class Employee extends BaseUser
     public function getExperiences()
     {
         return $this->experiences;
+    }
+
+    /**
+     * Set valid.
+     *
+     * @param bool $valid
+     *
+     * @return Employee
+     */
+    public function setValid($valid)
+    {
+        $this->valid = $valid;
+
+        return $this;
+    }
+
+    /**
+     * Get valid.
+     *
+     * @return bool
+     */
+    public function isValid()
+    {
+        return $this->valid;
     }
 }
