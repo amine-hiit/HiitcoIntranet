@@ -54,10 +54,8 @@ class EmployeeType extends AbstractType
             ->add('currentPosition',TextType::class, array(
                 'required' => true))
             ->add('status')
-            ->add('employee_formations', EmployeeFormationType::class)
 
             ->add('employee_formations', CollectionType::class, array(
-                // each entry in the array will be an "email" field
                 'entry_type' => EmployeeFormationType::class,
                 'allow_add' => true,
                 'delete_empty' => true,
@@ -65,14 +63,17 @@ class EmployeeType extends AbstractType
                 'prototype' => true,
                 'prototype_name' => '__name__',
             ))
+
             ->add('experiences', CollectionType::class, array(
-                // each entry in the array will be an "email" field
                 'entry_type' => ExperienceType::class,
                 'allow_add' => true,
                 'delete_empty' => true,
                 'allow_delete' => true,
                 'prototype' => true,
+                'prototype_name' => '__name__',
+
             ));
+
 
 
 
@@ -95,5 +96,6 @@ class EmployeeType extends AbstractType
     {
         return 'appbundle_employee';
     }
+
 
 }

@@ -2,12 +2,19 @@
 
 jQuery(document).ready(function () {
 
-    addFormation('.add-another-collection-widget',  e = null);
+    addFormation('.add-formation-collection-widget',  e = null);
+    addExperience('.add-experience-collection-widget',  e = null);
 
-    jQuery('.add-another-collection-widget').click(function (e) {
+    jQuery('.add-formation-collection-widget').click(function (e) {
         addFormation(this,e);
 
     });
+
+    jQuery('.add-experience-collection-widget').click(function (e) {
+        addExperience(this,e);
+
+    });
+
 
 
     function addTagFormDeleteLink($tagFormLi) {
@@ -38,6 +45,38 @@ jQuery(document).ready(function () {
     $(".inputfile").change(function(){
         readURL(this);
     });
+
+
+
+    function addExperience(className,e){
+        if (e!=null)
+            e.preventDefault();
+
+        var list = jQuery(jQuery(className).attr('data-list'));
+
+        var counter = list.children().length;
+        if (!counter) { counter = list.children().length; }
+
+
+        var newWidget = list.attr('data-prototype');
+
+        newWidget = newWidget.replace(/__name__/g, counter);
+
+        counter++;
+
+
+        var newElem = jQuery(list.attr('data-widget-tags')).html(newWidget);
+        newElem.appendTo(list);
+
+        $collectionHolder = $('experience-fields-list');
+
+        $collectionHolder.find('.Experience').each(function() {
+            if (!$(this).hasClass("dirty")) {
+                addTagFormDeleteLink($(this,));
+            }
+        });
+    }
+
 
     function addFormation(className,e){
         if (e!=null)
@@ -74,9 +113,6 @@ jQuery(document).ready(function () {
         autoclose: true
     });
 
-    $("#addFormation").click(function(){
-        $("#newFormation").append("<li>Appended item</li>");
-    });
 
 });
 
@@ -155,6 +191,7 @@ function fixStepIndicator(n) {
     // This function removes the "active" class of all steps...
     var i, x = document.getElementsByClassName("step");
     for (i = 0; i < x.length; i++) {
+        alert(x[i]);
         x[i].className = x[i].className.replace(" active", "");
     }
     //... and adds the "active" class on the current step:

@@ -22,6 +22,8 @@ use AppBundle\Form\ExperienceType;
 
 class EmployeeController extends Controller
 {
+
+
     /**
      * @Route("/intranet/form", name="employee-form")
      */
@@ -53,18 +55,22 @@ class EmployeeController extends Controller
     public function emplyeeProfileAction(Request $request, Employee $employee)
     {
 
+        $efm = $this->get('app.employee_formation.manager');
+
+
         if(!$employee->isValid())
             return  $this->render('@App/profil/invalid_employee.html.twig', array(
                 'employee' => $employee,
-
             ));
 
         $user = $this->get('security.token_storage')->getToken()->getUser();
-        $lastFormations = $this->getDoctrine()->getManager()->getRepository(EmployeeFormation::class)->findLastFormationByEmployeeId($employee);
-        $formations = $this->getDoctrine()->getManager()->getRepository(EmployeeFormation::class)->findAllByEmployeeId($employee->getId());
 
-        $employeeFormation = new EmployeeFormation();
+        $lastFormations = $efm->findEmployeeLastFormation($employee);
+        $formations = $efm->findEmployeeAllFormations($employee);
+
+        $employeeFormation =  $efm->create();
         $experience = new Experience();
+
 
         $formationForm = $this->get('form.factory')->create(EmployeeFormationType::class, $employeeFormation);
         $experienceForm = $this->get('form.factory')->create(ExperienceType::class, $experience);

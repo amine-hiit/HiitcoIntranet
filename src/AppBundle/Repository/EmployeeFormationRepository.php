@@ -9,12 +9,12 @@ use AppBundle\Entity\Employee;
  */
 class EmployeeFormationRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function findAllByEmployeeId($employeeId)
+    public function findEmployeeAllFormations(Employee $employee)
     {
         $qb = $this->createQueryBuilder('e');
         $qb
             ->where('e.employee = :employeeId')
-            ->setParameter('employeeId', $employeeId)
+            ->setParameter('employeeId',  $employee->getId())
         ;
 
         return $qb
@@ -22,7 +22,7 @@ class EmployeeFormationRepository extends \Doctrine\ORM\EntityRepository
             ->getResult()
             ;
     }
-    public function findLastFormationByEmployeeId(Employee $employee)
+    public function findEmployeeLastFormation(Employee $employee)
     {
         $qb =$this->createQueryBuilder('e');
 

@@ -105,7 +105,7 @@
                     <!--form id="regForm" action="/action_page.php"-->
                     {{ form_start(form, {'attr': {'id': 'regForm'}}) }}
                     <div class="callout callout-danger flat">
-                        <p> {{ form_errors(form) }}</p>
+                        <p> form_</p>
                     </div>
                     <div class="box-header">
                         <div class=" col-sm-6 ">
@@ -276,10 +276,33 @@
                                         </div>
 
                                         <a href="#"
-                                           class="add-another-collection-widget"
+                                           class="add-formation-collection-widget"
                                            data-list="#formation-fields-list"
                                         >
                                             Ajouter formation
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab">
+                                {{ form_label(form.experiences) }}
+                                <div class="row" >
+                                    <div class="col-sm-12 col-xs-12">
+                                        <div id="experience-fields-list"
+                                             data-prototype=
+                                             "
+                                                    {% filter escape %}
+                                                    {% include '@App/profil/experience_prototype.html.twig' with { 'item': form.experiences.vars.prototype } %}
+                                                    {% endfilter %}
+                                             "
+                                             data-widget-tags="{{ '<div class="formation"></div>'|e }}">
+                                        </div>
+
+                                        <a href="#"
+                                           class="add-experience-collection-widget"
+                                           data-list="#experience-fields-list"
+                                        >
+                                            Ajouter experience
                                         </a>
                                     </div>
                                 </div>
