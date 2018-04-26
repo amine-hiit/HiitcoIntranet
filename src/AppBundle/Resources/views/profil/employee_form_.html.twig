@@ -11,6 +11,9 @@
 
     <style>
 
+
+
+
         /*upload file*/
         .upload-btn-wrapper {
             position: relative;
@@ -63,18 +66,26 @@
         .step.finish {
             background-color: #c9d5ea;
         }
+
+        /* if the input is invalid */
+        input.invalid {
+            background-color: #ffdddd;
+        }
+        select.invalid {
+            background-color: #ffdddd;
+        }
+
     </style>
 {% endblock %}
 
 
 {% block content %}
 
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
 
 
         <!-- Content Header (Page header) -->
         <section class="content-header">
+
             <h1>
                 Fiche Collaborateur:
                 <small></small>
@@ -93,7 +104,9 @@
                 <div class="box-body">
                     <!--form id="regForm" action="/action_page.php"-->
                     {{ form_start(form, {'attr': {'id': 'regForm'}}) }}
-
+                    <div class="callout callout-danger flat">
+                        <p> form_</p>
+                    </div>
                     <div class="box-header">
                         <div class=" col-sm-6 ">
                             <h3 class="box-title">Personnal info</h3>
@@ -261,16 +274,38 @@
                                              "
                                              data-widget-tags="{{ '<div class="formation"></div>'|e }}">
                                         </div>
+
+                                        <a href="#"
+                                           class="add-formation-collection-widget"
+                                           data-list="#formation-fields-list"
+                                        >
+                                            Ajouter formation
+                                        </a>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="tab">
+                                {{ form_label(form.experiences) }}
+                                <div class="row" >
+                                    <div class="col-sm-12 col-xs-12">
+                                        <div id="experience-fields-list"
+                                             data-prototype=
+                                             "
+                                                    {% filter escape %}
+                                                    {% include '@App/profil/experience_prototype.html.twig' with { 'item': form.experiences.vars.prototype } %}
+                                                    {% endfilter %}
+                                             "
+                                             data-widget-tags="{{ '<div class="formation"></div>'|e }}">
+                                        </div>
 
-                                <a href="#"
-                                   class="add-another-collection-widget"
-                                   data-list="#formation-fields-list"
-                                >
-                                    Ajouter formation
-                                </a>
-
+                                        <a href="#"
+                                           class="add-experience-collection-widget"
+                                           data-list="#experience-fields-list"
+                                        >
+                                            Ajouter experience
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                             <!-- end tab-->
                         </div>

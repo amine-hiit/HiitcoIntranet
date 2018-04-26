@@ -1,0 +1,61 @@
+{% extends "default/layout.html.twig" %}
+
+{% set title = "Invalid Employee" %}
+{% set profile = "profile" %}
+
+{% block stylesheet %}
+
+{% endblock %}
+
+
+{% block content %}
+
+<section class="content">
+    <div class="row">
+            <div class="box box-default">
+                <div class="box-header with-border">
+                    <i class="fa fa-warning"></i>
+
+                    <h3 class="box-title">Employé Non Valide</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="alert alert-danger alert-dismissible">
+                        <p>Le collaborateur {{ employee.userName }} n'a pas encore rempli sa fiche collaborateur</p>
+                        <p><button  type="submit" class="btn btn-danger flat"> inviter {{ employee.userName }} à
+                                remplir sa fiche collaborateur</button>
+                        </p>
+                    </div>
+                </div>
+                <!-- /.box-body -->
+            </div>
+    </div>
+</section>
+{% endblock %}
+
+
+{% block script %}
+    {# <script src="{{ asset('https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')}}"></script>#}
+    <script src="{{ asset('bower_components/select2/dist/js/select2.full.min.js')}}"></script>
+    <script src="{{ asset('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js')}}"></script>
+{% endblock %}
+
+  {% block javascript %}
+      jQuery(document).ready(function () {
+      $('.select2').select2();
+
+      $('.datepicker').datepicker({
+      autoclose: true
+      });
+
+      jQuery('#add-formation').click(function (e) {
+      jQuery('#formation-form-holder').removeClass('hidden')
+      jQuery(this).addClass('hidden');
+      });
+
+      jQuery('#add-experience').click(function (e) {
+      jQuery('#experience-form-holder').removeClass('hidden')
+      jQuery(this).addClass('hidden');
+      });
+      });
+  {% endblock %}
