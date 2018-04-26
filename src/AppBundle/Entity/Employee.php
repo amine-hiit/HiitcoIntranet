@@ -4,7 +4,9 @@
 namespace AppBundle\Entity;
 
 use FOS\UserBundle\Model\User as BaseUser;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+
 
 /**
  * Employee
@@ -23,10 +25,17 @@ class Employee extends BaseUser
     protected $id;
 
     /**
+     * @var valid
+     * @ORM\Column(name="valid", type="boolean", nullable=false, )
+     */
+    private $valid = false;
+
+    /**
      * @var string
      * @ORM\Column(name="first_name" , type="string", nullable=true)
      */
     private $firstName;
+
 
     /**
      * @var string
@@ -36,6 +45,7 @@ class Employee extends BaseUser
 
     /**
      * @var \DateTime
+     * @Assert\NotBlank()
      * @ORM\Column(name="birthday" , type="date", nullable=true)
      */
     private $birthday;
@@ -47,6 +57,11 @@ class Employee extends BaseUser
     private $maritalStatus;
 
     /**
+     *
+     * @Assert\Range(
+     *      min = 0,
+     *      max = 10
+     * )
      * var int
      * @ORM\Column(name="dependent_child" , type="integer", nullable=true)
      */
@@ -59,6 +74,11 @@ class Employee extends BaseUser
     private $photoId;
 
     /**
+     *
+     * @Assert\Range(
+     *      min = 0,
+     *      max = 999999999
+     * )
      * @var int
      * @ORM\Column(name="cnss" , type="integer", nullable=true)
      */
@@ -640,5 +660,29 @@ class Employee extends BaseUser
     public function getExperiences()
     {
         return $this->experiences;
+    }
+
+    /**
+     * Set valid.
+     *
+     * @param bool $valid
+     *
+     * @return Employee
+     */
+    public function setValid($valid)
+    {
+        $this->valid = $valid;
+
+        return $this;
+    }
+
+    /**
+     * Get valid.
+     *
+     * @return bool
+     */
+    public function isValid()
+    {
+        return $this->valid;
     }
 }
