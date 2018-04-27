@@ -4,9 +4,22 @@ jQuery(document).ready(function () {
 
     addFormation('.add-formation-collection-widget',  e = null);
     addExperience('.add-experience-collection-widget',  e = null);
+    addProject('.add-project-collection-widget',  e = null);
+    addLanguage('.add-language-collection-widget',  e = null);
 
     jQuery('.add-formation-collection-widget').click(function (e) {
         addFormation(this,e);
+
+    });
+
+
+    jQuery('.add-language-collection-widget').click(function (e) {
+        addLanguage(this,e);
+
+    });
+
+    jQuery('.add-project-collection-widget').click(function (e) {
+        addProject(this,e);
 
     });
 
@@ -68,11 +81,40 @@ jQuery(document).ready(function () {
         var newElem = jQuery(list.attr('data-widget-tags')).html(newWidget);
         newElem.appendTo(list);
 
-        $collectionHolder = $('experience-fields-list');
+        $collectionHolder = $('#experience-fields-list');
 
-        $collectionHolder.find('.Experience').each(function() {
+        $collectionHolder.find('.experience').each(function() {
             if (!$(this).hasClass("dirty")) {
-                addTagFormDeleteLink($(this,));
+                addTagFormDeleteLink($(this));
+            }
+        });
+    }
+
+    function addLanguage(className,e){
+        if (e!=null)
+            e.preventDefault();
+
+        var list = jQuery(jQuery(className).attr('data-list'));
+
+        var counter = list.children().length;
+        if (!counter) { counter = list.children().length; }
+
+
+        var newWidget = list.attr('data-prototype');
+
+        newWidget = newWidget.replace(/__name__/g, counter);
+
+        counter++;
+
+
+        var newElem = jQuery(list.attr('data-widget-tags')).html(newWidget);
+        newElem.appendTo(list);
+
+        $collectionHolder = $('#language-fields-list');
+
+        $collectionHolder.find('.language').each(function() {
+            if (!$(this).hasClass("dirty")) {
+                addTagFormDeleteLink($(this));
             }
         });
     }
@@ -102,7 +144,34 @@ jQuery(document).ready(function () {
 
         $collectionHolder.find('.formation').each(function() {
             if (!$(this).hasClass("dirty")) {
-                addTagFormDeleteLink($(this,));
+                addTagFormDeleteLink($(this));
+            }
+        });
+    }
+
+    function addProject(className,e){
+        if (e!=null)
+            e.preventDefault();
+
+        var list = jQuery(jQuery(className).attr('data-list'));
+
+        var counter = list.children().length;
+
+        if (!counter) { counter = list.children().length; }
+
+        var newWidget = list.attr('data-prototype');
+        newWidget = newWidget.replace(/__name__/g, counter);
+
+        counter++;
+
+        var newElem = jQuery(list.attr('data-widget-tags')).html(newWidget);
+        newElem.appendTo(list);
+
+        $collectionHolder = $('#project-fields-list');
+
+        $collectionHolder.find('.project').each(function() {
+            if (!$(this).hasClass("dirty")) {
+                addTagFormDeleteLink($(this));
             }
         });
     }

@@ -45,6 +45,7 @@
 
         <ul class="timeline">
 
+            {% if  experiences|length > 0    %}
             <li>
                 <i class="fa fa-black-tie bg-black"></i>
 
@@ -71,22 +72,96 @@
 
                     {% if profileOwner %}
                         <div id="experience-form-holder" class="hidden">
-                            {{ form_start(experienceForm, {'id': 'experienceForm'}) }}
-                            {{ form_widget(experienceForm) }}
+                            {{ form_start(experienceForm, {'attr': {'id': 'experienceForm'}}) }}
+                            <div class="box-header with-border">
+                                <h3 class="timeline-header"> Nouvelle experience </h3>
+                            </div>
+                            <div class="box-body">
+                                <div class='col-sm-4 col-xs-12'>
+                                    <div class='form-group'>
+                                        {{ form_label(experienceForm.position) }}
+                                        {{ form_widget(experienceForm.position, {'attr':{
+                                            'class':'form-control'
+                                        }}) }}
+                                    </div>
+                                </div>
+                                <div class='col-sm-4 col-xs-12'>
+                                    <div class='form-group' >
+                                        {{ form_label(experienceForm.employer) }}
+                                        {{ form_widget(experienceForm.employer, {'attr':{
+                                            'class':'form-control'
+                                        }}) }}
+                                    </div>
+                                </div>
+                                <div class='col-sm-4 col-xs-12'>
+                                    <div class='form-group'>
+                                        {{ form_label(experienceForm.city) }}
+                                        {{ form_widget(experienceForm.city, {'attr':{
+                                            'class':'form-control'
+                                        }}) }}
+                                    </div>
+                                </div>
+                                <div class='col-sm-4 col-xs-12'>
+                                    <div class='form-group'>
+                                        {{ form_label(experienceForm.startDate) }}
+                                        <div class='input-group date'>
+                                            <div class='input-group-addon'>
+                                                <i class='fa fa-calendar'></i>
+                                            </div>
+                                            {{ form_widget(experienceForm.startDate, {'attr':{
 
-                            <button type="submit" class="btn btn-default flat col-sm-12 col-xs-12 "
-                            >
+                                                'class':'form-control pull-right datepicker'
+                                            }}) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class='col-sm-4 col-xs-12'>
+                                    <div class='form-group'>
+                                        {{ form_label(experienceForm.endDate) }}
+                                        <div class='input-group date'>
+                                            <div class='input-group-addon'>
+                                                <i class='fa fa-calendar'></i>
+                                            </div>
+                                            {{ form_widget(experienceForm.endDate, {'attr':{
+
+                                                'class':'form-control pull-right datepicker'
+                                            }}) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class='col-sm-4 col-xs-12'>
+                                    <div class='form-group' >
+                                        {{ form_label(experienceForm.country) }}
+                                        {{ form_widget(experienceForm.country, {'attr':{
+                                            'class':'form-control'
+                                        }}) }}
+                                    </div>
+                                </div>
+                                <div class='col-sm-12 col-xs-12'>
+                                    <div class='form-group' >
+                                        {{ form_label(experienceForm.description) }}
+                                        {{ form_widget(experienceForm.description, {'attr':{
+                                            'class':'form-control'
+                                        }}) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <a id="cancel-adding-new-experience" class="btn btn-default flat col-sm-6 col-xs-6">
+                                Annuler
+                            </a>
+                            <button type="submit" class="btn btn-default flat col-sm-6 col-xs-6">
                                 Envoyer
                             </button>
                             {{ form_end(experienceForm) }}
+                        </div>
 
                             <a class="btn btn-default flat col-sm-12 col-xs-12 "
                                id="add-experience"
                             >Ajouter Experience</a>
-                        </div>
                     {% endif %}
                 </div>
             </li>
+            {% endif %}
 
             <li>
                 <i class="fa fa-graduation-cap bg-blue"></i>
@@ -179,8 +254,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-default flat col-sm-12 col-xs-12 "
-                            >Envoyer
+                            <a id="cancel-adding-new-formation" class="btn btn-default flat col-sm-6 col-xs-6">
+                                Annuler
+                            </a>
+                            <button type="submit" class="btn btn-default flat col-sm-6 col-xs-6"
+                                >Envoyer
                             </button>
                             {% do formationForm.employee.setRendered %}
                             {{ form_end(formationForm) }}
@@ -230,5 +308,16 @@
           jQuery('#experience-form-holder').removeClass('hidden')
           jQuery(this).addClass('hidden');
       });
+
+      jQuery('#cancel-adding-new-experience').click(function (e) {
+      jQuery('#experience-form-holder').addClass('hidden')
+      jQuery('#add-experience').removeClass('hidden');
+      });
+
+      jQuery('#cancel-adding-new-formation').click(function (e) {
+      jQuery('#formation-form-holder').addClass('hidden')
+      jQuery('#add-formation').removeClass('hidden');
+      });
+
   });
   {% endblock %}

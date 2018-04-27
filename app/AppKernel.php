@@ -25,6 +25,7 @@ class AppKernel extends Kernel
 
             new JMS\SerializerBundle\JMSSerializerBundle(),
             new Yectep\PhpSpreadsheetBundle\PhpSpreadsheetBundle(),
+            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
 
 
         ];

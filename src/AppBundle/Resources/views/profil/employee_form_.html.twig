@@ -74,6 +74,9 @@
         select.invalid {
             background-color: #ffdddd;
         }
+        textarea.invalid {
+            background-color: #ffdddd;
+        }
 
     </style>
 {% endblock %}
@@ -194,6 +197,7 @@
                                             }}) }}
                                         </div>
                                     </div>
+
                                     <div class=" col-sm-4 ">
                                         <div class=" row">
                                             <div class=" col-sm-10 col-xs-offset-1">
@@ -204,16 +208,6 @@
                                                         {{ form_widget(form.avatar.file) }}
                                                         {{ form_label(form.avatar.file) }}
 
-                                                        <!--label for="appbundle_employee_avatar_file">
-                                                                <i class="fa  fa-upload"></i>
-                                                                <span id="avatar-upload-label">Veuillez telecharger votre Photo&hellip;</span>
-                                                                {#% do form.avatar.setRendered %#}
-                                                            </label-->
-
-
-                                                        {#{% form_theme form 'form/file.html.twig' %}
-                                                        {{ form_label(form.avatar.file) }}
-                                                        {{ form_widget(form.avatar.file) }}#}
                                                     </div>
                                                 </div>
                                             </div>
@@ -258,8 +252,50 @@
                                         </div>
                                     </div>
                                 </div>
+                                {{ form_label(form.experiences) }}
+                                <div class="row" >
+                                    <div class="col-sm-12 col-xs-12">
+                                        <div id="experience-fields-list"
+                                             data-prototype=
+                                             "
+                                                    {% filter escape %}
+                                                    {% include '@App/profil/prototype/experience_prototype.html.twig' with { 'item': form.experiences.vars.prototype } %}
+                                                    {% endfilter %}
+                                             "
+                                             data-widget-tags="{{ '<div class="experience"></div>'|e }}">
+                                        </div>
 
+                                        <a href="#"
+                                           class="add-experience-collection-widget"
+                                           data-list="#experience-fields-list"
+                                        >
+                                            Ajouter experience
+                                        </a>
+                                    </div>
+                                </div>
+                                {{ form_label(form.projects) }}
+                                <div class="row" >
+                                    <div class="col-sm-12 col-xs-12">
+                                        <div id="project-fields-list"
+                                             data-prototype=
+                                             "
+                                                    {% filter escape %}
+                                                    {% include '@App/profil/prototype/project_prototype.html.twig' with { 'item': form.projects.vars.prototype }%}
+                                                    {% endfilter %}
+                                             "
+                                             data-widget-tags="{{ '<div class="project"></div>'|e }}">
+                                        </div>
 
+                                        <a href="#"
+                                           class="add-project-collection-widget"
+                                           data-list="#project-fields-list"
+                                        >
+                                            Ajouter projet
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab">
                                 {{ form_label(form.employee_formations) }}
                                 <div class="row" >
                                     <div class="col-sm-12 col-xs-12">
@@ -281,26 +317,26 @@
                                         </a>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="tab">
-                                {{ form_label(form.experiences) }}
+
+
+                                {{ form_label(form.employee_languages) }}
                                 <div class="row" >
                                     <div class="col-sm-12 col-xs-12">
-                                        <div id="experience-fields-list"
+                                        <div id="language-fields-list"
                                              data-prototype=
                                              "
                                                     {% filter escape %}
-                                                    {% include '@App/profil/prototype/experience_prototype.html.twig' with { 'item': form.experiences.vars.prototype } %}
+                                                    {% include '@App/profil/prototype/language_prototype.html.twig' with { 'item': form.employee_languages.vars.prototype }%}
                                                     {% endfilter %}
                                              "
-                                             data-widget-tags="{{ '<div class="formation"></div>'|e }}">
+                                             data-widget-tags="{{ '<div class="language"></div>'|e }}">
                                         </div>
 
                                         <a href="#"
-                                           class="add-experience-collection-widget"
-                                           data-list="#experience-fields-list"
+                                           class="add-language-collection-widget"
+                                           data-list="#language-fields-list"
                                         >
-                                            Ajouter experience
+                                            Ajouter langue
                                         </a>
                                     </div>
                                 </div>
@@ -320,7 +356,9 @@
                         <span class="step"></span>
                     </div>
                     {% do form.employee_formations.setRendered %}
+                    {% do form.projects.setRendered %}
                     {% do form.experiences.setRendered %}
+                    {% do form.employee_languages.setRendered %}
                     {{ form_end(form) }}
                     <!--/form-->
                 </div>
