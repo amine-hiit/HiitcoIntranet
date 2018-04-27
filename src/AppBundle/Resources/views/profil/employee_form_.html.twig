@@ -104,9 +104,7 @@
                 <div class="box-body">
                     <!--form id="regForm" action="/action_page.php"-->
                     {{ form_start(form, {'attr': {'id': 'regForm'}}) }}
-                    <div class="callout callout-danger flat">
-                        <p> form_</p>
-                    </div>
+
                     <div class="box-header">
                         <div class=" col-sm-6 ">
                             <h3 class="box-title">Personnal info</h3>
@@ -269,7 +267,7 @@
                                              data-prototype=
                                              "
                                                     {% filter escape %}
-                                                    {% include '@App/profil/prototype.html.twig' with { 'item': form.employee_formations.vars.prototype }%}
+                                                    {% include '@App/profil/prototype/formation_prototype.html.twig' with { 'item': form.employee_formations.vars.prototype }%}
                                                     {% endfilter %}
                                              "
                                              data-widget-tags="{{ '<div class="formation"></div>'|e }}">
@@ -292,7 +290,7 @@
                                              data-prototype=
                                              "
                                                     {% filter escape %}
-                                                    {% include '@App/profil/experience_prototype.html.twig' with { 'item': form.experiences.vars.prototype } %}
+                                                    {% include '@App/profil/prototype/experience_prototype.html.twig' with { 'item': form.experiences.vars.prototype } %}
                                                     {% endfilter %}
                                              "
                                              data-widget-tags="{{ '<div class="formation"></div>'|e }}">
@@ -317,6 +315,7 @@
                     </div>
                     <!-- Circles which indicates the steps of the form: -->
                     <div style="text-align:center;margin-top:40px;">
+                        <span class="step"></span>
                         <span class="step"></span>
                         <span class="step"></span>
                     </div>

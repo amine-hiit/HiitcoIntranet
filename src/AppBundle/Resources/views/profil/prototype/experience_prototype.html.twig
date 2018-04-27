@@ -20,18 +20,32 @@
         </div>
         <div class='col-sm-4 col-xs-12'>
             <div class='form-group' >
-                {{ form_label(item.description) }}
-                {{ form_widget(item.description, {'attr':{
+                {{ form_label(item.employer) }}
+                {{ form_widget(item.employer, {'attr':{
                     'class':'form-control'
                 }}) }}
             </div>
         </div>
         <div class='col-sm-4 col-xs-12'>
-            <div class='form-group' >
-                {{ form_label(item.startDate) }}
-                {{ form_widget(item.startDate, {'attr':{
+            <div class='form-group'>
+                {{ form_label(item.city) }}
+                {{ form_widget(item.city, {'attr':{
                     'class':'form-control'
                 }}) }}
+            </div>
+        </div>
+        <div class='col-sm-4 col-xs-12'>
+            <div class='form-group'>
+                {{ form_label(item.startDate) }}
+                <div class='input-group date'>
+                    <div class='input-group-addon'>
+                        <i class='fa fa-calendar'></i>
+                    </div>
+                    {{ form_widget(item.startDate, {'attr':{
+
+                        'class':'form-control pull-right datepicker'
+                    }}) }}
+                </div>
             </div>
         </div>
         <div class='col-sm-4 col-xs-12'>
@@ -49,18 +63,21 @@
             </div>
         </div>
         <div class='col-sm-4 col-xs-12'>
-            <div class='form-group'>
-                {{ form_label(item.city) }}
-                <div class='input-group date'>
-                    <div class='input-group-addon'>
-                        <i class='fa fa-calendar'></i>
-                    </div>
-                    {{ form_widget(item.city, {'attr':{
-
-                        'class':'form-control pull-right datepicker'
-                    }}) }}
-                </div>
+            <div class='form-group' >
+                {{ form_label(item.country) }}
+                {{ form_widget(item.country, {'attr':{
+                    'class':'form-control'
+                }}) }}
+            </div>
+        </div>
+        <div class='col-sm-12 col-xs-12'>
+            <div class='form-group' >
+                {{ form_label(item.description) }}
+                {{ form_widget(item.description, {'attr':{
+                    'class':'form-control'
+                }}) }}
             </div>
         </div>
     </div>
 </div>
+
