@@ -33,3 +33,4 @@
 /web/bower_components/
 >>>>>>> 53f2cf017ef0783cf4117e57940b10f9061c9055
 /.idea
+/src/AppBundle/Entity/*~
