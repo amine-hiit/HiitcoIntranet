@@ -25,7 +25,7 @@ class Employee extends BaseUser
     protected $id;
 
     /**
-     * @var valid
+     * @var bool
      * @ORM\Column(name="valid", type="boolean", nullable=false, )
      */
     private $valid = false;
@@ -151,9 +151,6 @@ class Employee extends BaseUser
 
 
 
-
-
-
     public function __construct()
     {
         parent::__construct();
@@ -170,6 +167,7 @@ class Employee extends BaseUser
      */
     public function addEmployeeLanguage(\AppBundle\Entity\EmployeeLanguage $employeeLanguage)
     {
+        $employeeLanguage->setEmployee($this);
         $this->employeeLanguages[] = $employeeLanguage;
 
         return $this;
@@ -206,6 +204,7 @@ class Employee extends BaseUser
      */
     public function addExperience(\AppBundle\Entity\Experience $experience)
     {
+        $experience->setEmployee($this);
         $this->experiences[] = $experience;
 
         return $this;
@@ -468,6 +467,7 @@ class Employee extends BaseUser
      */
     public function setAddress($address = null)
     {
+
         $this->address = $address;
 
         return $this;
@@ -541,6 +541,7 @@ class Employee extends BaseUser
      */
     public function addEmployeeFormation(\AppBundle\Entity\EmployeeFormation $employeeFormation)
     {
+        $employeeFormation->setEmployee($this);
         $this->employeeFormations[] = $employeeFormation;
 
         return $this;
@@ -596,12 +597,13 @@ class Employee extends BaseUser
     /**
      * Add project.
      *
-     * @param \AppBundle\Entity\Project $project
+     * @param \AppBundle\Entity\Project
      *
      * @return Employee
      */
     public function addProject(\AppBundle\Entity\Project $project)
     {
+        $project->setEmployee($this);
         $this->projects[] = $project;
 
         return $this;
@@ -627,5 +629,29 @@ class Employee extends BaseUser
     public function getProjects()
     {
         return $this->projects;
+    }
+
+    /**
+     * Set status.
+     *
+     * @param string|null $status
+     *
+     * @return Employee
+     */
+    public function setStatus($status = null)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status.
+     *
+     * @return string|null
+     */
+    public function getStatus()
+    {
+        return $this->status;
     }
 }

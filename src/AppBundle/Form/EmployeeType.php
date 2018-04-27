@@ -43,7 +43,8 @@ class EmployeeType extends AbstractType
                 'attr' => array('min' => 0)))
             ->add('cnssNumber')
             ->add('phoneNumber')
-            ->add('address')
+            ->add('address',TextType::class,array('by_reference' => false))
+
 
             ->add('startDate',DateType::class, array(
                 'format' => 'MM/dd/yyyy',
@@ -53,7 +54,14 @@ class EmployeeType extends AbstractType
 
             ->add('currentPosition',TextType::class, array(
                 'required' => true))
-            ->add('status')
+            ->add('status',ChoiceType::class, array(
+                'choices'  => array(
+                    'Choisir' => '' ,
+                    'CDI' => 'CDI',
+                    'CTT' => 'CTT',
+                    'CDD' => 'CDD',
+                ),
+            ))
 
             ->add('employee_formations', CollectionType::class, array(
                 'entry_type' => EmployeeFormationType::class,
@@ -62,6 +70,7 @@ class EmployeeType extends AbstractType
                 'allow_delete' => true,
                 'prototype' => true,
                 'prototype_name' => '__name__',
+                'by_reference' => false,
             ))
             ->add('experiences', CollectionType::class, array(
                 'entry_type' => ExperienceType::class,
@@ -69,7 +78,9 @@ class EmployeeType extends AbstractType
                 'delete_empty' => true,
                 'allow_delete' => true,
                 'prototype' => true,
-                'prototype_name' => '__name__'
+                'prototype_name' => '__name__',
+                'by_reference' => false,
+
             ))
             ->add('employee_languages', CollectionType::class, array(
                 'entry_type' => EmployeeLanguageType::class,
@@ -77,7 +88,9 @@ class EmployeeType extends AbstractType
                 'delete_empty' => true,
                 'allow_delete' => true,
                 'prototype' => true,
-                'prototype_name' => '__name__'
+                'prototype_name' => '__name__',
+                'by_reference' => false,
+
             ))
             ->add('projects', CollectionType::class, array(
                 'entry_type' => ProjectType::class,
@@ -86,6 +99,8 @@ class EmployeeType extends AbstractType
                 'allow_delete' => true,
                 'prototype' => true,
                 'prototype_name' => '__name__',
+                'by_reference' => false,
+
 
             ));
 

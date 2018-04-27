@@ -21,8 +21,7 @@ class ProjectType extends AbstractType
                 'format' => 'MM/dd/yyyy',
                 'widget' => 'single_text',
                 'required' => true))
-            ->add('description',TextareaType::class)
-            ->add('employee');
+            ->add('description',TextareaType::class);
     }/**
      * {@inheritdoc}
      */

@@ -62,11 +62,6 @@ class EmployeeManager
         $user->getAvatar()->upload();
         $user->getAvatar()->setAlt($user->getUserName().'_Avatar');
 
-        $experiences = $user->getExperiences();
-        foreach ($experiences as $experience )
-        {
-            $experience->setEmployee($user);
-        }
         $user->setValid(true);
         $this->em->persist($user);
         $this->em->flush();

@@ -114,40 +114,4 @@ class Language
     {
         return $this->employees;
     }
-
-    /**
-     * Add employeeLanguage.
-     *
-     * @param \AppBundle\Entity\EmployeeLanguage $employeeLanguage
-     *
-     * @return Language
-     */
-    public function addEmployeeLanguage(\AppBundle\Entity\EmployeeLanguage $employeeLanguage)
-    {
-        $this->employeeLanguages[] = $employeeLanguage;
-
-        return $this;
-    }
-
-    /**
-     * Remove employeeLanguage.
-     *
-     * @param \AppBundle\Entity\EmployeeLanguage $employeeLanguage
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
-     */
-    public function removeEmployeeLanguage(\AppBundle\Entity\EmployeeLanguage $employeeLanguage)
-    {
-        return $this->employeeLanguages->removeElement($employeeLanguage);
-    }
-
-    /**
-     * Get employeeLanguages.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getEmployeeLanguages()
-    {
-        return $this->employeeLanguages;
-    }
 }
