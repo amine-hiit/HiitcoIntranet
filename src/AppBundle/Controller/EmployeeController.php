@@ -40,6 +40,7 @@ class EmployeeController extends Controller
             {
                 $employeeManager->completeEmployeeForm($user);
                 return $this->redirect('/intranet/employee/'.$user->getId());
+
             }
         }
         return $this->render('@App/profil/employee_form_.html.twig', array(
@@ -55,7 +56,7 @@ class EmployeeController extends Controller
     public function emplyeeProfileAction(Request $request, Employee $employee)
     {
 
-        $efm = $this->get('app.employee_formation.manager');
+        $employeemanager = $this->get('app.employee.manager');
 
 
         if(!$employee->isValid())
@@ -65,10 +66,12 @@ class EmployeeController extends Controller
 
         $user = $this->get('security.token_storage')->getToken()->getUser();
 
-        $lastFormations = $efm->findEmployeeLastFormation($employee);
-        $formations = $efm->findEmployeeAllFormations($employee);
+        $lastFormations = $employeemanager->findEmployeeLastFormation($employee);
+        $formations = $employeemanager->findEmployeeAllFormations($employee);
+        $experiences = $employeemanager->findEmployeeAllExperiences($employee);
 
-        $employeeFormation =  $efm->create();
+
+        $employeeFormation =  $employeemanager->create();
         $experience = new Experience();
 
 
@@ -80,17 +83,19 @@ class EmployeeController extends Controller
         {
             if ($formationForm->handleRequest($request)->isValid())
             {
-                dump($formationForm);
-                dump($experienceForm);die;
+                $employeemanager->setUserToAtribut($employeeFormation, $user );
+                $employeemanager->persistAtribut($employeeFormation);
+                $employeemanager->flush();
 
-                return new Response('done');
+                return $this->redirect('/intranet/employee/'.$user->getId());
             }
             else if ($experienceForm->handleRequest($request)->isValid())
             {
-                dump($formationForm);
-                dump($experienceForm);die;
+                $employeemanager->setUserToAtribut($experience, $user );
+                $employeemanager->persistAtribut($experience);
+                $employeemanager->flush();
 
-                return new Response('done');
+                return $this->redirect('/intranet/employee/'.$user->getId());
             }
         }
 
@@ -103,7 +108,8 @@ class EmployeeController extends Controller
             'employee' => $employee,
             'profileOwner' => ($employee->getId()==$user->getId()),
             'lastFormations' => $lastFormations,
-            'formations' => $formations
+            'formations' => $formations,
+            'experiences' => $experiences
         ));
     }
 

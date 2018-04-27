@@ -1,0 +1,45 @@
+<div class="box box-success box-solid flat ">
+    <div class="box-header with-border">
+        <h3 class="box-title">Nouveau projet</h3>
+
+        <div class="box-tools pull-right">
+            <a  class="removing btn btn-box-tool" ></a>
+        </div>
+        <!-- /.box-tools -->
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body">
+
+        <div class='col-sm-6 col-xs-12'>
+            <div class='form-group' >
+                {{ form_label(item.name) }}
+                {{ form_widget(item.name, {'attr':{
+                    'class':'form-control'
+                }}) }}
+            </div>
+        </div>
+        <div class='col-sm-6 col-xs-12'>
+            <div class='form-group'>
+                {{ form_label(item.date) }}
+                <div class='input-group date'>
+                    <div class='input-group-addon'>
+                        <i class='fa fa-calendar'></i>
+                    </div>
+                    {{ form_widget(item.date, {'attr':{
+
+                        'class':'form-control pull-right datepicker'
+                    }}) }}
+                </div>
+            </div>
+        </div>
+        <div class='col-sm-12 col-xs-12'>
+            <div class='form-group' >
+                {{ form_label(item.description) }}
+                {{ form_widget(item.description, {'attr':{
+                    'class':'form-control'
+                }}) }}
+            </div>
+        </div>
+    </div>
+</div>
+
