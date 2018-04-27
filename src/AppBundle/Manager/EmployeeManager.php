@@ -57,6 +57,21 @@ class EmployeeManager
         return new EmployeeFormation();
     }
 
+    public function setUserToAtribut($atribut,Employee $user)
+    {
+        $atribut->setEmployee($user);
+    }
+
+    public function persistAtribut($atribut)
+    {
+        $this->em->persist($atribut);
+    }
+
+    public function flush()
+    {
+        $this->em->flush();
+    }
+
     public function completeEmployeeForm(Employee $user)
     {
         $user->getAvatar()->upload();
@@ -64,7 +79,8 @@ class EmployeeManager
 
         $user->setValid(true);
         $this->em->persist($user);
-        $this->em->flush();
+        $this->flush();
     }
+
 
 }

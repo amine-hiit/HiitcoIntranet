@@ -150,4 +150,7 @@ class Language
     {
         return $this->employeeLanguages;
     }
+    public function getFullName(){
+        return $this->label;
+    }
 }

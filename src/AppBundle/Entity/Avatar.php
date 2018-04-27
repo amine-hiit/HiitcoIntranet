@@ -61,4 +61,10 @@ class Avatar extends File
     {
         return 'uploads/img/avatar';
     }
+
+
+
+
+
+
 }

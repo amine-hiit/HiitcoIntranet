@@ -40,6 +40,7 @@ class EmployeeController extends Controller
             {
                 $employeeManager->completeEmployeeForm($user);
                 return $this->redirect('/intranet/employee/'.$user->getId());
+
             }
         }
         return $this->render('@App/profil/employee_form_.html.twig', array(
@@ -82,17 +83,19 @@ class EmployeeController extends Controller
         {
             if ($formationForm->handleRequest($request)->isValid())
             {
-                dump($formationForm);
-                dump($experienceForm);die;
+                $employeemanager->setUserToAtribut($employeeFormation, $user );
+                $employeemanager->persistAtribut($employeeFormation);
+                $employeemanager->flush();
 
-                return new Response('done');
+                return $this->redirect('/intranet/employee/'.$user->getId());
             }
             else if ($experienceForm->handleRequest($request)->isValid())
             {
-                dump($formationForm);
-                dump($experienceForm);die;
+                $employeemanager->setUserToAtribut($experience, $user );
+                $employeemanager->persistAtribut($experience);
+                $employeemanager->flush();
 
-                return new Response('done');
+                return $this->redirect('/intranet/employee/'.$user->getId());
             }
         }
 

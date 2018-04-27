@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -21,7 +22,12 @@ class EmployeeLanguageType extends AbstractType
                 'Avancé' => 'veuf',
                 'Débutant' => 'marié',
             )))
-            ->add('language');
+            ->add('language', EntityType::class, array(
+
+                'class' => 'AppBundle:Language',
+                'choice_label' => 'fullName',
+                'placeholder' => 'Langue',
+            ));
     }
 
     /**
