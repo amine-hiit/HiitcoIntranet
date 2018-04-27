@@ -1,6 +1,6 @@
 <div class="box box-success box-solid flat ">
     <div class="box-header with-border">
-        <h3 class="box-title">Nouvelle experience</h3>
+        <h3 class="box-title">Nouveau projet</h3>
 
         <div class="box-tools pull-right">
             <a  class="removing btn btn-box-tool" ></a>
@@ -10,64 +10,26 @@
     <!-- /.box-header -->
     <div class="box-body">
 
-        <div class='col-sm-4 col-xs-12'>
-            <div class='form-group'>
-                {{ form_label(item.position) }}
-                {{ form_widget(item.position, {'attr':{
-                    'class':'form-control'
-                }}) }}
-            </div>
-        </div>
-        <div class='col-sm-4 col-xs-12'>
+        <div class='col-sm-6 col-xs-12'>
             <div class='form-group' >
-                {{ form_label(item.employer) }}
-                {{ form_widget(item.employer, {'attr':{
+                {{ form_label(item.name) }}
+                {{ form_widget(item.name, {'attr':{
                     'class':'form-control'
                 }}) }}
             </div>
         </div>
-        <div class='col-sm-4 col-xs-12'>
+        <div class='col-sm-6 col-xs-12'>
             <div class='form-group'>
-                {{ form_label(item.city) }}
-                {{ form_widget(item.city, {'attr':{
-                    'class':'form-control'
-                }}) }}
-            </div>
-        </div>
-        <div class='col-sm-4 col-xs-12'>
-            <div class='form-group'>
-                {{ form_label(item.startDate) }}
+                {{ form_label(item.date) }}
                 <div class='input-group date'>
                     <div class='input-group-addon'>
                         <i class='fa fa-calendar'></i>
                     </div>
-                    {{ form_widget(item.startDate, {'attr':{
+                    {{ form_widget(item.date, {'attr':{
 
                         'class':'form-control pull-right datepicker'
                     }}) }}
                 </div>
-            </div>
-        </div>
-        <div class='col-sm-4 col-xs-12'>
-            <div class='form-group'>
-                {{ form_label(item.endDate) }}
-                <div class='input-group date'>
-                    <div class='input-group-addon'>
-                        <i class='fa fa-calendar'></i>
-                    </div>
-                    {{ form_widget(item.endDate, {'attr':{
-
-                        'class':'form-control pull-right datepicker'
-                    }}) }}
-                </div>
-            </div>
-        </div>
-        <div class='col-sm-4 col-xs-12'>
-            <div class='form-group' >
-                {{ form_label(item.country) }}
-                {{ form_widget(item.country, {'attr':{
-                    'class':'form-control'
-                }}) }}
             </div>
         </div>
         <div class='col-sm-12 col-xs-12'>

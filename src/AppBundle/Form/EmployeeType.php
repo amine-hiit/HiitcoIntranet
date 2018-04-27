@@ -63,9 +63,24 @@ class EmployeeType extends AbstractType
                 'prototype' => true,
                 'prototype_name' => '__name__',
             ))
-
             ->add('experiences', CollectionType::class, array(
                 'entry_type' => ExperienceType::class,
+                'allow_add' => true,
+                'delete_empty' => true,
+                'allow_delete' => true,
+                'prototype' => true,
+                'prototype_name' => '__name__'
+            ))
+            ->add('employee_languages', CollectionType::class, array(
+                'entry_type' => EmployeeLanguageType::class,
+                'allow_add' => true,
+                'delete_empty' => true,
+                'allow_delete' => true,
+                'prototype' => true,
+                'prototype_name' => '__name__'
+            ))
+            ->add('projects', CollectionType::class, array(
+                'entry_type' => ProjectType::class,
                 'allow_add' => true,
                 'delete_empty' => true,
                 'allow_delete' => true,

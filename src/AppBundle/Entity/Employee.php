@@ -109,8 +109,8 @@ class Employee extends BaseUser
     private $currentPosition;
 
     /**
-     * @var int
-     * @ORM\Column(name="status" , type="integer", nullable=true)
+     * @var string
+     * @ORM\Column(name="status" , type="string", nullable=true)
      */
     private $status;
 
@@ -531,29 +531,6 @@ class Employee extends BaseUser
         return $this->currentPosition;
     }
 
-    /**
-     * Set status.
-     *
-     * @param int|null $status
-     *
-     * @return Employee
-     */
-    public function setStatus($status = null)
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get status.
-     *
-     * @return int|null
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
 
     /**
      * Add employeeFormation.
