@@ -22,6 +22,8 @@ use AppBundle\Form\ExperienceType;
 
 class EmployeeController extends Controller
 {
+
+
     /**
      * @Route("/intranet/form", name="employee-form")
      */
@@ -46,27 +48,6 @@ class EmployeeController extends Controller
     }
 
 
-    /**
-     * @Route("/intranet/fichetest", name="intranet-fiche-test")
-     */
-    public function ficheTestAction(Request $request)
-    {
-
-        $employee = new Employee();
-        $form = $this->get('form.factory')->create(EmployeeType::class, $employee);
-
-        if ($request->isMethod('POST'))
-        {
-            if ($form->handleRequest($request)->isValid())
-            {
-                //$em = $this->get('entity.manager')->
-            }
-        }
-        return $this->render('@App/test/collection.html.twig', array(
-            'form' => $form->createView(),
-        ));
-    }
-
 
     /**
      * @Route("/intranet/employee/{employee}", name="employee-profil")
@@ -74,21 +55,27 @@ class EmployeeController extends Controller
     public function emplyeeProfileAction(Request $request, Employee $employee)
     {
 
+        $employeemanager = $this->get('app.employee.manager');
 
-        $lastFormations = $this->getDoctrine()->getManager()->getRepository(EmployeeFormation::class)->findLastFormationByEmployeeId($employee);
-        $formations = $this->getDoctrine()->getManager()->getRepository(EmployeeFormation::class)->findAllByEmployeeId($employee->getId());
 
-        $employeeFormation = new EmployeeFormation();
-        $experience = new Experience();
-
-        $formationForm = $this->get('form.factory')->create(EmployeeFormationType::class, $employeeFormation);
-        $experienceForm = $this->get('form.factory')->create(ExperienceType::class, $experience);
+        if(!$employee->isValid())
+            return  $this->render('@App/profil/invalid_employee.html.twig', array(
+                'employee' => $employee,
+            ));
 
         $user = $this->get('security.token_storage')->getToken()->getUser();
 
+        $lastFormations = $employeemanager->findEmployeeLastFormation($employee);
+        $formations = $employeemanager->findEmployeeAllFormations($employee);
+        $experiences = $employeemanager->findEmployeeAllExperiences($employee);
 
-        //$fm = $this->get('app.form.manager');
-        //$fm->handForm();
+
+        $employeeFormation =  $employeemanager->create();
+        $experience = new Experience();
+
+
+        $formationForm = $this->get('form.factory')->create(EmployeeFormationType::class, $employeeFormation);
+        $experienceForm = $this->get('form.factory')->create(ExperienceType::class, $experience);
 
         /* to be deleted from controller and used in manager */
         if ($request->isMethod('POST'))
@@ -116,8 +103,10 @@ class EmployeeController extends Controller
             'formationForm' => $formationForm->createView(),
             'experienceForm' => $experienceForm->createView(),
             'employee' => $employee,
+            'profileOwner' => ($employee->getId()==$user->getId()),
             'lastFormations' => $lastFormations,
-            'formations' => $formations
+            'formations' => $formations,
+            'experiences' => $experiences
         ));
     }
 

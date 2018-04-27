@@ -85,8 +85,8 @@ class Employee extends BaseUser
     private $cnssNumber;
 
     /**
-     * @var int
-     * @ORM\Column(name="phone_number" , type="integer", nullable=true)
+     * @var string
+     * @ORM\Column(name="phone_number" , type="string", nullable=true)
      */
     private $phoneNumber;
 
@@ -129,11 +129,17 @@ class Employee extends BaseUser
 
 
     /**
-     * @var Experience
+     * @var \Doctrine\Common\Collections\ArrayCollection
      * @ORM\OneToMany(targetEntity="Experience", mappedBy="employee",cascade={"persist","remove"})
      *
      */
     private $experiences;
+
+    /**
+     * @var Project
+     * @ORM\OneToMany(targetEntity="Project", mappedBy="employee",cascade={"persist","remove"})
+     */
+    private $projects;
 
     /**
      * @var Avatar
@@ -152,6 +158,113 @@ class Employee extends BaseUser
     {
         parent::__construct();
         // your own logic
+    }
+
+
+    /**
+     * Add employeeLanguage.
+     *
+     * @param \AppBundle\Entity\EmployeeLanguage $employeeLanguage
+     *
+     * @return Employee
+     */
+    public function addEmployeeLanguage(\AppBundle\Entity\EmployeeLanguage $employeeLanguage)
+    {
+        $this->employeeLanguages[] = $employeeLanguage;
+
+        return $this;
+    }
+
+    /**
+     * Remove employeeLanguage.
+     *
+     * @param \AppBundle\Entity\EmployeeLanguage $employeeLanguage
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeEmployeeLanguage(\AppBundle\Entity\EmployeeLanguage $employeeLanguage)
+    {
+        return $this->employeeLanguages->removeElement($employeeLanguage);
+    }
+
+    /**
+     * Get employeeLanguages.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEmployeeLanguages()
+    {
+        return $this->employeeLanguages;
+    }
+
+    /**
+     * Add experience.
+     *
+     * @param \AppBundle\Entity\Experience $experience
+     *
+     * @return Employee
+     */
+    public function addExperience(\AppBundle\Entity\Experience $experience)
+    {
+        $this->experiences[] = $experience;
+
+        return $this;
+    }
+
+    /**
+     * Remove experience.
+     *
+     * @param \AppBundle\Entity\Experience $experience
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeExperience(\AppBundle\Entity\Experience $experience)
+    {
+        return $this->experiences->removeElement($experience);
+    }
+
+    /**
+     * Get experiences.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getExperiences()
+    {
+        return $this->experiences;
+    }
+
+    /**
+     * Set valid.
+     *
+     * @param bool $valid
+     *
+     * @return Employee
+     */
+    public function setValid($valid)
+    {
+        $this->valid = $valid;
+
+        return $this;
+    }
+
+    /**
+     * Get valid.
+     *
+     * @return bool
+     */
+    public function isValid()
+    {
+        return $this->valid;
+    }
+
+    /**
+     * Get valid.
+     *
+     * @return bool
+     */
+    public function getValid()
+    {
+        return $this->valid;
     }
 
     /**
@@ -325,7 +438,7 @@ class Employee extends BaseUser
     /**
      * Set phoneNumber.
      *
-     * @param int|null $phoneNumber
+     * @param string|null $phoneNumber
      *
      * @return Employee
      */
@@ -339,7 +452,7 @@ class Employee extends BaseUser
     /**
      * Get phoneNumber.
      *
-     * @return int|null
+     * @return string|null
      */
     public function getPhoneNumber()
     {
@@ -451,8 +564,7 @@ class Employee extends BaseUser
      */
     public function addEmployeeFormation(\AppBundle\Entity\EmployeeFormation $employeeFormation)
     {
-        $employeeFormation->setEmployee($this);
-        $this->employeeFormation[] = $employeeFormation;
+        $this->employeeFormations[] = $employeeFormation;
 
         return $this;
     }
@@ -466,17 +578,42 @@ class Employee extends BaseUser
      */
     public function removeEmployeeFormation(\AppBundle\Entity\EmployeeFormation $employeeFormation)
     {
-        return $this->employeeFormation->removeElement($employeeFormation);
+        return $this->employeeFormations->removeElement($employeeFormation);
     }
 
     /**
-     * Get employeeFormation.
+     * Get employeeFormations.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getEmployeeFormation()
+    public function getEmployeeFormations()
     {
-        return $this->employeeFormation;
+        return $this->employeeFormations;
+    }
+
+
+    /**
+     * Set avatar.
+     *
+     * @param \AppBundle\Entity\Avatar|null $avatar
+     *
+     * @return Employee
+     */
+    public function setAvatar(\AppBundle\Entity\Avatar $avatar = null)
+    {
+        $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    /**
+     * Get avatar.
+     *
+     * @return \AppBundle\Entity\Avatar|null
+     */
+    public function getAvatar()
+    {
+        return $this->avatar;
     }
 
     /**
@@ -513,176 +650,5 @@ class Employee extends BaseUser
     public function getProjects()
     {
         return $this->projects;
-    }
-
-    /**
-     * Add language.
-     *
-     * @param \AppBundle\Entity\Language $language
-     *
-     * @return Employee
-     */
-    public function addLanguage(\AppBundle\Entity\Language $language)
-    {
-        $this->languages[] = $language;
-
-        return $this;
-    }
-
-    /**
-     * Remove language.
-     *
-     * @param \AppBundle\Entity\Language $language
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
-     */
-    public function removeLanguage(\AppBundle\Entity\Language $language)
-    {
-        return $this->languages->removeElement($language);
-    }
-
-    /**
-     * Get languages.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getLanguages()
-    {
-        return $this->languages;
-    }
-
-    /**
-     * Get employeeFormations.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getEmployeeFormations()
-    {
-        return $this->employeeFormations;
-    }
-
-    /**
-     * Set avatar.
-     *
-     * @param \AppBundle\Entity\Avatar $avatar
-     *
-     * @return Employee
-     */
-    public function setAvatar(\AppBundle\Entity\Avatar $avatar)
-    {
-        $this->avatar = $avatar;
-
-        return $this;
-    }
-
-    /**
-     * Get avatar.
-     *
-     * @return \AppBundle\Entity\Avatar
-     */
-    public function getAvatar()
-    {
-        return $this->avatar;
-    }
-
-
-
-
-
-
-    /**
-     * Add employeeLanguage.
-     *
-     * @param \AppBundle\Entity\EmployeeLanguage $employeeLanguage
-     *
-     * @return Employee
-     */
-    public function addEmployeeLanguage(\AppBundle\Entity\EmployeeLanguage $employeeLanguage)
-    {
-        $this->employeeLanguages[] = $employeeLanguage;
-
-        return $this;
-    }
-
-    /**
-     * Remove employeeLanguage.
-     *
-     * @param \AppBundle\Entity\EmployeeLanguage $employeeLanguage
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
-     */
-    public function removeEmployeeLanguage(\AppBundle\Entity\EmployeeLanguage $employeeLanguage)
-    {
-        return $this->employeeLanguages->removeElement($employeeLanguage);
-    }
-
-    /**
-     * Get employeeLanguages.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getEmployeeLanguages()
-    {
-        return $this->employeeLanguages;
-    }
-
-    /**
-     * Add experience.
-     *
-     * @param \AppBundle\Entity\Experience $experience
-     *
-     * @return Employee
-     */
-    public function addExperience(\AppBundle\Entity\Experience $experience)
-    {
-        $this->experiences[] = $experience;
-
-        return $this;
-    }
-
-    /**
-     * Remove experience.
-     *
-     * @param \AppBundle\Entity\Experience $experience
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
-     */
-    public function removeExperience(\AppBundle\Entity\Experience $experience)
-    {
-        return $this->experiences->removeElement($experience);
-    }
-
-    /**
-     * Get experiences.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getExperiences()
-    {
-        return $this->experiences;
-    }
-
-    /**
-     * Set valid.
-     *
-     * @param bool $valid
-     *
-     * @return Employee
-     */
-    public function setValid($valid)
-    {
-        $this->valid = $valid;
-
-        return $this;
-    }
-
-    /**
-     * Get valid.
-     *
-     * @return bool
-     */
-    public function isValid()
-    {
-        return $this->valid;
     }
 }
