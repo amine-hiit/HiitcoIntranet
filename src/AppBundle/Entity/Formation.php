@@ -162,29 +162,6 @@ class Formation
     }
 
     /**
-     * Set counrty.
-     *
-     * @param string $counrty
-     *
-     * @return Formation
-     */
-    public function setCounrty($counrty)
-    {
-        $this->counrty = $counrty;
-
-        return $this;
-    }
-
-    /**
-     * Get counrty.
-     *
-     * @return string
-     */
-    public function getCounrty()
-    {
-        return $this->counrty;
-    }
-    /**
      * Constructor
      */
     public function __construct()

@@ -1,4 +1,4 @@
-<div class="box box-success box-solid flat ">
+<div class="box box-success box-solid flat">
     <div class="box-header with-border">
         <h3 class="box-title">Nouvelle formation</h3>
 
@@ -14,9 +14,10 @@
 
         <div class='col-sm-4 col-xs-12'>
             <div class='form-group'>
-                {{ form_label(item.formation) }}<a href='#'> Autre?</a>
+                {{ form_label(item.formation) }}<a data-toggle="modal" class="other-formation" data-target="#formationModal"> autre ?</a>
+
                 {{ form_widget(item.formation, {'attr':{
-                    'class':'form-control'
+                    'class':'form-control formation-select',
                 }}) }}
             </div>
         </div>
@@ -67,3 +68,25 @@
 
     </div>
 </div>
+
+
+<div class="modal fade" id="formationModal" >
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <a class="close" data-dismiss="modal">×</a>
+            </div>
+            <div  id="new-formation-label">
+
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-success flat" id="formation-submit">Ajouter</a>
+                <a href="#" class="btn" data-dismiss="modal">Annuler</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+

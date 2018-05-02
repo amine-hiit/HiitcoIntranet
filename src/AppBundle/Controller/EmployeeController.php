@@ -13,12 +13,16 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+
 use AppBundle\Entity\Employee;
-use AppBundle\Entity\EmployeeFormation;
+use AppBundle\Entity\Formation;
 use AppBundle\Entity\Experience;
+use AppBundle\Entity\EmployeeFormation;
+
 use AppBundle\Form\EmployeeType;
-use AppBundle\Form\EmployeeFormationType;
+use AppBundle\Form\FormationType;
 use AppBundle\Form\ExperienceType;
+use AppBundle\Form\EmployeeFormationType;
 
 class EmployeeController extends Controller
 {
@@ -75,13 +79,14 @@ class EmployeeController extends Controller
         $experience = new Experience();
 
 
-        $formationForm = $this->get('form.factory')->create(EmployeeFormationType::class, $employeeFormation);
+        $employeeFormationForm = $this->get('form.factory')->create(EmployeeFormationType::class, $employeeFormation);
+        //$formationForm = $this->get('form.factory')->create(FormationType::class, $employeeFormation);
         $experienceForm = $this->get('form.factory')->create(ExperienceType::class, $experience);
 
         /* to be deleted from controller and used in manager */
         if ($request->isMethod('POST'))
         {
-            if ($formationForm->handleRequest($request)->isValid())
+            if ($employeeFormationForm->handleRequest($request)->isValid())
             {
                 $employeemanager->setUserToAtribut($employeeFormation, $user );
                 $employeemanager->persistAtribut($employeeFormation);
@@ -103,7 +108,7 @@ class EmployeeController extends Controller
 
 
         return  $this->render('@App/profil/employee.html.twig', array(
-            'formationForm' => $formationForm->createView(),
+            'formationForm' =>$employeeFormationForm->createView(),
             'experienceForm' => $experienceForm->createView(),
             'employee' => $employee,
             'profileOwner' => ($employee->getId()==$user->getId()),
