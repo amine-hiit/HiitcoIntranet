@@ -12,7 +12,9 @@
     <style>
 
 
+        @media screen and (min-width: 768px) {
 
+        }
 
         /*upload file*/
         .upload-btn-wrapper {
@@ -385,5 +387,46 @@
 {% endblock %}
 
   {% block javascript %}
+
+
+      $(function() {
+          $("#formation-submit").click(function(){
+              var $formationForm = $('#formation-form');
+
+              $.ajax({
+                  type: "POST",
+                  url: Routing.generate('new-formation',true),
+                  data: $formationForm.serialize(),
+                  success: function(dataF){
+
+                  console.log(dataF);
+                      $("#modal-content").modal('hide');
+                      var myObject = JSON.parse(dataF);
+                      $(".formation-select > option").each(function(){
+                           $(this).removeAttr( "selected" );
+                      })
+                      $(".formation-select").append('<option selected="selected" value="'+myObject.id+'">'+myObject.value+'</option>');
+                      $('#formationModal').modal('hide');
+                  },
+                  error: function(){
+                      alert("failure2");
+                  }
+              });
+          });
+          $(".other-formation").click(function(){
+              $.ajax({
+                  type: "GET",
+                  url: Routing.generate('new-formation',true),
+                  success: function(msg){
+                  console.log(msg);
+                  $("#new-formation-label").empty();
+                  $("#new-formation-label").append(msg);
+                  },
+                  error: function(){
+                      alert("failure");
+                  }
+              });
+          });
+      });
 
   {% endblock %}

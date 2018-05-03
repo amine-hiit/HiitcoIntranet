@@ -1,0 +1,29 @@
+{{ form_start(formationForm, {attr:{
+    'id':'formation-form'
+}}) }}
+
+<div class='col-sm-4 col-xs-12'>
+    <div class='form-group' >
+        {{ form_label(formationForm.speciality) }}
+        {{ form_widget(formationForm.speciality, {'attr':{
+            'class':'form-control'
+        }}) }}
+    </div>
+</div>
+<div class='col-sm-4 col-xs-12'>
+    <div class='form-group' >
+        {{ form_label(formationForm.diploma) }}
+        {{ form_widget(formationForm.diploma, {'attr':{
+            'class':'form-control'
+        }}) }}
+    </div>
+</div>
+<div class='col-sm-4 col-xs-12'>
+        <div class='form-group' >
+        {{ form_label(formationForm.level) }}
+        {{ form_widget(formationForm.level, {'attr':{
+            'class':'form-control'
+        }}) }}
+    </div>
+</div>
+{{ form_end(formationForm) }}
