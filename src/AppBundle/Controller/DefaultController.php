@@ -10,9 +10,6 @@ use AppBundle\Form\VacationType;
 
 class DefaultController extends Controller
 {
-    
-    
-
     /**
      * @Route("/", name="homepage")
      * @Route("/intranet/home", name="intranet-homepage")
@@ -20,7 +17,6 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-
         $securityContext = $this->container->get('security.authorization_checker');
         if ($securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             return $this->render('@App/home.html.twig');
