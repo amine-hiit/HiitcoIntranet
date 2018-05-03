@@ -395,7 +395,7 @@
 
               $.ajax({
                   type: "POST",
-                  url: Routing.generate('new-formation',true),
+                  url: Routing.generate('new-formation'),
                   data: $formationForm.serialize(),
                   success: function(dataF){
 
@@ -416,7 +416,7 @@
           $(".other-formation").click(function(){
               $.ajax({
                   type: "GET",
-                  url: Routing.generate('new-formation',true),
+                  url: Routing.generate('new-formation'),
                   success: function(msg){
                   console.log(msg);
                   $("#new-formation-label").empty();
