@@ -23,13 +23,11 @@ class FileController extends Controller
         $listVacation = $lm->findAll();
         $newSpreadsheet = $this->get('phpoffice.spreadsheet')->createSpreadsheet();
         $newSpreadsheet->setActiveSheetIndex(0);
-
         $newSpreadsheet->getActiveSheet()->setCellValue('A1','Type');
         $newSpreadsheet->getActiveSheet()->setCellValue('B1','Employé');
         $newSpreadsheet->getActiveSheet()->setCellValue('C1','Date_Début');
         $newSpreadsheet->getActiveSheet()->setCellValue('D1','Date_fin');
         $newSpreadsheet->getActiveSheet()->setCellValue('E1','Raison');
-
         $i=2;
         foreach ($listVacation as $vacation)
         {
@@ -40,8 +38,7 @@ class FileController extends Controller
             $newSpreadsheet->getActiveSheet()->setCellValue('E'.strval($i),$vacation->getReason());
             $i++;
         }
-
-
+        
         $SW = $this->get('phpoffice.spreadsheet')->createWriter($newSpreadsheet,'Xlsx');
         $response=$this->get('phpoffice.spreadsheet')->createStreamedResponse(
             $newSpreadsheet,
