@@ -24,7 +24,7 @@ class FormationController extends Controller
 
 
     /**
-     * @Route("/intranet/form/new-formation", name="new-formation")
+     * @Route("/intranet/form/new-formation", options={"expose"=true}, name="new-formation")
      */
     public function createFormationAction(Request $request)
     {
