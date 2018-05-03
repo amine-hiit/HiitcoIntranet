@@ -8,7 +8,7 @@
 
 namespace AppBundle\EventListener;
 
-use PHPMailer\PHPMailer\Exception;
+use AppBundle\Entity\Employee;
 use Symfony\Component\EventDispatcher\EventSubscriberinterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
@@ -22,13 +22,16 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 class EmployeeSubscriber implements EventSubscriberinterface
 {
 
-    const INVALID_EMPLOYEE_ALLOWED_ROUTES = array(
+    const INVALID_EMPLOYEE_ALLOWED_ROUTES = [
         'employee-form',
+        'new-formation',
         'fos_user_security_login',
         'homepage',
+        '_wdt',
         'intranet-homepage',
-        'intranet'
-    );
+        'intranet',
+        'fos_js_routing_js',
+    ];
     /**
      * @var TokenStorageInterface
      */
@@ -60,11 +63,16 @@ class EmployeeSubscriber implements EventSubscriberinterface
 
     public function onKernelController(GetResponseEvent $event)
     {
-
+        if (!$event->isMasterRequest()
+            || ('assetic.controller:render' === $event->getRequest()->attributes->get('_controller'))
+            || !($this->tokenStorage->getToken() instanceof TokenInterface)
+            || !($this->tokenStorage->getToken()->getUser() instanceof Employee)
+        ) {
+            // don't do anything
+            return;
+        }
         $currentRoute = $event->getRequest()->get('_route');
-
-        if (null === $token = $this->tokenStorage->getToken())
-            $event->setResponse(new RedirectResponse($this->router->generate('homepage')));
+        $token = $this->tokenStorage->getToken();
 
         $user = $token->getUser();
 
