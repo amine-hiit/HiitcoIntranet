@@ -29,8 +29,8 @@ services:
         public: true
         tags: ['controller.service_arguments']
     
-    app.leave.manager:
-        class: 'AppBundle\Manager\LeaveManager'
+    app.vacation.manager:
+        class: 'AppBundle\Manager\VacationManager'
         public: true
         arguments: ['@doctrine.orm.entity_manager']
 

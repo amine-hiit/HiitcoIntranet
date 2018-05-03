@@ -5,14 +5,11 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\Leave;
-use AppBundle\Form\LeaveType;
+use AppBundle\Entity\Vacation;
+use AppBundle\Form\VacationType;
 
 class DefaultController extends Controller
 {
-    
-    
-
     /**
      * @Route("/", name="homepage")
      * @Route("/intranet/home", name="intranet-homepage")

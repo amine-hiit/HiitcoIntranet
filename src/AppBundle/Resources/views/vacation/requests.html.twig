@@ -30,10 +30,10 @@
                 <div class="box">
                     <div class="box-header">
                         <center>
-                            <a type="button" class="btn btn-default btn-flat" href="/intranet/my-leave-requests"> Mes
+                            <a type="button" class="btn btn-default btn-flat" href="/intranet/my-vacation-requests"> Mes
                                 congés </a>
                             <a type="button" class="btn btn-default btn-flat"> Mon solde </a>
-                            <a type="button" class="btn btn-default btn-flat" href="/intranet/request-a-leave"> Demander
+                            <a type="button" class="btn btn-default btn-flat" href="/intranet/request-a-vacation"> Demander
                                 congé </a>
                             <a type="button" class="btn btn-default btn-flat disabled"> Liste des demandes </a>
                         </center>
@@ -42,7 +42,7 @@
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                             Type <span class="caret myspace"></span>
                         </a>
-                        <a href="export/leave-requests" class="btn btn-default btn-flat">Exporter en xls</a>
+                        <a href="export/vacation-requests" class="btn btn-default btn-flat">Exporter en xls</a>
 
                         <ul class="dropdown-menu">
                             <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Congé</a></li>
@@ -79,24 +79,24 @@
                             </tr>
                             </thead>
                             <tbody>
-                            {% for Leave in listLeave %}
+                            {% for Vacation in listVacation %}
                                 <tr>
-                                    <td>{{ Leave.type }}</td>
-                                    <td>{{ Leave.employee.userName }}</td>
-                                    <td>{{ Leave.startDate | date("d/m/Y") }}</td>
-                                    <td>{{ Leave.endDate | date("d/m/Y") }}</td>
-                                    <td>{{ Leave.reason }}</td>
+                                    <td>{{ Vacation.type }}</td>
+                                    <td>{{ Vacation.employee.userName }}</td>
+                                    <td>{{ Vacation.startDate | date("d/m/Y") }}</td>
+                                    <td>{{ Vacation.endDate | date("d/m/Y") }}</td>
+                                    <td>{{ Vacation.reason }}</td>
                                     <td>
-                                        <form method="post" action="/intranet/leave-validation">
-                                            <input type="hidden" name="id_" value="{{ Leave.id }}"/>
-                                            <input type="hidden" name="user_id" value="{{ Leave.employee.id }}"/>
+                                        <form method="post" action="/intranet/vacation-validation">
+                                            <input type="hidden" name="id_" value="{{ Vacation.id }}"/>
+                                            <input type="hidden" name="user_id" value="{{ Vacation.employee.id }}"/>
                                             <input type="submit" name="action" class="btn btn-success btn-flat btn-sm"
                                                    role="button" value="accepter">
                                         </form>
                                     <td>
-                                        <form method="post" action="/intranet/leave-validation">
-                                            <input type="hidden" name="id_" value="{{ Leave.id }}"/>
-                                            <input type="hidden" name="user_id" value="{{ Leave.employee.id }}"/>
+                                        <form method="post" action="/intranet/vacation-validation">
+                                            <input type="hidden" name="id_" value="{{ Vacation.id }}"/>
+                                            <input type="hidden" name="user_id" value="{{ Vacation.employee.id }}"/>
                                             <input type="text" name="refuse_reason"/>
                                             <input type="submit" name="action"
                                                    class="btn btn-danger btn-flat btn-sm myspace" role="button"
@@ -123,18 +123,17 @@
 
 
 {% block javascript %}
-$(document).ready(function () {
+    $(document).ready(function () {
     $('.sidebar-menu').tree()
     $(function () {
-        x
-        $('#example2').DataTable({
-            'paging': true,
-            'lengthChange': true,
-            'searching': false,
-            'ordering': true,
-            'info': true,
-            'autoWidth': false
-        })
+    $('#example2').DataTable({
+    'paging': true,
+    'lengthChange': true,
+    'searching': false,
+    'ordering': true,
+    'info': true,
+    'autoWidth': false
     })
-})
+    })
+    })
 {% endblock %}

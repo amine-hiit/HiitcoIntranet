@@ -5,14 +5,14 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Leave
+ * Vacation
  *
- * @ORM\Table(name="leaves")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\LeaveRepository")
+ * @ORM\Table(name="vacation")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\VacationRepository")
  */
-class Leave
+class Vacation
 {
-    const LEAVE = 'leave';
+    const VACATION = 'vacation';
     const ABSENCE = 'absence';
 
     /**
@@ -65,9 +65,9 @@ class Leave
 
     /**
      * @var int
-     * @ORM\Column(name ="leave_days_left", nullable=true)
+     * @ORM\Column(name ="vacation_days_left", nullable=true)
      */
-    private $leaveDaysLeft;
+    private $vacationDaysLeft;
 
     /**
      * @var string
@@ -92,7 +92,7 @@ class Leave
      *
      * @param string $type
      *
-     * @return Leave
+     * @return Vacation
      */
     public function setType($type)
     {
@@ -116,7 +116,7 @@ class Leave
      *
      * @param string|null $reason
      *
-     * @return Leave
+     * @return Vacation
      */
     public function setReason($reason = null)
     {
@@ -140,7 +140,7 @@ class Leave
      *
      * @param string|null $refuseReason
      *
-     * @return Leave
+     * @return Vacation
      */
     public function setRefuseReason($refuseReason = null)
     {
@@ -165,7 +165,7 @@ class Leave
      *
      * @param \DateTime|null $startDate
      *
-     * @return Leave
+     * @return Vacation
      */
     public function setStartDate($startDate = null)
     {
@@ -189,7 +189,7 @@ class Leave
      *
      * @param \DateTime|null $endDate
      *
-     * @return Leave
+     * @return Vacation
      */
     public function setEndDate($endDate = null)
     {
@@ -213,7 +213,7 @@ class Leave
      *
      * @param string|null $validationStatus
      *
-     * @return Leave
+     * @return Vacation
      */
     public function setValidationStatus($validationStatus = null)
     {
@@ -232,38 +232,39 @@ class Leave
         return $this->validationStatus;
     }
 
+
     /**
-     * Set leaveDaysLeft.
+     * Set vacationDaysLeft.
      *
-     * @param string|null $leaveDaysLeft
+     * @param string|null $vacationDaysLeft
      *
-     * @return Leave
+     * @return Vacation
      */
-    public function setLeaveDaysLeft($leaveDaysLeft = null)
+    public function setVacationDaysLeft($vacationDaysLeft = null)
     {
-        $this->leaveDaysLeft = $leaveDaysLeft;
+        $this->vacationDaysLeft = $vacationDaysLeft;
 
         return $this;
     }
 
     /**
-     * Get leaveDaysLeft.
+     * Get vacationDaysLeft.
      *
      * @return string|null
      */
-    public function getLeaveDaysLeft()
+    public function getVacationDaysLeft()
     {
-        return $this->leaveDaysLeft;
+        return $this->vacationDaysLeft;
     }
 
     /**
      * Set employee.
      *
-     * @param string|null $employee
+     * @param \AppBundle\Entity\Employee $employee
      *
-     * @return Leave
+     * @return Vacation
      */
-    public function setEmployee($employee = null)
+    public function setEmployee(\AppBundle\Entity\Employee $employee)
     {
         $this->employee = $employee;
 
@@ -273,7 +274,7 @@ class Leave
     /**
      * Get employee.
      *
-     * @return string|null
+     * @return \AppBundle\Entity\Employee
      */
     public function getEmployee()
     {
