@@ -35,11 +35,11 @@
                         <center>
                             <a type="button" class="btn btn-default btn-flat disabled"> Mes congés </a>
                             <a type="button" class="btn btn-default btn-flat"> Mon solde </a>
-                            <a type="button" class="btn btn-default btn-flat" href="/intranet/request-a-leave"> Demander
+                            <a type="button" class="btn btn-default btn-flat" href="/intranet/request-a-vacation"> Demander
                                 congé </a>
 
                             {% if is_granted('ROLE_HR') %}
-                                <a type="button" class="btn btn-default btn-flat " href="/intranet/hrm/leave-requests">
+                                <a type="button" class="btn btn-default btn-flat " href="/intranet/hrm/vacation-requests">
                                     Liste des demandes </a>
                             {% endif %}
 
@@ -85,21 +85,21 @@
                             </tr>
                             </thead>
                             <tbody>
-                            {% for Leave in listLeave %}
+                            {% for Vacation in listVacation %}
                                 <tr>
 
-                                    <td>{{ Leave.startDate | date("d/m/Y") }}</td>
-                                    <td>{{ Leave.endDate | date("d/m/Y") }}</td>
-                                    <td>{{ Leave.type }}</td>
-                                    <td>{{ Leave.reason }}</td>
-                                    {% if Leave.validationStatus=='n' %}
+                                    <td>{{ Vacation.startDate | date("d/m/Y") }}</td>
+                                    <td>{{ Vacation.endDate | date("d/m/Y") }}</td>
+                                    <td>{{ Vacation.type }}</td>
+                                    <td>{{ Vacation.reason }}</td>
+                                    {% if Vacation.validationStatus=='n' %}
                                         <td><span class="label label-danger flat ">Refusé</td>
-                                    {% elseif Leave.validationStatus==null %}
+                                    {% elseif Vacation.validationStatus==null %}
                                         <td><span class="label label-warning flat">Non traitée</td>
-                                    {% elseif Leave.validationStatus=='y' %}
+                                    {% elseif Vacation.validationStatus=='y' %}
                                         <td><span class="label label-success flat">Approuvée</td>
                                     {% endif %}
-                                    <td>{{ Leave.refuseReason }}</td>
+                                    <td>{{ Vacation.refuseReason }}</td>
 
                                 </tr>
                             {% endfor %}
@@ -127,20 +127,20 @@
 {% endblock %}
 
   {% block javascript %}
-  $(document).ready(function () {
+      $(document).ready(function () {
       $('.sidebar-menu').tree()
       $(function () {
 
-          $('#example2').DataTable({
-              'paging': true,
-              'lengthChange': true,
-              'searching': false,
-              'ordering': true,
-              'info': true,
-              'autoWidth': false
-          })
+      $('#example2').DataTable({
+      'paging': true,
+      'lengthChange': true,
+      'searching': false,
+      'ordering': true,
+      'info': true,
+      'autoWidth': false
       })
-  })
+      })
+      })
 
   {% endblock %}
 

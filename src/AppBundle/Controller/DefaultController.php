@@ -5,8 +5,8 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\Leave;
-use AppBundle\Form\LeaveType;
+use AppBundle\Entity\Vacation;
+use AppBundle\Form\VacationType;
 
 class DefaultController extends Controller
 {
@@ -20,6 +20,7 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
+
         $securityContext = $this->container->get('security.authorization_checker');
         if ($securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             return $this->render('@App/home.html.twig');

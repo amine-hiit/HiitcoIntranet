@@ -1,10 +1,10 @@
 <?php
-// src/AppBundle/Repository/LeaveRepository.php
+// src/AppBundle/Repository/VacationRepository.php
 namespace AppBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
-class LeaveRepository extends EntityRepository
+class VacationRepository extends EntityRepository
 {
 	public function findAllByUserId($userId)
 	{
