@@ -3,10 +3,11 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use AppBundle\Validator\Constraints\UniqueVacationDate;
 
 /**
  * Vacation
- *
+ * @UniqueVacationDate()
  * @ORM\Table(name="vacation")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\VacationRepository")
  */
@@ -65,15 +66,15 @@ class Vacation
 
     /**
      * @var int
-     * @ORM\Column(name ="vacation_days_left", nullable=true)
+     * @ORM\Column(name ="duration", nullable=false)
      */
-    private $vacationDaysLeft;
+    private $duration;
 
     /**
      * @var string
-     * @ORM\Column(name ="validation_status", type="text", nullable=true)
+     * @ORM\Column(name ="validation_status", type="text", nullable=false)
      */
-    private $validationStatus;
+    private $validationStatus = 0;
 
 
 
@@ -232,31 +233,6 @@ class Vacation
         return $this->validationStatus;
     }
 
-
-    /**
-     * Set vacationDaysLeft.
-     *
-     * @param string|null $vacationDaysLeft
-     *
-     * @return Vacation
-     */
-    public function setVacationDaysLeft($vacationDaysLeft = null)
-    {
-        $this->vacationDaysLeft = $vacationDaysLeft;
-
-        return $this;
-    }
-
-    /**
-     * Get vacationDaysLeft.
-     *
-     * @return string|null
-     */
-    public function getVacationDaysLeft()
-    {
-        return $this->vacationDaysLeft;
-    }
-
     /**
      * Set employee.
      *
@@ -279,5 +255,29 @@ class Vacation
     public function getEmployee()
     {
         return $this->employee;
+    }
+
+    /**
+     * Set duration.
+     *
+     * @param string $duration
+     *
+     * @return Vacation
+     */
+    public function setDuration($duration)
+    {
+        $this->duration = $duration;
+
+        return $this;
+    }
+
+    /**
+     * Get duration.
+     *
+     * @return string
+     */
+    public function getDuration()
+    {
+        return $this->duration;
     }
 }

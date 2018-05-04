@@ -9,6 +9,7 @@ use Symfony\Component\Form\FormError;
 use AppBundle\Entity\Vacation;
 use AppBundle\Form\VacationType;
 use AppBundle\Manager\VacationManager;
+use Symfony\Component\HttpFoundation\Response;
 
 class VacationController extends Controller
 {
@@ -22,16 +23,16 @@ class VacationController extends Controller
         $user = $this->get('security.token_storage')->getToken()->getUser();
         $vacation = new Vacation();
         $form = $this->get('form.factory')->create(VacationType::class, $vacation);
-        $lm = $this->get('app.vacation.manager');
+        $vm = $this->get('app.vacation.manager');
 
         if ($request->isMethod('POST')) {
             $errors = [];
             if ($form->handleRequest($request)->isValid()) {
-                $errors = $lm->isDemandeValid($vacation);
+                $errors = $vm->isDemandeValid($vacation);
                 if (count($errors)==0) {
                     //echo count($lm->isDemandeValid($vacation));
                     $vacation->setEmployee($user);
-                    $this->getDoctrine()->getManager()->persist($vacation);
+                    $vm->persist($vacation);
                     $this->getDoctrine()->getManager()->flush();
                     return $this->redirect('/intranet/my-vacation-requests');
                 }
@@ -52,6 +53,19 @@ class VacationController extends Controller
 
 
     /**
+     * @Route("/intranet/sold", name="sold")
+     */
+    public function showSoldAction(Request $request)
+    {
+        $employee = $this->get('security.token_storage')->getToken()->getUser();
+        $vm = $this->get('app.vacation.manager');
+        $sold = $vm->calculateSold($employee, true);
+        return new Response($sold);
+    }
+
+
+
+    /**
      * @Route("/intranet/hrm/vacation-requests", name="approve")
      */
     public function approveListAction(Request $request)
@@ -60,8 +74,8 @@ class VacationController extends Controller
 
         $user = $this->get('security.token_storage')->getToken()->getUser();
 
-        $lm = $this->get('app.vacation.manager');
-        $listVacation = $lm->findAll();
+        $vm = $this->get('app.vacation.manager');
+        $listVacation = $vm->findAll();
         return $this->render('@App/vacation/requests.html.twig', array(
             'listVacation' => $listVacation,
         ));
@@ -76,8 +90,8 @@ class VacationController extends Controller
 
 
         $user = $this->get('security.token_storage')->getToken()->getUser();
-        $lm = $this->get('app.vacation.manager');
-        $listVacation = $lm->findAllByUserId($user->getId());
+        $vm = $this->get('app.vacation.manager');
+        $listVacation = $vm->findAllByUserId($user->getId());
         return $this->render('@App/vacation/myrequests.html.twig', array(
             'listVacation' => $listVacation,
         ));
@@ -92,10 +106,10 @@ class VacationController extends Controller
         $vacationId = $request->get('id_');
         $isValid = $request->get('action');
         $refuseReason = $request->get('refuse_reason');
-        $lm = $this->get('app.vacation.manager');
-        $vacation = $lm->findOneById($vacationId);
-        $lm->validation($vacation, $isValid, $refuseReason);
-        $lm->flush();
+        $vm = $this->get('app.vacation.manager');
+        $vacation = $vm->findOneById($vacationId);
+        $vm->validation($vacation, $isValid, $refuseReason);
+        $vm->flush();
         return $this->redirect('/intranet/hrm/vacation-requests');
     }
 }

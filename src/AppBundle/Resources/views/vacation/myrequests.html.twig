@@ -92,11 +92,11 @@
                                     <td>{{ Vacation.endDate | date("d/m/Y") }}</td>
                                     <td>{{ Vacation.type }}</td>
                                     <td>{{ Vacation.reason }}</td>
-                                    {% if Vacation.validationStatus=='n' %}
+                                    {% if Vacation.validationStatus==-1 %}
                                         <td><span class="label label-danger flat ">Refusé</td>
-                                    {% elseif Vacation.validationStatus==null %}
+                                    {% elseif Vacation.validationStatus==0 %}
                                         <td><span class="label label-warning flat">Non traitée</td>
-                                    {% elseif Vacation.validationStatus=='y' %}
+                                    {% elseif Vacation.validationStatus==1 %}
                                         <td><span class="label label-success flat">Approuvée</td>
                                     {% endif %}
                                     <td>{{ Vacation.refuseReason }}</td>
