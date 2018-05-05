@@ -3,17 +3,18 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use AppBundle\Validator\Constraints\UniqueVacationDate;
+use AppBundle\Validator\Constraints\VacationPeriode;
 
 /**
  * Vacation
- * @UniqueVacationDate()
+ * @VacationPeriode()
  * @ORM\Table(name="vacation")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\VacationRepository")
  */
 class Vacation
 {
     const VACATION = 'vacation';
+    const VACATION_DAYS_PER_MONTH = 1.5;
     const ABSENCE = 'absence';
 
     /**

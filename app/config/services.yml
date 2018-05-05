@@ -60,10 +60,10 @@ services:
         tags:
             - { name : kernel.event_subscriber }
 
-    unique_event_date_validator:
-        class: 'AppBundle\Validator\Constraints\UniqueVacationDateValidation'
-        arguments: ['@doctrine.orm.entity_manager','@app.vacation.manager']
+    vacation_date_validator:
+        class: 'AppBundle\Validator\Constraints\VacationPeriodeValidator'
+        arguments: ['@doctrine.orm.entity_manager','@app.vacation.manager','@security.token_storage']
         tags:
             -
                 name: 'validator.constraint_validator'
-                alias: 'unique_vacation_date'
+                alias: 'vacation_date_validator'

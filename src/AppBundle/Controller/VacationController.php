@@ -25,25 +25,18 @@ class VacationController extends Controller
         $form = $this->get('form.factory')->create(VacationType::class, $vacation);
         $vm = $this->get('app.vacation.manager');
 
-        if ($request->isMethod('POST')) {
-            $errors = [];
-            if ($form->handleRequest($request)->isValid()) {
-                $errors = $vm->isDemandeValid($vacation);
-                if (count($errors)==0) {
-                    //echo count($lm->isDemandeValid($vacation));
-                    $vacation->setEmployee($user);
-                    $vm->persist($vacation);
-                    $this->getDoctrine()->getManager()->flush();
-                    return $this->redirect('/intranet/my-vacation-requests');
-                }
-                else{
-                    foreach ($errors as $key => $value){
-                        $form->get($key)->addError(new FormError($value));
-                    }
-                }
-            }else{dump($form->getErrors());die;}
-        }
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid())
+        {
+            $vacation->setEmployee($this->getUser());
+            $vm->persist($vacation);
+            $vm->flush();
+            $request->getSession()->getFlashBag()->add(
+                'success',
+                'Your config file is writable, it should be set read-only'
+            );
+            return $this->redirect($this->get('router')->generate('my_vacations_requests'));
 
+        }
         return $this->render('@App/vacation/request.html.twig', array(
             'form' => $form->createView(),
         ));
@@ -59,10 +52,9 @@ class VacationController extends Controller
     {
         $employee = $this->get('security.token_storage')->getToken()->getUser();
         $vm = $this->get('app.vacation.manager');
-        $sold = $vm->calculateSold($employee, true);
+        $sold = $vm->calculateVacationBalance($employee, true);
         return new Response($sold);
     }
-
 
 
     /**
@@ -83,7 +75,7 @@ class VacationController extends Controller
 
 
     /**
-     * @Route("/intranet/my-vacation-requests", name="my_asked_vacations")
+     * @Route("/intranet/my-vacation-requests", name="my_vacations_requests")
      */
     public function myListAction(Request $request)
     {

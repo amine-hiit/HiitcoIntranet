@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Employee;
+use AppBundle\Entity\Vacation;
 use Doctrine\ORM\EntityRepository;
 
 
@@ -35,15 +36,17 @@ class VacationRepository extends EntityRepository
 	  ;
 	}
 
-    public function findByStatusByUser($status ,Employee $employee)
+    public function findByStatusAndUser($status ,Employee $employee)
     {
         $qb = $this->createQueryBuilder('v');
 
         $qb
             ->where('v.employee = :employeeId')
             ->andWhere('v.validationStatus =  :status')
+            ->andWhere('v.type =  :type')
             ->setParameter('employeeId', $employee->getId())
             ->setParameter('status', $status)
+            ->setParameter('type', Vacation::VACATION)
         ;
         return $qb
             ->getQuery()
