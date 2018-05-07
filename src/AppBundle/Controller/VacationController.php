@@ -9,6 +9,7 @@ use Symfony\Component\Form\FormError;
 use AppBundle\Entity\Vacation;
 use AppBundle\Form\VacationType;
 use AppBundle\Manager\VacationManager;
+use Symfony\Component\HttpFoundation\Response;
 
 class VacationController extends Controller
 {
@@ -22,33 +23,38 @@ class VacationController extends Controller
         $user = $this->get('security.token_storage')->getToken()->getUser();
         $vacation = new Vacation();
         $form = $this->get('form.factory')->create(VacationType::class, $vacation);
-        $lm = $this->get('app.vacation.manager');
+        $vm = $this->get('app.vacation.manager');
 
-        if ($request->isMethod('POST')) {
-            $errors = [];
-            if ($form->handleRequest($request)->isValid()) {
-                $errors = $lm->isDemandeValid($vacation);
-                if (count($errors)==0) {
-                    //echo count($lm->isDemandeValid($vacation));
-                    $vacation->setEmployee($user);
-                    $this->getDoctrine()->getManager()->persist($vacation);
-                    $this->getDoctrine()->getManager()->flush();
-                    return $this->redirect('/intranet/my-vacation-requests');
-                }
-                else{
-                    foreach ($errors as $key => $value){
-                        $form->get($key)->addError(new FormError($value));
-                    }
-                }
-            }else{dump($form->getErrors());die;}
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid())
+        {
+            $vacation->setEmployee($this->getUser());
+            $vm->persist($vacation);
+            $vm->flush();
+            $request->getSession()->getFlashBag()->add(
+                'success',
+                'Your config file is writable, it should be set read-only'
+            );
+            return $this->redirect($this->get('router')->generate('my_vacations_requests'));
+
         }
-
         return $this->render('@App/vacation/request.html.twig', array(
             'form' => $form->createView(),
         ));
 
     }
 
+
+
+    /**
+     * @Route("/intranet/sold", name="sold")
+     */
+    public function showSoldAction(Request $request)
+    {
+        $employee = $this->get('security.token_storage')->getToken()->getUser();
+        $vm = $this->get('app.vacation.manager');
+        $sold = $vm->calculateVacationBalance($employee, true);
+        return new Response($sold);
+    }
 
 
     /**
@@ -60,8 +66,8 @@ class VacationController extends Controller
 
         $user = $this->get('security.token_storage')->getToken()->getUser();
 
-        $lm = $this->get('app.vacation.manager');
-        $listVacation = $lm->findAll();
+        $vm = $this->get('app.vacation.manager');
+        $listVacation = $vm->findAll();
         return $this->render('@App/vacation/requests.html.twig', array(
             'listVacation' => $listVacation,
         ));
@@ -69,15 +75,15 @@ class VacationController extends Controller
 
 
     /**
-     * @Route("/intranet/my-vacation-requests", name="my_asked_vacations")
+     * @Route("/intranet/my-vacation-requests", name="my_vacations_requests")
      */
     public function myListAction(Request $request)
     {
 
 
         $user = $this->get('security.token_storage')->getToken()->getUser();
-        $lm = $this->get('app.vacation.manager');
-        $listVacation = $lm->findAllByUserId($user->getId());
+        $vm = $this->get('app.vacation.manager');
+        $listVacation = $vm->findAllByUserId($user->getId());
         return $this->render('@App/vacation/myrequests.html.twig', array(
             'listVacation' => $listVacation,
         ));
@@ -89,13 +95,23 @@ class VacationController extends Controller
      */
     public function validationAction(Request $request)
     {
+
+        $vm = $this->get('app.vacation.manager');
         $vacationId = $request->get('id_');
-        $isValid = $request->get('action');
+        $approval = $request->get('action');
         $refuseReason = $request->get('refuse_reason');
-        $lm = $this->get('app.vacation.manager');
-        $vacation = $lm->findOneById($vacationId);
-        $lm->validation($vacation, $isValid, $refuseReason);
-        $lm->flush();
+        $vacation = $vm->findOneById($vacationId);
+
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_DIRECTOR')) {
+            $vm->adminValidation($vacation, $approval, $refuseReason);
+
+        }
+
+        else if ($this->get('security.authorization_checker')->isGranted('ROLE_HR')) {
+            $vm->hrmValidation($vacation, $approval, $refuseReason);
+        }
+
+        $vm->flush();
         return $this->redirect('/intranet/hrm/vacation-requests');
     }
 }

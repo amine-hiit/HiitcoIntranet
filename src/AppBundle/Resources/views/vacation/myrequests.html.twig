@@ -11,6 +11,7 @@
 
 
 {% block content %}
+
     <!-- Content Wrapper. Contains page content -->
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -92,11 +93,11 @@
                                     <td>{{ Vacation.endDate | date("d/m/Y") }}</td>
                                     <td>{{ Vacation.type }}</td>
                                     <td>{{ Vacation.reason }}</td>
-                                    {% if Vacation.validationStatus=='n' %}
-                                        <td><span class="label label-danger flat ">Refusé</td>
-                                    {% elseif Vacation.validationStatus==null %}
+                                    {% if Vacation.validationStatus==-1 %}
+                                        <td><span class="label label-danger flat ">Refusée</td>
+                                    {% elseif Vacation.validationStatus==0 or Vacation.validationStatus==1 %}
                                         <td><span class="label label-warning flat">Non traitée</td>
-                                    {% elseif Vacation.validationStatus=='y' %}
+                                    {% elseif Vacation.validationStatus==2 %}
                                         <td><span class="label label-success flat">Approuvée</td>
                                     {% endif %}
                                     <td>{{ Vacation.refuseReason }}</td>
