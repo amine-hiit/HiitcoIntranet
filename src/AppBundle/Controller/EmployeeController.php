@@ -48,6 +48,7 @@ class EmployeeController extends Controller
                 $employee->setEnabled(true);
                 $userManager->updateUser($employee);
             }
+            return $this->redirect($this->generateUrl('employees-list'));
         }
         return $this->render('@App/profil/register_new_employee.html.twig', array(
             'form' => $registrationForm->createView(),
@@ -75,6 +76,21 @@ class EmployeeController extends Controller
         }
         return $this->render('@App/profil/employee_form_.html.twig', array(
             'form' => $form->createView(),
+        ));
+    }
+
+    /**
+     * @Route("/intranet/hrm/employees", name="employees-list")
+     */
+    public function listAction(Request $request)
+    {
+
+        $employeeManager = $this->get('app.employee.manager');
+        $employees = $employeeManager->findAll();
+
+
+        return $this->render('@App/profil/employees_list.html.twig', array(
+            'employees' => $employees,
         ));
     }
 
