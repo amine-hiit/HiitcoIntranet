@@ -35,7 +35,7 @@
                     <div class="box-header">
                         <center>
                             <a type="button" class="btn btn-default btn-flat disabled"> Mes congés </a>
-                            <a type="button" class="btn btn-default btn-flat"> Mon solde </a>
+                            <a type="button" class="btn btn-default btn-flat" href="/intranet/sold"> Mon solde </a>
                             <a type="button" class="btn btn-default btn-flat" href="/intranet/request-a-vacation"> Demander
                                 congé </a>
 
@@ -94,11 +94,11 @@
                                     <td>{{ Vacation.type }}</td>
                                     <td>{{ Vacation.reason }}</td>
                                     {% if Vacation.validationStatus==-1 %}
-                                        <td><span class="label label-danger flat ">Refusée</td>
+                                        <td><span class="label label-danger flat ">Refusée</span></td>
                                     {% elseif Vacation.validationStatus==0 or Vacation.validationStatus==1 %}
-                                        <td><span class="label label-warning flat">Non traitée</td>
+                                        <td><span class="label label-warning flat">Non traitée</span></td>
                                     {% elseif Vacation.validationStatus==2 %}
-                                        <td><span class="label label-success flat">Approuvée</td>
+                                        <td><span class="label label-success flat">Approuvée</span></td>
                                     {% endif %}
                                     <td>{{ Vacation.refuseReason }}</td>
 

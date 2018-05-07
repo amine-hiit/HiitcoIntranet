@@ -37,7 +37,7 @@ class VacationController extends Controller
             return $this->redirect($this->get('router')->generate('my_vacations_requests'));
 
         }
-        return $this->render('@App/vacation/request.html.twig', array(
+        return $this->render('@App/vacation/request2.html.twig', array(
             'form' => $form->createView(),
         ));
 

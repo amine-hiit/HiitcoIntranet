@@ -23,9 +23,11 @@ class VacationType extends AbstractType
                 'label'    => 'Type',
                 'required' => true,
                 'choices' => array(
+                    'Vous demandez' => '' ,
                     'vacation' => 'vacation',
                     'absence' => 'absence',
                 ),
+                'data' => ''
             ))
             ->add('reason',TextType::class, array(
                 'required' => false
