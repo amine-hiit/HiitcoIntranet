@@ -23,10 +23,10 @@ class VacationRepository extends EntityRepository
 
 	public function findAllByUserId($userId)
 	{
-	  $qb = $this->createQueryBuilder('l');
+	  $qb = $this->createQueryBuilder('v');
 
 	  $qb
-	    ->where('l.employee = :employeeId')
+	    ->where('v.employee = :employeeId')
 	    ->setParameter('employeeId', $userId)
 	  ;
 	  return $qb
@@ -53,10 +53,10 @@ class VacationRepository extends EntityRepository
 
 	public function findAllByUser(Employee $employee)
 	{
-	  $qb = $this->createQueryBuilder('l');
+	  $qb = $this->createQueryBuilder('v');
 
 	  $qb
-	    ->where('l.employee = :employeeId')
+	    ->where('v.employee = :employeeId')
 	    ->setParameter('employeeId', $employee->getId())
 	  ;
 	  return $qb

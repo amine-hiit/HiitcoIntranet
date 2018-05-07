@@ -31,7 +31,6 @@ class UniqueVacationDateValidation extends ConstraintValidator
         $conflicts = $this->vm->findOverlappingWithRange($object);
         $vacationDuration = $this->vm->vacationDuration($object);
 
-
         if ($vacationDuration) {
 
             $this->context->buildViolation($constraint::UNIQUE_VACATION_DATE_MESSAGE)

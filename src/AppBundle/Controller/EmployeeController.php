@@ -9,9 +9,11 @@
 namespace AppBundle\Controller;
 
 
+use FOS\UserBundle\Form\Type\RegistrationFormType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpFoundation\Response;
 
 use AppBundle\Entity\Employee;
@@ -26,6 +28,34 @@ use AppBundle\Form\EmployeeFormationType;
 
 class EmployeeController extends Controller
 {
+
+
+
+
+    /**
+     * @Route("/intranet/admin/register-new-employee", name="employee-registration")
+     */
+    public function registerEmployeeAction(Request $request)
+    {
+        $employee = new Employee();
+        $form = $this->createForm(RegistrationFormType::class, $employee);
+        $form->handleRequest($request);
+        if($form->isSubmitted()){
+            if($form->isValid()){
+                $userManager = $this->get('fos_user.user_manager');
+                $exists = $userManager->findUserBy(array('email' => $employee->getEmail()));
+                if ($exists instanceof Employee) {
+                    throw new HttpException(409, 'Email already taken');
+                }
+                $employee->setEnabled(true);
+                $userManager->updateUser($employee);
+            }
+        }
+
+        return $this->render('@App/profil/register_new_employee.html.twig', array(
+            'form' => $form->createView(),
+        ));
+    }
 
 
     /**

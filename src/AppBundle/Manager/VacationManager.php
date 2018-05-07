@@ -170,18 +170,20 @@ class VacationManager
                 //return $approvedVacation->getDuration();
                     $sold -= $approvedVacation->getDuration();
             }
+
             else
             {
                 foreach ($approvedVacations as $approvedVacation)
                     $sold -= $approvedVacation->getDuration();
                 foreach ($untreatedVacations as $untreatedVacation)
-                    $sold -= $approvedVacation->getDuration();
+                    $sold -= $untreatedVacation->getDuration();
             }
 
             if ($currentMonth == $startMonth+1 && $currentYear == $startYear)
             {
                 return $sold;
             }
+
             else
             {
                 if ($currentMonth >= $startMonth)
