@@ -95,12 +95,22 @@ class VacationController extends Controller
      */
     public function validationAction(Request $request)
     {
-        $vacationId = $request->get('id_');
-        $isValid = $request->get('action');
-        $refuseReason = $request->get('refuse_reason');
+
         $vm = $this->get('app.vacation.manager');
+        $vacationId = $request->get('id_');
+        $approval = $request->get('action');
+        $refuseReason = $request->get('refuse_reason');
         $vacation = $vm->findOneById($vacationId);
-        $vm->validation($vacation, $isValid, $refuseReason);
+
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_DIRECTOR')) {
+            $vm->adminValidation($vacation, $approval, $refuseReason);
+
+        }
+
+        else if ($this->get('security.authorization_checker')->isGranted('ROLE_HR')) {
+            $vm->hrmValidation($vacation, $approval, $refuseReason);
+        }
+
         $vm->flush();
         return $this->redirect('/intranet/hrm/vacation-requests');
     }

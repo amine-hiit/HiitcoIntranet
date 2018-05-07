@@ -62,16 +62,32 @@ class VacationManager
 
     }
 
-    public function validation(&$vacation, $isValid, $refuseReason)
+    public function adminValidation(&$vacation, $isValid, $refuseReason)
     {
         if ('accepter' === $isValid) {
-            $vacation->setValidationStatus('1');
+            $vacation->setValidationStatus('2');
             $vacation->setRefuseReason('');
-        } elseif ('refuser' === $isValid) {
+        }
+
+        elseif ('refuser' === $isValid) {
             $vacation->setValidationStatus('-1');
             $vacation->setRefuseReason($refuseReason);
         }
     }
+
+    public function hrmValidation(&$vacation, $isValid, $refuseReason)
+    {
+        if ('accepter' === $isValid) {
+            $vacation->setValidationStatus('1');
+            $vacation->setRefuseReason('');
+        }
+
+        elseif ('refuser' === $isValid) {
+            $vacation->setValidationStatus('-1');
+            $vacation->setRefuseReason($refuseReason);
+        }
+    }
+
 
     public function calculateWeekEndDaysNumberIncluded($vacation)
     {
@@ -188,49 +204,6 @@ class VacationManager
 }
 
 
-
-
-
-
-
-
-
-/*
-
-
-
-    public function isDemandeValid($vacation)
-    {
-        $errors = array();
-        if ($vacation->getType() == Vacation::VACATION) {
-            $vacationDaysLeft = $vacation->getvacationDaysLeft();
-            $now = time();
-            $startTime = strtotime($vacation->getStartDate()->format('d-m-Y'));
-
-            $endTime = strtotime($vacation->getEndDate()->format('d-m-Y'));
-            $untilStartDay = ($startTime - $now) / (60 * 60 * 24);
-            $vacationDuration = ($endTime - $startTime) / (60 * 60 * 24);
-
-            if ((10 < $vacationDuration)) {
-                $errors = ["endDate" => "vous n'avez pas assez de jour dans votre vacationBalancee"];
-            }
-
-            if ($untilStartDay - 30 < 0) {
-                $errors += ["startDate" => "Le congé doit être demandé 30 jour à l'avance"];
-            }
-        }
-        return $errors;
-    }
-
-
-    public function calculateLeftDay($vacation)
-    {
-        $startTime = strtotime($vacation->getStartDate()->format('d-m-Y'));
-        $endTime = strtotime($vacation->getEndDate()->format('d-m-Y'));
-        return ($endTime - $startTime) / (60 * 60 * 24);
-    }
-
-*/
 
 
 
