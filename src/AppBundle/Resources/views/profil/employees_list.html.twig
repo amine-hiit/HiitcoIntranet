@@ -72,7 +72,11 @@
                                 <tr>
                                     <td>{{ employee.id }}</td>
                                     <td><a href="/intranet/employee/{{ employee.id }}">
-                                            {% if employee.valid %}<img src="{{ asset(employee.avatar.url) }}" width = "32" height="32" style="border-radius: 50%;" />{% endif %}
+                                            {% if employee.avatar is not empty %}
+                                                <img src="{{ asset(employee.avatar.url) }}" width = "32" height="32" style="border-radius: 50%;" />
+                                            {% else %}
+                                                <img src="{{ asset(default_avatar) }}" width = "32" height="32" style="border-radius: 50%;" />
+                                            {% endif %}
                                             {{ employee.username }}</a>
                                     </td>
                                     <td>{{ employee.email }}</td>
