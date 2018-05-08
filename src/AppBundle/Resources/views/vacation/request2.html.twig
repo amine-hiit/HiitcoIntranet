@@ -74,11 +74,11 @@
 
                                     <div class="form-group" >
                                         <label class="spc"> Période : </label>
-                                        <label for = "morning_end" class="spc" >
+                                        <label  class="spc" >
                                             <input type="radio" class = "periode" name="periode" value="one-day" />  Une journée
                                         </label>
 
-                                        <label for = "afternoon_end"  class="spc">
+                                        <label   class="spc">
                                             <input type="radio" class = "periode" name="periode" value="more-than-one-day" checked/>  Ou plus
                                         </label>
 
@@ -119,10 +119,9 @@
 
                             <div class="col-sm-6 col-xs-12 "><br/><br/>
                                 <div class="form-group one-day hidden" >
-                                    <label for = "time1" class="spc" > <input type="radio" id = "morning_start" name="time_start" value="morning" /> Matin</label>
-
-                                    <label for = "time2"  class="spc"><input type="radio" id = "afternoon_start" name="time_start" value="afternoon" checked/> Aprem </label>
-                                    <label for = "time2"  class="spc"><input type="radio" id = "all_day" name="time_start" value="afternoon" checked/> Toute la journé </label>
+                                        <div class="form-group">
+                                            {{ form_widget(form.dayPeriod) }}
+                                        </div>
                                 </div>
                             </div>
                         </div>
@@ -175,36 +174,45 @@
 
 
   {% block javascript %}
-      $(document).ready(function () {
+  $(document).ready(function () {
+      $('input[name=periode][value=more-than-one-day]').prop('checked', true);
+      $('#appbundle_vacation_dayPeriod > label').each(function () {
+          $(this).addClass('spc');
+      });
+
       $('.vacation-type-select').on('change', function() {
-          if($(this).val() != "" ){
-            $('#periode').removeClass('hidden');
-            $('#the-rest').removeClass('hidden');
+      if($(this).val() != "" ){
+        $('#periode').removeClass('hidden');
+        $('#the-rest').removeClass('hidden');
 
-            if($(this).val() == 'vacation' ){
-              $('.absence').addClass('hidden');
-              $('.vacation').removeClass('hidden');
-            }
+        if($(this).val() == 'vacation' ){
+          $('.absence').addClass('hidden');
+          $('.vacation').removeClass('hidden');
+        }
 
-            else if($(this).val() == 'absence' ){
-              $('.vacation').addClass('hidden');
-              $('.absence').removeClass('hidden');
-            }
-          }
+        else if($(this).val() == 'absence' ){
+          $('.vacation').addClass('hidden');
+          $('.absence').removeClass('hidden');
 
-          else{
-            $('#the-rest').addClass('hidden');
-          }
+        }
+      }
+
+      else{
+        $('#the-rest').addClass('hidden');
+      }
       });
 
       $('.periode').on('click', function() {
           if($('input[name=periode][value=more-than-one-day]').is(':checked') ){
             $('.more-than-one-day').removeClass('hidden');
             $('.one-day').addClass('hidden');
+            $('#appbundle_vacation_dayPeriod_2').prop('checked', true);
           }
+
           else if($('input[name=periode][value=one-day]').is(':checked') ){
             $('.more-than-one-day').addClass('hidden');
             $('.one-day').removeClass('hidden');
+            $('#appbundle_vacation_endDate').val('');
           }
 
       });
@@ -213,5 +221,5 @@
       $('.datepicker').datepicker({
       autoclose: true
       });
-      });
+  });
   {% endblock %}

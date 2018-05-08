@@ -64,7 +64,6 @@
                                 <th>NOM D'UTILISATEUR</th>
                                 <th>EMAIL</th>
                                 <th>ETAT</th>
-                                <th>VOIR PROFIL</th>
 
                             </tr>
                             </thead>
@@ -72,14 +71,16 @@
                             {% for employee in employees %}
                                 <tr>
                                     <td>{{ employee.id }}</td>
-                                    <td>{{ employee.username }}</td>
+                                    <td><a href="/intranet/employee/{{ employee.id }}">
+                                            {% if employee.valid %}<img src="{{ asset(employee.avatar.url) }}" width = "32" height="32" style="border-radius: 50%;" />{% endif %}
+                                            {{ employee.username }}</a>
+                                    </td>
                                     <td>{{ employee.email }}</td>
                                     {% if employee.valid %}
                                         <td><span class="label label-success flat ">valide</span></td>
                                     {% elseif not employee.valid %}
                                         <td><span class="label label-danger flat ">non valide</span></td>
                                     {% endif %}
-                                    <td><a href="/intranet/employee/{{ employee.id }}" class="label label-default flat ">voir profil</a></td>
                                 </tr>
                             {% endfor %}
                             </tbody>

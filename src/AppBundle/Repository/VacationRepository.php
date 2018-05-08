@@ -10,13 +10,15 @@ use Doctrine\ORM\EntityRepository;
 class VacationRepository extends EntityRepository
 {
 
-    public function findOverlappingWithRange(\DateTime $startDate, \DateTime $endDate)
+    public function findOverlappingWithRange(\DateTime $startDate, \DateTime $endDate, Employee $employee)
     {
         $qb = $this->createQueryBuilder('v');
 
-        return $qb->andWhere('v.startDate < :endDate AND v.endDate > :startDate')
+        return $qb->andWhere('v.startDate <= :endDate AND v.endDate >= :startDate')
+            ->andWhere('v.employee = :employeeId')
             ->setParameter('startDate', $startDate)
             ->setParameter('endDate', $endDate)
+            ->setParameter('employeeId', $employee->getId())
             ->getQuery()
             ->execute()
             ;

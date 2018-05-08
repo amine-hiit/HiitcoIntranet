@@ -8,6 +8,7 @@
 
 namespace AppBundle\Validator\Constraints;
 
+use AppBundle\Entity\Vacation;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\ConstraintValidator;
 use Doctrine\ORM\EntityManager;
@@ -30,10 +31,16 @@ class VacationPeriodeValidator extends ConstraintValidator
 
     public function validate($object, Constraint $constraint)
     {
+
         $startDate = $object->getStartDate();
+        $dayPeriod = $object->getDayPeriod();
         $endDate = $object->getEndDate();
+
+        if(null === $endDate || $dayPeriod !== Vacation::ALL_DAY )
+            $endDate = $object->setEndDate(clone($startDate));
+
         $employee = $this->ts->getToken()->getUser();
-        $conflicts = $this->vm->findOverlappingWithRange($object);
+        $conflicts = $this->vm->findOverlappingWithRange($object, $employee);
         $vacationDuration = $this->vm->calculateDuration($object);
         $vacationBalance = $this->vm->calculatevacationBalance(
             $employee,
@@ -42,6 +49,7 @@ class VacationPeriodeValidator extends ConstraintValidator
         $daysUntilStartDate = $this->vm
             ->calculateDaysUntilStartDate($object);
         $now = new \DateTime();
+
 
         if ($now > $startDate) {
 
@@ -55,8 +63,13 @@ class VacationPeriodeValidator extends ConstraintValidator
                 ->addViolation();
         }
 
+        if (count($conflicts) > 0) {
+
+            $this->context->buildViolation($constraint::UNIQUE_VACATION_DATE_MESSAGE)
+                ->addViolation();
+        }
         /** absence type is not concerned by the rest of constraints*/
-        if ($object->getType() == 'absence') {
+        if ($object->getType() === Vacation::ABSENCE) {
             return;
         }
 
@@ -72,11 +85,7 @@ class VacationPeriodeValidator extends ConstraintValidator
                 ->addViolation();
         }
 
-        if (count($conflicts) > 0) {
 
-            $this->context->buildViolation($constraint::UNIQUE_VACATION_DATE_MESSAGE)
-                ->addViolation();
-        }
     }
 
 }
