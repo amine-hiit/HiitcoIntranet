@@ -117,7 +117,6 @@ class VacationController extends Controller
             $vm->hrmValidation($vacation, $approval, $refuseReason);
         }
 
-        $vm->flush();
         return $this->redirect('/intranet/hrm/vacation-requests');
     }
 }

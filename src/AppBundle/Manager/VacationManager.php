@@ -2,6 +2,7 @@
 
 namespace AppBundle\Manager;
 
+use AppBundle\Entity\Notification;
 use Doctrine\ORM\EntityManagerInterface;
 use AppBundle\Entity\Vacation;
 use AppBundle\Entity\Employee;
@@ -10,19 +11,34 @@ use PhpOffice\PhpSpreadsheet\Calculation\DateTime;
 
 class VacationManager
 {
+    const VACATION_REQUEST_NOTIF = 'vacation_request';
+    const VACATION_ADMIN_ACCEPTATION_NOTIF = 'vacation_admin_acceptation';
+    const VACATION_ADMIN_REFUSE_NOTIF = 'vacation_admin_refuse';
+    const VACATION_HRM_ACCEPTATION_NOTIF = 'vacation_hrm_acceptation';
+    const VACATION_HRM_REFUSE_NOTIF = 'vacation_hrm_refuse';
+
     /**
      * @var EntityManagerInterface
      */
     private $em;
 
     /**
+     * @var NotificationManager
+     */
+    private $nm;
+
+    /**
      * VacationManager constructor.
      * @param EntityManagerInterface $em
+     * @param NotificationManager $nm
      */
-    public function __construct(EntityManagerInterface $em)
+
+    public function __construct(EntityManagerInterface $em, NotificationManager $nm)
     {
         $this->em = $em;
+        $this->nm = $nm;
     }
+
 
     public function findAllByUserId($userId)
     {
@@ -68,12 +84,17 @@ class VacationManager
         if ('accepter' === $isValid) {
             $vacation->setValidationStatus('2');
             $vacation->setRefuseReason('');
+            $this->generateNotification(self::VACATION_ADMIN_ACCEPTATION_NOTIF, array('le directeur'));
+
         }
 
         elseif ('refuser' === $isValid) {
             $vacation->setValidationStatus('-1');
             $vacation->setRefuseReason($refuseReason);
+            $this->generateNotification(self::VACATION_ADMIN_REFUSE_NOTIF, array('le directeur'));
+
         }
+        $this->flush();
     }
 
     public function hrmValidation(&$vacation, $isValid, $refuseReason)
@@ -81,12 +102,15 @@ class VacationManager
         if ('accepter' === $isValid) {
             $vacation->setValidationStatus('1');
             $vacation->setRefuseReason('');
+            $this->generateNotification(self::VACATION_HRM_ACCEPTATION_NOTIF, array('le directeur'));
         }
 
         elseif ('refuser' === $isValid) {
             $vacation->setValidationStatus('-1');
             $vacation->setRefuseReason($refuseReason);
+            $this->generateNotification(self::VACATION_HRM_REFUSE_NOTIF, array('le directeur'));
         }
+        $this->flush();
     }
 
 
@@ -221,6 +245,13 @@ class VacationManager
     {
         $this->em->flush();
     }
+
+
+    public function generateNotification($notifType, $args)
+    {
+        $this->nm->createMessage($notifType, $args);
+    }
+
 }
 
 

@@ -32,7 +32,12 @@ services:
     app.vacation.manager:
         class: 'AppBundle\Manager\VacationManager'
         public: true
-        arguments: ['@doctrine.orm.entity_manager']
+        arguments: ['@doctrine.orm.entity_manager','@app.notification.manager']
+
+    app.notification.manager:
+        class: 'AppBundle\Manager\NotificationManager'
+        public: true
+
 
     # add more services, or override services that need manual wiring
     # AppBundle\Service\ExampleService:
