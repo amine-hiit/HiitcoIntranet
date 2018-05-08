@@ -46,12 +46,11 @@
             <div class="box-header">
                 <center>
                     <a type="button" class="btn btn-default btn-flat" href="/intranet/my-vacation-requests">   Mes congés       </a>
-                    <a type="button" class="btn btn-default btn-flat">   Mon solde        </a>
+                    <a type="button" class="btn btn-default btn-flat" href="/intranet/sold">   Mon solde        </a>
                     <a type="button" class="btn btn-default btn-flat disabled">   Demander congé   </a>
                     {% if is_granted('ROLE_HR') %}
                         <a type="button" class="btn btn-default btn-flat " href="/intranet/hrm/vacation-requests">  Liste des demandes   </a>
                     {% endif %}
-
                 </center>
             </div>
 
@@ -111,7 +110,7 @@
                         <div class="form-group" style="width: 90%;">
                             {{ form_label(form.type) }}
                             {{ form_widget(form.type ,{'attr':{
-                                'class':'form-control select2'
+                                'class':'form-control vacation-type-select'
                             }}) }}
                         </div>
                     </div>
@@ -153,15 +152,17 @@
 
 {% block script %}
     <script src="../../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
-    <script src="../../bower_components/select2/dist/js/select2.full.min.js"></script>
 
 {% endblock %}
 
 
   {% block javascript %}
       $(document).ready(function () {
+      $('.vacation-type-select').on('change', function() {
+        if (this.value == 'absence' ){
 
-      $('.select2').select2();
+      }
+      });
 
       $('.datepicker').datepicker({
       autoclose: true

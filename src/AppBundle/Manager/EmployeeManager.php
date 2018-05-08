@@ -41,6 +41,11 @@ class EmployeeManager
         return $this->em->getRepository(Experience::class)->findEmployeeLastFormation($employee);
     }
 
+    public function findAll()
+    {
+        return $this->em->getRepository(Employee::class)->findAll();
+    }
+
     public function findEmployeeAllExperiences(Employee $employee)
     {
         return $this->em->getRepository(Experience::class)->findEmployeeAllExperiences($employee);

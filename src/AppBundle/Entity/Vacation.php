@@ -16,7 +16,9 @@ class Vacation
     const VACATION = 'vacation';
     const VACATION_DAYS_PER_MONTH = 1.5;
     const ABSENCE = 'absence';
-
+    const ALL_DAY = 'allDay';
+    const MORNING = 'morning';
+    const AFTERNOON = 'afternoon';
     /**
      * @var int
      *
@@ -66,6 +68,12 @@ class Vacation
     private $endDate;
 
     /**
+     * @var string
+     * @ORM\Column(name ="day_period", nullable=false)
+     */
+    private $dayPeriod = 'allDay';
+
+ /**
      * @var int
      * @ORM\Column(name ="duration", nullable=false)
      */
@@ -280,5 +288,29 @@ class Vacation
     public function getDuration()
     {
         return $this->duration;
+    }
+
+    /**
+     * Set dayPeriod.
+     *
+     * @param string $dayPeriod
+     *
+     * @return Vacation
+     */
+    public function setDayPeriod($dayPeriod)
+    {
+        $this->dayPeriod = $dayPeriod;
+
+        return $this;
+    }
+
+    /**
+     * Get dayPeriod.
+     *
+     * @return string
+     */
+    public function getDayPeriod()
+    {
+        return $this->dayPeriod;
     }
 }

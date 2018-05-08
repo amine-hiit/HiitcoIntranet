@@ -13,6 +13,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+
+use FOS\UserBundle\Form\Type\RegistrationFormType;
 
 use AppBundle\Entity\Employee;
 use AppBundle\Entity\Formation;
@@ -27,6 +30,30 @@ use AppBundle\Form\EmployeeFormationType;
 class EmployeeController extends Controller
 {
 
+    /**
+     * @Route("/intranet/admin/register-new-employee", name="employee-registration")
+     */
+    public function registerEmployeeAction(Request $request)
+    {
+        $employee = new Employee();
+        $registrationForm = $this->createForm(RegistrationFormType::class, $employee);
+        $registrationForm->handleRequest($request);
+        if($registrationForm->isSubmitted()){
+            if($registrationForm->isValid()){
+                $userManager = $this->get('fos_user.user_manager');
+                $exists = $userManager->findUserBy(array('email' => $employee->getEmail()));
+                if ($exists instanceof Employee) {
+                    throw new HttpException(409, 'Email already taken');
+                }
+                $employee->setEnabled(true);
+                $userManager->updateUser($employee);
+            }
+            return $this->redirect($this->generateUrl('employees-list'));
+        }
+        return $this->render('@App/profil/register_new_employee.html.twig', array(
+            'form' => $registrationForm->createView(),
+        ));
+    }
 
     /**
      * @Route("/intranet/form", name="employee-form")
@@ -49,6 +76,21 @@ class EmployeeController extends Controller
         }
         return $this->render('@App/profil/employee_form_.html.twig', array(
             'form' => $form->createView(),
+        ));
+    }
+
+    /**
+     * @Route("/intranet/hrm/employees", name="employees-list")
+     */
+    public function listAction(Request $request)
+    {
+
+        $employeeManager = $this->get('app.employee.manager');
+        $employees = $employeeManager->findAll();
+
+
+        return $this->render('@App/profil/employees_list.html.twig', array(
+            'employees' => $employees,
         ));
     }
 

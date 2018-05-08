@@ -45,7 +45,6 @@ class Employee extends BaseUser
 
     /**
      * @var \DateTime
-     * @Assert\NotBlank()
      * @ORM\Column(name="birthday" , type="date", nullable=true)
      */
     private $birthday;

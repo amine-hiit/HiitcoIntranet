@@ -17,30 +17,33 @@ class VacationController extends Controller
     /**
      * @Route("/intranet/request-a-vacation", name="request_a_vacation")
      */
-    public function requestAVacationAction(Request $request)
+    public function requestVacationAction(Request $request)
     {
 
-        $user = $this->get('security.token_storage')->getToken()->getUser();
         $vacation = new Vacation();
         $form = $this->get('form.factory')->create(VacationType::class, $vacation);
         $vm = $this->get('app.vacation.manager');
 
-        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid())
-        {
-            $vacation->setEmployee($this->getUser());
-            $vm->persist($vacation);
-            $vm->flush();
-            $request->getSession()->getFlashBag()->add(
-                'success',
-                'Your config file is writable, it should be set read-only'
-            );
-            return $this->redirect($this->get('router')->generate('my_vacations_requests'));
+        if ($request->isMethod('POST' ) && $form->handleRequest($request)) {
+            if ($form->isValid()) {
+                $startDate = $form['startDate']->getData();
+                $dayPeriod = $form['dayPeriod']->getData();
 
+                if ( Vacation::ALL_DAY !== $dayPeriod)
+                    $vacation->setEndDate($startDate);
+
+                $vacation->setEmployee($this->getUser());
+
+                $vm->persist($vacation);
+                $vm->flush();
+
+                return $this->redirect($this->get('router')
+                    ->generate('my_vacations_requests'));
+            }
         }
-        return $this->render('@App/vacation/request.html.twig', array(
+        return $this->render('@App/vacation/request2.html.twig', array(
             'form' => $form->createView(),
         ));
-
     }
 
 
@@ -52,8 +55,11 @@ class VacationController extends Controller
     {
         $employee = $this->get('security.token_storage')->getToken()->getUser();
         $vm = $this->get('app.vacation.manager');
-        $sold = $vm->calculateVacationBalance($employee, true);
-        return new Response($sold);
+        $soldAfterAppovingRequestes = $vm->calculateVacationBalance($employee, true);
+        $soldBeforeAppovingRequestes = $vm->calculateVacationBalance($employee, false);
+        return new Response('apres validation des demandes pécedentes: ' .$soldAfterAppovingRequestes.'<br/>'
+        .'avant validation des demandes pécedentes: '. $soldBeforeAppovingRequestes
+        );
     }
 
 

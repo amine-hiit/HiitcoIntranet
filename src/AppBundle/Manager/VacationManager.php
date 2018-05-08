@@ -35,11 +35,12 @@ class VacationManager
     }
 
 
-    public function findOverlappingWithRange(Vacation $vacation)
+    public function findOverlappingWithRange(Vacation $vacation ,Employee $employee)
     {
+
         return $this->em
             ->getRepository('AppBundle:Vacation')
-            ->findOverlappingWithRange($vacation->getStartDate(), $vacation->getEndDate());
+            ->findOverlappingWithRange($vacation->getStartDate(), $vacation->getEndDate(),$employee);
     }
 
 
@@ -94,17 +95,18 @@ class VacationManager
         $WeekEndDaysNumber = 0;
         $startDate = $vacation->getStartDate();
         $endDate = $vacation->getEndDate();
-
-        //because the end date is not included
         $endDate->modify('+1 day');
+        //because the end date is not included
+
         $period = new \DatePeriod($startDate, new \DateInterval('P1D'), $endDate);
 
         foreach ($period as $day) {
+
             if ($day->format('D') == 'Sat' || $day->format('D') == 'Sun') {
                 $WeekEndDaysNumber++;
             }
         }
-
+        $endDate->modify('-1 day');
         return $WeekEndDaysNumber;
     }
 
@@ -112,13 +114,22 @@ class VacationManager
     //calculation of the vacation days number
     public function calculateDuration($vacation, $weekEndIncluded = true)
     {
+        if ($vacation->getDayPeriod() !== 'allDay')
+            return $weekEndIncluded && boolval($this->calculateWeekEndDaysNumberIncluded($vacation)) ? 0: 0.5;
+
+        $endDate = $vacation->getEndDate();
+        $endDate->modify('+1 day');
+
+
         $startTime = strtotime($vacation->getStartDate()->format('d-m-Y'));
         $endTime = strtotime($vacation->getEndDate()->format('d-m-Y'));
+
 
         $duration = $weekEndIncluded ? ($endTime - $startTime) / (60 * 60 * 24)
             - $this->calculateWeekEndDaysNumberIncluded($vacation)
             : ($endTime - $startTime) / (60 * 60 * 24);
 
+        $endDate->modify('-1 day');
         return $duration;
     }
 
@@ -134,7 +145,8 @@ class VacationManager
     function calculatevacationBalance(Employee $employee, $afterRequestAprovement = false)
     {
         $startDate = $employee->getStartDate();
-        $approvedVacations = $this->findByStatusAndUser(1, $employee);
+        $hrmApprovedVacations = $this->findByStatusAndUser(1, $employee);
+        $adminApprovedVacations = $this->findByStatusAndUser(2, $employee);
         $untreatedVacations = $this->findByStatusAndUser(0, $employee);
         $vacationBalance = 0;
         $now = new \DateTime();
@@ -160,12 +172,19 @@ class VacationManager
             }
 
             if ($afterRequestAprovement) {
-                foreach ($approvedVacations as $approvedVacation) {
-                    $vacationBalance -= $approvedVacation->getDuration();
+                foreach ($adminApprovedVacations as $adminApprovedVacation) {
+                    $vacationBalance -= $adminApprovedVacation->getDuration();
+                }
+                foreach ($hrmApprovedVacations as $hrmApprovedVacation) {
+                    $vacationBalance -= $hrmApprovedVacation->getDuration();
                 }
             } else {
-                foreach ($approvedVacations as $approvedVacation) {
-                    $vacationBalance -= $approvedVacation->getDuration();
+
+                foreach ($adminApprovedVacations as $adminApprovedVacation) {
+                    $vacationBalance -= $adminApprovedVacation->getDuration();
+                }
+                foreach ($hrmApprovedVacations as $hrmApprovedVacation) {
+                    $vacationBalance -= $hrmApprovedVacation->getDuration();
                 }
                 foreach ($untreatedVacations as $untreatedVacation) {
                     $vacationBalance -= $untreatedVacation->getDuration();
@@ -193,7 +212,8 @@ class VacationManager
     public function persist($vacation)
     {
         //set duration attribute before persisting
-        $vacation->setDuration($this->calculateDuration($vacation));
+        $vacation->setDuration($this->calculateDuration($vacation,true));
+
         $this->em->persist($vacation);
     }
 

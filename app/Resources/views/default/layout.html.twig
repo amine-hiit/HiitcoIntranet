@@ -1,8 +1,9 @@
+{% set default_avatar =  asset('/uploads/img/avatar/default_avatar.png') %}
 {% if app.user.avatar.name  is defined %}
     {% set avatar_url = app.user.avatar.url %}
     {% set avatar_alt = app.user.avatar.url %}
 {% else %}
-    {% set avatar_url =  asset('/uploads/img/avatar/default_avatar.png') %}
+    {% set avatar_url = default_avatar %}
     {% set avatar_alt =  'avatar' %}
 {% endif %}
 
@@ -179,7 +180,7 @@
                         <li><a href="/intranet/request-a-doc"><i class="fa fa-circle-o"></i> Demander document</a></li>
                         <li><a href="/intranet/cooptation"><i class="fa fa-circle-o"></i> Cooptations</a></li>
                         {% if is_granted('ROLE_HR') %}
-                            <li><a href="/intranet/employees"><i class="fa fa-circle-o"></i> Employées</a></li>
+                            <li><a href="/intranet/hrm/employees"><i class="fa fa-circle-o"></i> Employés</a></li>
                         {% endif %}
                     </ul>
                 </li>
