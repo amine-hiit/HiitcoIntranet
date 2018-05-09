@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * NotificationType
  *
  * @ORM\Table(name="notification_type")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\NotificationReferenceRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\NotificationTypeRepository")
  */
 class NotificationType
 {

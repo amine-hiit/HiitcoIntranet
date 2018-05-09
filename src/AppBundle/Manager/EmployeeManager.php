@@ -30,6 +30,10 @@ class EmployeeManager
         $this->em = $em;
     }
 
+    public function findByRole($role)
+    {
+        return $this->em->getRepository(Employee::class)->findByRole($role);
+    }
 
     public function findEmployeeLastFormation(Employee $employee)
     {

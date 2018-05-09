@@ -3,7 +3,7 @@ vacation_rhm_validation: %s request message %s
 vacation_admin_validation: %s request message %s
 fill_employee_form_invatation:
 employee_form_filled_out:
-vacation_hrm_refuse: %s a refusé votre demande de congé
-vacation_hrm_acceptation: %s a accepté votre demande de congé
+vacation_hrm_refuse: %s a refusé une demande de congé
+vacation_hrm_acceptation: %s a refusé accepté votre demande de congé
 vacation_admin_acceptation: %s a accepté votre demande de congé
 vacation_admin_refuse: %s a refusé votre demande de congé

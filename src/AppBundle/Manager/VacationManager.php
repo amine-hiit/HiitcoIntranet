@@ -51,12 +51,12 @@ class VacationManager
     }
 
 
-    public function findOverlappingWithRange(Vacation $vacation ,Employee $employee)
+    public function findOverlappingWithRange(Vacation $vacation, Employee $employee)
     {
 
         return $this->em
             ->getRepository('AppBundle:Vacation')
-            ->findOverlappingWithRange($vacation->getStartDate(), $vacation->getEndDate(),$employee);
+            ->findOverlappingWithRange($vacation->getStartDate(), $vacation->getEndDate(), $employee);
     }
 
 
@@ -79,16 +79,17 @@ class VacationManager
 
     }
 
+
+
+
+
+
     public function adminValidation(&$vacation, $isValid, $refuseReason)
     {
         if ('accepter' === $isValid) {
             $vacation->setValidationStatus('2');
             $vacation->setRefuseReason('');
-            $this->generateNotification(self::VACATION_ADMIN_ACCEPTATION_NOTIF, array('le directeur'));
-
-        }
-
-        elseif ('refuser' === $isValid) {
+        } elseif ('refuser' === $isValid) {
             $vacation->setValidationStatus('-1');
             $vacation->setRefuseReason($refuseReason);
             $this->generateNotification(self::VACATION_ADMIN_REFUSE_NOTIF, array('le directeur'));
@@ -102,16 +103,25 @@ class VacationManager
         if ('accepter' === $isValid) {
             $vacation->setValidationStatus('1');
             $vacation->setRefuseReason('');
-            $this->generateNotification(self::VACATION_HRM_ACCEPTATION_NOTIF, array('le directeur'));
-        }
-
-        elseif ('refuser' === $isValid) {
+            $notifConcernedEmployees = $this->em->getRepository('AppBundle:Employee')
+                ->findByRole(Employee::ROLE_EMPLOYEE);
+            $this->generateNotification(self::VACATION_HRM_ACCEPTATION_NOTIF, array('le service rh'), 'url', $notifConcernedEmployees);
+        } elseif ('refuser' === $isValid) {
             $vacation->setValidationStatus('-1');
             $vacation->setRefuseReason($refuseReason);
             $this->generateNotification(self::VACATION_HRM_REFUSE_NOTIF, array('le directeur'));
         }
         $this->flush();
     }
+
+    public function generateNotification($notifType, $args, $url, $employees)
+    {
+        $this->nm->generateNotification($notifType, $args, $url, $employees);
+    }
+
+
+
+
 
 
     public function calculateWeekEndDaysNumberIncluded($vacation)
@@ -131,15 +141,16 @@ class VacationManager
             }
         }
         $endDate->modify('-1 day');
+
         return $WeekEndDaysNumber;
     }
 
-
-    //calculation of the vacation days number
+    /**calculation of the vacation days number*/
     public function calculateDuration($vacation, $weekEndIncluded = true)
     {
-        if ($vacation->getDayPeriod() !== 'allDay')
-            return $weekEndIncluded && boolval($this->calculateWeekEndDaysNumberIncluded($vacation)) ? 0: 0.5;
+        if ($vacation->getDayPeriod() !== 'allDay') {
+            return $weekEndIncluded && boolval($this->calculateWeekEndDaysNumberIncluded($vacation)) ? 0 : 0.5;
+        }
 
         $endDate = $vacation->getEndDate();
         $endDate->modify('+1 day');
@@ -154,6 +165,7 @@ class VacationManager
             : ($endTime - $startTime) / (60 * 60 * 24);
 
         $endDate->modify('-1 day');
+
         return $duration;
     }
 
@@ -166,7 +178,7 @@ class VacationManager
         return ($startTime - $nowTime) / (60 * 60 * 24);
     }
 
-    function calculatevacationBalance(Employee $employee, $afterRequestAprovement = false)
+    function calculateVacationBalance(Employee $employee, $afterRequestApprove = false)
     {
         $startDate = $employee->getStartDate();
         $hrmApprovedVacations = $this->findByStatusAndUser(1, $employee);
@@ -195,7 +207,7 @@ class VacationManager
                 $vacationBalance += 0.5;
             }
 
-            if ($afterRequestAprovement) {
+            if ($afterRequestApprove) {
                 foreach ($adminApprovedVacations as $adminApprovedVacation) {
                     $vacationBalance -= $adminApprovedVacation->getDuration();
                 }
@@ -236,20 +248,15 @@ class VacationManager
     public function persist($vacation)
     {
         //set duration attribute before persisting
-        $vacation->setDuration($this->calculateDuration($vacation,true));
+        $vacation->setDuration($this->calculateDuration($vacation, true));
 
         $this->em->persist($vacation);
     }
 
+
     public function flush()
     {
         $this->em->flush();
-    }
-
-
-    public function generateNotification($notifType, $args)
-    {
-        $this->nm->createMessage($notifType, $args);
     }
 
 }

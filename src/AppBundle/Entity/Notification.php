@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use AppBundle\AppBundle;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -35,20 +36,6 @@ class Notification
     private $sender;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(name="seen", type="boolean")
-     */
-    private $seen = false;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="archived", type="boolean")
-     */
-    private $archived = false;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="createdAt", type="datetime")
@@ -70,15 +57,15 @@ class Notification
     private $url;
 
     /**
-     * Many Notifications concern Many Employees.
-     * @ORM\ManyToMany(targetEntity="Employee")
-     * @ORM\JoinTable(name="notifications_employees",
-     *      joinColumns={@ORM\JoinColumn(name="notification_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="employee_id", referencedColumnName="id")}
-     *      )
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="EmployeeNotification",
+     *     mappedBy="notification",
+     *     cascade={"persist","remove"}
+     *     )
      */
-    private $employees;
-
+    private $employeeNotifications;
 
 
     /**
@@ -116,54 +103,6 @@ class Notification
     }
 
     /**
-     * Set seen.
-     *
-     * @param bool $seen
-     *
-     * @return Notification
-     */
-    public function setSeen($seen)
-    {
-        $this->seen = $seen;
-
-        return $this;
-    }
-
-    /**
-     * Get seen.
-     *
-     * @return bool
-     */
-    public function getSeen()
-    {
-        return $this->seen;
-    }
-
-    /**
-     * Set archived.
-     *
-     * @param bool $archived
-     *
-     * @return Notification
-     */
-    public function setArchived($archived)
-    {
-        $this->archived = $archived;
-
-        return $this;
-    }
-
-    /**
-     * Get archived.
-     *
-     * @return bool
-     */
-    public function getArchived()
-    {
-        return $this->archived;
-    }
-
-    /**
      * Set notificationType.
      *
      * @param \AppBundle\Entity\NotificationType|null $notificationType
@@ -187,41 +126,6 @@ class Notification
         return $this->notificationType;
     }
 
-    /**
-     * Add employee.
-     *
-     * @param \AppBundle\Entity\Employee $employee
-     *
-     * @return Notification
-     */
-    public function addEmployee(\AppBundle\Entity\Employee $employee)
-    {
-        $this->employees[] = $employee;
-
-        return $this;
-    }
-
-    /**
-     * Remove employee.
-     *
-     * @param \AppBundle\Entity\Employee $employee
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
-     */
-    public function removeEmployee(\AppBundle\Entity\Employee $employee)
-    {
-        return $this->employees->removeElement($employee);
-    }
-
-    /**
-     * Get employees.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getEmployees()
-    {
-        return $this->employees;
-    }
 
     /**
      * Set createdAt.
@@ -270,4 +174,59 @@ class Notification
     {
         return $this->url;
     }
+
+    /**
+     * Add employeeNotification.
+     *
+     * @param \AppBundle\Entity\EmployeeNotification $employeeNotification
+     *
+     * @return Notification
+     */
+    public function addEmployeeNotification(\AppBundle\Entity\EmployeeNotification $employeeNotification)
+    {
+        $this->employeeNotifications[] = $employeeNotification;
+
+        return $this;
+    }
+
+    /**
+     * Remove employeeNotification.
+     *
+     * @param \AppBundle\Entity\EmployeeNotification $employeeNotification
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeEmployeeNotification(\AppBundle\Entity\EmployeeNotification $employeeNotification)
+    {
+        return $this->employeeNotifications->removeElement($employeeNotification);
+    }
+
+    /**
+     * Get employeeNotifications.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEmployeeNotifications()
+    {
+        return $this->employeeNotifications;
+    }
+
+
+    /**
+     * Set employeeNotifications.
+     *
+     * @return Notification
+     */
+    public function setEmployeeNotifications($employees)
+    {
+        foreach ($employees as $employee){
+            $employeeNotification = new EmployeeNotification();
+            $employeeNotification->setEmployee($employee);
+            $employeeNotification->setNotification($this);
+            $this->addEmployeeNotification($employeeNotification);
+        }
+        return $this;
+    }
+
+
 }

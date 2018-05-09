@@ -42,7 +42,7 @@ class VacationPeriodeValidator extends ConstraintValidator
         $employee = $this->ts->getToken()->getUser();
         $conflicts = $this->vm->findOverlappingWithRange($object, $employee);
         $vacationDuration = $this->vm->calculateDuration($object);
-        $vacationBalance = $this->vm->calculatevacationBalance(
+        $vacationBalance = $this->vm->calculateVacationBalance(
             $employee,
             false
         );

@@ -17,6 +17,10 @@ use Doctrine\ORM\Mapping as ORM;
 class Employee extends BaseUser
 {
 
+    const ROLE_ADMIN = 'ROLE_ADMIN';
+    const ROLE_HR = 'ROLE_HR';
+    const ROLE_EMPLOYEE = 'ROLE_EMPLOYEE';
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -114,9 +118,49 @@ class Employee extends BaseUser
     private $status;
 
 
+
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
-     * @ORM\OneToMany(targetEntity="EmployeeFormation", mappedBy="employee", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="EmployeeNotification", mappedBy="employee",cascade={"remove"})
+     *
+     */
+    private $notifications;
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getNotifications()
+    {
+        return $this->notifications;
+    }
+
+    /**
+     * @param \Doctrine\Common\Collections\ArrayCollection $notifications
+     */
+    public function setNotifications($notifications)
+    {
+        $this->notifications = $notifications;
+    }
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @ORM\OneToMany(targetEntity="EmployeeFormation", mappedBy="employee", cascade={"persist","remove"})
      */
     private $employeeFormations;
 
@@ -125,7 +169,6 @@ class Employee extends BaseUser
      * @ORM\OneToMany(targetEntity="EmployeeLanguage", mappedBy="employee", cascade={"persist","remove"})
      */
     private $employeeLanguages;
-
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
