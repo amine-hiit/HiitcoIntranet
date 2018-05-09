@@ -104,7 +104,7 @@ class VacationManager
             $vacation->setValidationStatus('1');
             $vacation->setRefuseReason('');
             $notifConcernedEmployees = $this->em->getRepository('AppBundle:Employee')
-                ->findByRole(Employee::ROLE_EMPLOYEE);
+                ->findByRole(Employee::ROLE_ADMIN);
             $this->generateNotification(self::VACATION_HRM_ACCEPTATION_NOTIF, array('le service rh'), 'url', $notifConcernedEmployees);
         } elseif ('refuser' === $isValid) {
             $vacation->setValidationStatus('-1');
@@ -207,21 +207,13 @@ class VacationManager
                 $vacationBalance += 0.5;
             }
 
+            foreach ($adminApprovedVacations as $adminApprovedVacation) {
+                $vacationBalance -= $adminApprovedVacation->getDuration();
+            }
+            foreach ($hrmApprovedVacations as $hrmApprovedVacation) {
+                $vacationBalance -= $hrmApprovedVacation->getDuration();
+            }
             if ($afterRequestApprove) {
-                foreach ($adminApprovedVacations as $adminApprovedVacation) {
-                    $vacationBalance -= $adminApprovedVacation->getDuration();
-                }
-                foreach ($hrmApprovedVacations as $hrmApprovedVacation) {
-                    $vacationBalance -= $hrmApprovedVacation->getDuration();
-                }
-            } else {
-
-                foreach ($adminApprovedVacations as $adminApprovedVacation) {
-                    $vacationBalance -= $adminApprovedVacation->getDuration();
-                }
-                foreach ($hrmApprovedVacations as $hrmApprovedVacation) {
-                    $vacationBalance -= $hrmApprovedVacation->getDuration();
-                }
                 foreach ($untreatedVacations as $untreatedVacation) {
                     $vacationBalance -= $untreatedVacation->getDuration();
                 }

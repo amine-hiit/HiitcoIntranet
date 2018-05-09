@@ -12,14 +12,26 @@ use AppBundle\Entity\Employee;
  */
 class EmployeeNotificationRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function countUnseenByEmployeeId(Employee $employee){
+    public function countUnseenByEmployee(Employee $employee){
         return $this->createQueryBuilder('e')
             ->select('COUNT(e)')
-            ->where('e.employeeId = :employeeId')
+            ->where('e.employee = :employee')
             ->andWhere('e.seen = false')
             ->andWhere('e.archived = false')
-            ->setParameter(employeeId, $employee->getId())
+            ->setParameter('employee', $employee)
             ->getQuery()
             ->getSingleScalarResult();
     }
+
+    public function findLastTeenByEmployee(Employee $employee)
+    {
+        $qb = $this->createQueryBuilder('en')
+            ->innerJoin('en.notification', 'n')
+            ->andWhere('en.employee = :employee')
+            ->setParameter('employee', $employee)
+        ;
+        return $qb->getQuery()
+            ->getResult();
+    }
+
 }

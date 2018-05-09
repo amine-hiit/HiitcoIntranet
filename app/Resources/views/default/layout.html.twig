@@ -78,13 +78,18 @@
                     <li class="dropdown notifications-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <i class="fa fa-bell-o"></i>
-                            <span class="label label-warning">10</span>
+                            <span class="label label-warning count"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li class="header">You have 10 notifications</li>
+                            <li class="header">You have <span class="count"></span> notifications</li>
                             <li>
                                 <!-- inner menu: contains the actual data -->
-                                <ul class="menu">
+                                <ul class="menu notifications">
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-users text-aqua"></i> 5 new members joined today
+                                        </a>
+                                    </li>
                                     <li>
                                         <a href="#">
                                             <i class="fa fa-users text-aqua"></i> 5 new members joined today
@@ -268,7 +273,8 @@
 <script src="{{ asset('dist/js/demo.js') }}"></script>
 <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
 <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
-
+<!-- Intranet scripts-->
+<script src="{{ asset('intra/js/notification.js') }}"></script>
 {% block script %}
 
 {% endblock %}

@@ -225,7 +225,6 @@ class Notification
             $employeeNotification->setNotification($this);
             $this->addEmployeeNotification($employeeNotification);
         }
-        return $this;
     }
 
 
