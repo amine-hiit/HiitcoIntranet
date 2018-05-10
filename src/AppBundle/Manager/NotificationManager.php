@@ -8,6 +8,8 @@
 
 namespace AppBundle\Manager;
 
+use AppBundle\Entity\Employee;
+use AppBundle\Entity\EmployeeNotification;
 use AppBundle\Entity\Notification;
 use AppBundle\Entity\NotificationType;
 use AppBundle\Repository\NotificationTypeRepository;
@@ -46,6 +48,29 @@ class NotificationManager
             ->findOneByLabel($notificationType);
     }
 
+    public function findLastTeenByEmployee(Employee $employee)
+    {
+        return $this->em->getRepository('AppBundle:EmployeeNotification')
+            ->findLastTeenByEmployee($employee);
+    }
+
+    public function countUnseenByEmployee(Employee $employee)
+    {
+        return $this->em->getRepository('AppBundle:EmployeeNotification')
+            ->countUnseenByEmployee($employee);
+    }
+
+    /** make notification as seen */
+    public function setSeenNotification($notificationId, Employee $employee)
+    {
+
+        $notification = $this->findOneNotification($notificationId);
+        $notificationEmployee = $this->findOneEmployeeNotification($notification, $employee);
+        $notificationEmployee->setSeen(true);
+        $this->persist($notification);
+        $this->flush();
+    }
+
     /** create message from message structure */
     public function createMessage($notificationType, $args)
     {
@@ -67,6 +92,33 @@ class NotificationManager
         $notification->setNotificationType($notificationType);
         $notification->setEmployeeNotifications($employees);
         $this->em->persist($notification);
+        $this->em->flush();
+    }
+
+
+
+    public function findOneEmployeeNotification(Notification $notification, Employee $employee)
+    {
+        return $this->em
+            ->getRepository('AppBundle:EmployeeNotification')
+            ->findOneEmployeeNotification( $notification, $employee);
+    }
+
+    public function findOneNotification($notificationId)
+    {
+        return $this->em
+            ->getRepository('AppBundle:Notification')
+            ->find($notificationId);
+    }
+
+
+    public function persist($notification)
+    {
+        $this->em->persist($notification);
+    }
+
+    public function flush()
+    {
         $this->em->flush();
     }
 

@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Employee;
+use AppBundle\Manager\NotificationManager;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerBuilder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -16,37 +17,37 @@ class NotificationController extends Controller
 {
 
     /**
-     * @Route("/intranet/yaml", name="yaml_test")
+     * @Route("/intranet/see-notification", name="see-notification")
      * @return Response
      */
-    public function testYamlAction()
+    public function seeNotificationAction(Request $request)
     {
-        $yaml = Yaml::parseFile($this->get('kernel')->getRootDir().'/../src/AppBundle/Resources/notification/message.yml');
-        $message = vsprintf($yaml['vacation_request'],array('1','2'));
-        echo $message;die;
-        return new Response();
+        $notificationId = $request->request->get('id');
+        $user = $this->getUser();
+        //dump($notificationId);dump($user->getId());die;
+        $this->getNotificationManager()->setSeenNotification($notificationId, $user);
+        return new JsonResponse('done');
     }
 
     /**
-     * @Route("/intranet/get-notif", name="last-teen-notifications")
+     * @Route("/intranet/last-teen-notifications", name="last-teen-notifications")
      * @return Response
      */
     public function jsonNotificationsAction()
     {
-        $directeur = $this->getDoctrine()->getRepository('AppBundle:Employee')->find(6);
-        $unseenNotifiNumber = $this->getDoctrine()->getManager()
-            ->getRepository('AppBundle:EmployeeNotification')
-            ->countUnseenByEmployee($directeur);
+        $nm = $this->getNotificationManager();
+        $user = $this->getUser();
+        $unseenNotifNumber = $nm->countUnseenByEmployee($user);
 
         $lastTeenNotifications = $this->getDoctrine()->getManager()
-            ->getRepository('AppBundle:EmployeeNotification')->findLastTeenByEmployee($directeur);
+            ->getRepository('AppBundle:EmployeeNotification')->findLastTeenByEmployee($user);
 
-        $data = array(
-            'unseen_notification_number' => $unseenNotifiNumber,
-            'all_notifications' => $lastTeenNotifications,
-        );
         $serializer = SerializerBuilder::create()->build();
-        return new JsonResponse($serializer->serialize($data, 'json', SerializationContext::create()->setGroups(array('notification'))));
+
+        return new JsonResponse($serializer->serialize(
+            $lastTeenNotifications, 'json',
+            SerializationContext::create()->setGroups(array('notification'))
+        ));
     }
 
     /**
@@ -55,17 +56,22 @@ class NotificationController extends Controller
      */
     public function unseenNotificationsAction()
     {
-        $directeur = $this->getDoctrine()->getRepository('AppBundle:Employee')->find(6);
-        $response = $this->getDoctrine()->getManager()
-            ->getRepository('AppBundle:EmployeeNotification')
-            ->countUnseenByEmployee($directeur);
+        $nm = $this->getNotificationManager();
+        $user = $this->getUser();
+        $response = $nm->countUnseenByEmployee($user);
         $data = array(
-            'unseen_notification' => $response,
+            'unseen_notification_number' => $response,
         );
-
         return new Response(json_encode($data));
     }
 
+    /**
+     * @return NotificationManager
+     */
+    private function getNotificationManager()
+    {
+        return $this->get('app.notification.manager');
+    }
 }
 
 

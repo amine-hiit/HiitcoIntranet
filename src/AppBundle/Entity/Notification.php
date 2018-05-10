@@ -21,7 +21,7 @@ class Notification
 
     /**
      * @var int
-     *
+     * @Groups({"notification"})
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")

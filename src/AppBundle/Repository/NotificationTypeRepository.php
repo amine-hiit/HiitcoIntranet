@@ -10,7 +10,7 @@ namespace AppBundle\Repository;
  */
 class NotificationTypeRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function findByLabel($notificationType)
+    public function findOneByLabel($notificationType)
     {
         $qb = $this->createQueryBuilder('n')->where('label = :notificationType')
             ->setParameter('notificationType', $notificationType);

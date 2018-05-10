@@ -3,8 +3,10 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Employee;
+use AppBundle\Entity\Notification;
 use Assetic\Exception\Exception;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 
 /**
  * EmployeeNotificationRepository
@@ -26,7 +28,24 @@ class EmployeeNotificationRepository extends \Doctrine\ORM\EntityRepository
                 ->getQuery()
                 ->getSingleScalarResult();
         } catch (NonUniqueResultException $e) {
-            // log?
+        }
+    }
+
+    public function findOneEmployeeNotification(Notification $notification, Employee $employee)
+    {
+        try
+        {
+            return $this->createQueryBuilder('e')
+                ->where('e.employee = :employee')
+                ->andWhere('e.notification = :notification')
+                ->setParameter('notification', $notification)
+                ->setParameter('employee', $employee)
+                ->setMaxResults('1')
+                ->getQuery()
+                ->getSingleResult();
+        }catch(NoResultException $nre){
+        }catch (NonUniqueResultException $nure){
+
         }
     }
 
@@ -36,7 +55,26 @@ class EmployeeNotificationRepository extends \Doctrine\ORM\EntityRepository
             ->innerJoin('en.notification', 'n')
             ->andWhere('en.employee = :employee')
             ->andWhere('en.archived = false')
+
             ->setParameter('employee', $employee)
+            ->orderBy('n.createdAt', 'ASC')
+            ->setMaxResults(10)
+        ;
+        return $qb->getQuery()
+            ->getResult();
+    }
+
+    public function findLastTeenWithIndexByEmployee(Employee $employee, $offset)
+    {
+        $qb = $this->createQueryBuilder('en')
+            ->innerJoin('en.notification', 'n')
+            ->andWhere('en.employee = :employee')
+            ->andWhere('en.archived = false')
+
+            ->setParameter('employee', $employee)
+            ->orderBy('n.createdAt', 'ASC')
+            ->setMaxResults(10)
+            ->setFirstResult( $offset )
         ;
         return $qb->getQuery()
             ->getResult();

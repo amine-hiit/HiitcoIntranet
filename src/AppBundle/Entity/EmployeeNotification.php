@@ -16,7 +16,7 @@ class EmployeeNotification
 
     /**
      * @var int
-     *
+     * @Groups({"notification"})
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -25,7 +25,6 @@ class EmployeeNotification
 
     /**
      * @var Employee
-     *
      * @ORM\ManyToOne(targetEntity="Employee", inversedBy="employeeNotification")
      * @ORM\JoinColumn(nullable=false)
      */

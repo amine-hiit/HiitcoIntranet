@@ -84,7 +84,7 @@ class VacationManager
 
 
 
-    public function adminValidation(&$vacation, $isValid, $refuseReason)
+    public function adminValidation(Vacation &$vacation, $isValid, $refuseReason)
     {
         if ('accepter' === $isValid) {
             $vacation->setValidationStatus('2');
@@ -98,18 +98,19 @@ class VacationManager
         $this->flush();
     }
 
-    public function hrmValidation(&$vacation, $isValid, $refuseReason)
+    public function hrmValidation(Vacation &$vacation, $isValid, $refuseReason)
     {
         if ('accepter' === $isValid) {
             $vacation->setValidationStatus('1');
             $vacation->setRefuseReason('');
             $notifConcernedEmployees = $this->em->getRepository('AppBundle:Employee')
                 ->findByRole(Employee::ROLE_ADMIN);
-            $this->generateNotification(self::VACATION_HRM_ACCEPTATION_NOTIF, array('le service rh'), 'url', $notifConcernedEmployees);
+            $this->generateNotification(self::VACATION_HRM_ACCEPTATION_NOTIF,
+                array('le service rh'), 'url', $notifConcernedEmployees);
         } elseif ('refuser' === $isValid) {
             $vacation->setValidationStatus('-1');
             $vacation->setRefuseReason($refuseReason);
-            $this->generateNotification(self::VACATION_HRM_REFUSE_NOTIF, array('le directeur'));
+            $this->generateNotification(self::VACATION_HRM_REFUSE_NOTIF, array('le directeur'),'url', $notifConcernedEmployees);
         }
         $this->flush();
     }

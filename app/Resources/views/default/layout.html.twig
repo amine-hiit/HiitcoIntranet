@@ -28,6 +28,8 @@
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="{{ asset('dist/css/skins/_all-skins.min.css') }}">
+    <!-- intranet notification style-->
+    <link rel="stylesheet" href="{{ asset('intra/css/notification.css') }}">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -76,15 +78,15 @@
                     <!-- MESSAGES: style can be found in dropdown.less -->
                     <!-- Notifications: style can be found in dropdown.less -->
                     <li class="dropdown notifications-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <a href="#" class="dropdown-toggle" id="notification-link" data-toggle="dropdown">
                             <i class="fa fa-bell-o"></i>
                             <span class="label label-warning count"></span>
                         </a>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu flat " style="width: 450px;">
                             <li class="header">You have <span class="count"></span> notifications</li>
                             <li>
                                 <!-- inner menu: contains the actual data -->
-                                <ul class="menu notifications">
+                                <ul class="menu" id="notifications">
                                     <li>
                                         <a href="#">
                                             <i class="fa fa-users text-aqua"></i> 5 new members joined todayafaazfazefaezfzaf
