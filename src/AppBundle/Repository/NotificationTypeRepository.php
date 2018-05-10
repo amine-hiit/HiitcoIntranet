@@ -2,6 +2,9 @@
 
 namespace AppBundle\Repository;
 
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
+
 /**
  * NotificationTypeRepository
  *
@@ -12,8 +15,16 @@ class NotificationTypeRepository extends \Doctrine\ORM\EntityRepository
 {
     public function findOneByLabel($notificationType)
     {
-        $qb = $this->createQueryBuilder('n')->where('label = :notificationType')
+        $qb = $this->createQueryBuilder('n')
+            ->where('n.label = :notificationType')
             ->setParameter('notificationType', $notificationType);
-        return $qb;
+
+        try
+        {
+            return $qb->getQuery()
+                ->getSingleResult();
+        }catch(NoResultException $nre){
+        }catch (NonUniqueResultException $nure){
+        }
     }
 }

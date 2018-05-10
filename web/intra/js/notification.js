@@ -78,7 +78,7 @@ $().ready(function(){
             dataType:"json",
             success:function(data)
             {
-                //alert(JSON.stringify(data));
+                load_unseen_notification_number();
             },
             error:function ()
             {

@@ -45,7 +45,6 @@ class EmployeeNotificationRepository extends \Doctrine\ORM\EntityRepository
                 ->getSingleResult();
         }catch(NoResultException $nre){
         }catch (NonUniqueResultException $nure){
-
         }
     }
 
