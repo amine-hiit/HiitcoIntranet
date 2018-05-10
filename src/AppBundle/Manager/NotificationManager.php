@@ -18,6 +18,7 @@ use Symfony\Component\Yaml\Yaml;
 
 class NotificationManager
 {
+    const MESSAGES_FILE_DIR = '/../src/AppBundle/Resources/notification/message.yml';
     /**
      * @var EntityManagerInterface
      */
@@ -49,12 +50,9 @@ class NotificationManager
     public function createMessage($notificationType, $args)
     {
         $messageFile = Yaml::parseFile(
-            $this->kernel->getRootDir().
-            '/../src/AppBundle/Resources/notification/message.yml'
-        );
-        $message = vsprintf($messageFile[$notificationType], $args);
-        dump($message);
-        die;
+            $this->kernel->getRootDir().self::MESSAGES_FILE_DIR);
+
+        return vsprintf($messageFile[$notificationType], $args);
     }
 
     /** create message from message structure */
@@ -63,6 +61,7 @@ class NotificationManager
 
         $notification = new Notification();
         $notificationType = $this->findOneByLabel($notificationTypeLabel);
+        $notification->setMessage($this->createMessage($notificationTypeLabel, $args));
 
         $notification->setUrl($url);
         $notification->setNotificationType($notificationType);

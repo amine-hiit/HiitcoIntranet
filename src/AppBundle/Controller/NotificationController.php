@@ -3,9 +3,11 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Employee;
+use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerBuilder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Yaml\Yaml;
@@ -26,12 +28,12 @@ class NotificationController extends Controller
     }
 
     /**
-     * @Route("/intranet/getNotif", name="last-teen-notifications")
+     * @Route("/intranet/get-notif", name="last-teen-notifications")
      * @return Response
      */
     public function jsonNotificationsAction()
     {
-        $directeur = $this->getDoctrine()->getRepository('AppBundle:Employee')->find(15);
+        $directeur = $this->getDoctrine()->getRepository('AppBundle:Employee')->find(6);
         $unseenNotifiNumber = $this->getDoctrine()->getManager()
             ->getRepository('AppBundle:EmployeeNotification')
             ->countUnseenByEmployee($directeur);
@@ -44,9 +46,7 @@ class NotificationController extends Controller
             'all_notifications' => $lastTeenNotifications,
         );
         $serializer = SerializerBuilder::create()->build();
-        dump($serializer->serialize($data, 'json'));die;
-        return $this->json($serializer->serialize($data, 'json'));
-        return new Response($data);
+        return new JsonResponse($serializer->serialize($data, 'json', SerializationContext::create()->setGroups(array('notification'))));
     }
 
     /**
@@ -55,7 +55,7 @@ class NotificationController extends Controller
      */
     public function unseenNotificationsAction()
     {
-        $directeur = $this->getDoctrine()->getRepository('AppBundle:Employee')->find(15);
+        $directeur = $this->getDoctrine()->getRepository('AppBundle:Employee')->find(6);
         $response = $this->getDoctrine()->getManager()
             ->getRepository('AppBundle:EmployeeNotification')
             ->countUnseenByEmployee($directeur);
@@ -67,3 +67,5 @@ class NotificationController extends Controller
     }
 
 }
+
+

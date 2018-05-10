@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 use AppBundle\AppBundle;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
+use JMS\Serializer\Annotation\Groups;
 /**
  * Notification
  *
@@ -29,6 +29,7 @@ class Notification
     private $id;
 
     /**
+     * @Groups({"notification"})
      * @var Employee|null
      *
      * @ORM\Column(name="sender_id", type="integer", nullable=true)
@@ -37,13 +38,14 @@ class Notification
 
     /**
      * @var \DateTime
-     *
+     * @Groups({"notification"})
      * @ORM\Column(name="createdAt", type="datetime")
      */
     private $createdAt;
 
     /**
      * @var NotificationType
+     * @Groups({"notification"})
      * @ORM\ManyToOne(targetEntity="NotificationType")
      * @ORM\JoinColumn(name="notification_type_id", referencedColumnName="id")
      */
@@ -51,14 +53,22 @@ class Notification
 
     /**
      * @var string
-     *
+     * @Groups({"notification"})
      * @ORM\Column(name="url", type="string")
      */
     private $url;
 
     /**
+     * @var string
+     * @Groups({"notification"})
+     * @ORM\Column(name="message", type="string")
+     */
+    private $message;
+
+    /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
+     * @Groups({"notification"})
      * @ORM\OneToMany(
      *     targetEntity="EmployeeNotification",
      *     mappedBy="notification",
@@ -228,4 +238,28 @@ class Notification
     }
 
 
+
+    /**
+     * Set message.
+     *
+     * @param string $message
+     *
+     * @return Notification
+     */
+    public function setMessage($message)
+    {
+        $this->message = $message;
+
+        return $this;
+    }
+
+    /**
+     * Get message.
+     *
+     * @return string
+     */
+    public function getMessage()
+    {
+        return $this->message;
+    }
 }

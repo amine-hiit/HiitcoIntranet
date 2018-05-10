@@ -3,6 +3,8 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Employee;
+use Assetic\Exception\Exception;
+use Doctrine\ORM\NonUniqueResultException;
 
 /**
  * EmployeeNotificationRepository
@@ -13,14 +15,19 @@ use AppBundle\Entity\Employee;
 class EmployeeNotificationRepository extends \Doctrine\ORM\EntityRepository
 {
     public function countUnseenByEmployee(Employee $employee){
-        return $this->createQueryBuilder('e')
-            ->select('COUNT(e)')
-            ->where('e.employee = :employee')
-            ->andWhere('e.seen = false')
-            ->andWhere('e.archived = false')
-            ->setParameter('employee', $employee)
-            ->getQuery()
-            ->getSingleScalarResult();
+        try
+        {
+            return $this->createQueryBuilder('e')
+                ->select('COUNT(e)')
+                ->where('e.employee = :employee')
+                ->andWhere('e.seen = false')
+                ->andWhere('e.archived = false')
+                ->setParameter('employee', $employee)
+                ->getQuery()
+                ->getSingleScalarResult();
+        } catch (NonUniqueResultException $e) {
+            // log?
+        }
     }
 
     public function findLastTeenByEmployee(Employee $employee)
@@ -28,6 +35,7 @@ class EmployeeNotificationRepository extends \Doctrine\ORM\EntityRepository
         $qb = $this->createQueryBuilder('en')
             ->innerJoin('en.notification', 'n')
             ->andWhere('en.employee = :employee')
+            ->andWhere('en.archived = false')
             ->setParameter('employee', $employee)
         ;
         return $qb->getQuery()

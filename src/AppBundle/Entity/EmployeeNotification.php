@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\Groups;
 
 /**
  * EmployeeNotification
@@ -12,8 +13,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class EmployeeNotification
 {
-
-
 
     /**
      * @var int
@@ -35,7 +34,7 @@ class EmployeeNotification
 
     /**
      * @var Notification
-     *
+     * @Groups({"notification"})
      * @ORM\ManyToOne(targetEntity="Notification", inversedBy="employeeNotifications")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -43,14 +42,14 @@ class EmployeeNotification
 
     /**
      * @var bool
-     *
+     * @Groups({"notification"})
      * @ORM\Column(name="seen", type="boolean")
      */
     private $seen = false;
 
     /**
      * @var bool
-     *
+     * Groups({"notification"})
      * @ORM\Column(name="archived", type="boolean")
      */
     private $archived = false;
