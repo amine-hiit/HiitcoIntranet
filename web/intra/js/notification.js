@@ -1,7 +1,54 @@
+"use strict";
 $().ready(function(){
 
+    var _index = 0;
+    load_unseen_notification_number();
+    load_teen_notifications(_index);
 
-    "use strict";
+
+    function load_teen_notifications( _index)
+    {
+        var index = {
+            'index': _index,
+        };
+        $.ajax({
+            url:"/intranet/teen-notifications",
+            method:"GET",
+            dataType:"json",
+            success:function(data)
+            {
+                var notifications = JSON.parse(data);
+                var htmlNotificationList = [];
+                for (var indice in  notifications) {
+
+                    var isSeen = notifications[indice].seen;
+                    var seen = isSeen?'':'unseen';
+                    var notificationId = notifications[indice].notification.id;
+                    var message = notifications[indice].notification.message;
+                    var url = notifications[indice].notification.url;
+
+                    htmlNotificationList.push(`
+                        <a id = "${ notificationId }" href="#" class="list-group-item ${ seen }">
+                        ${ message }
+                        </a>`
+                    );
+                }
+                if (_index == 0){
+                    $('.notifications').html(
+                        htmlNotificationList
+                    );
+                }
+                $('#notifications-menu').html(
+                    htmlNotificationList
+                );
+
+            },
+            data:index
+
+        });
+    }
+
+
     function load_unseen_notification_number()
     {
 
@@ -25,45 +72,11 @@ $().ready(function(){
 
 
     $('#notification-link').click(function () {
-        function load_last_teen_notification()
-        {
-
-            $.ajax({
-                url:"/intranet/last-teen-notifications",
-                method:"GET",
-                dataType:"json",
-                success:function(data)
-                {
-                    var notifications = JSON.parse(data);
-                    var htmlNotificationList = [];
-                    for (var indice in  notifications) {
-
-                        var isSeen = notifications[indice].seen;
-                        var seen = isSeen?'':'unseen';
-                        var notificationId = notifications[indice].notification.id;
-
-                        htmlNotificationList.push(
-                            '<li id = "'+notificationId+'"class="'+seen+'">' +
-                            '<a href="#"><i class="fa fa-users text-aqua"></i>'+
-                            notifications[indice].notification.message+
-                            '</a></li>');
-                    }
-                    $('#notifications').html(
-                        htmlNotificationList
-                    );
-
-                }
-            });
-        }
-        load_last_teen_notification();
+        load_teen_notifications(0);
     });
 
-
-
-
-
-    $('#notifications').on('click','li',function () {
-
+    $('.notifications').on('click','a',function () {
+        alert($(this).attr('id'));
         var notification = {
             'id': $(this).attr('id'),
         };
@@ -83,11 +96,23 @@ $().ready(function(){
         });
     });
 
+
+
+
+
+
+
+
+
     setInterval(function(){
         load_unseen_notification_number();
     }, 5000);
 
 });
 
-
+/*
+<li id = "${ notificationId }"class="${ seen }">
+<a href="#"><i class="fa fa-users text-aqua">
+</i>${notifications[indice].notification.message} </a></li>
+*/
 

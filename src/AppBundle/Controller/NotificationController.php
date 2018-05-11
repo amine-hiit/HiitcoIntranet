@@ -39,26 +39,32 @@ class NotificationController extends Controller
         $nm = $this->getNotificationManager();
         $user = $this->getUser();
 
-        /*
-         *
-         *
-         *
-         *
-         *
-         *
-         *
-         *
-         *
-         *
-         *
-         *
-         *
-         *
-         */
-        $unseenNotifNumber = $nm->countUnseenByEmployee($user);
 
         $lastTeenNotifications = $this->getDoctrine()->getManager()
             ->getRepository('AppBundle:EmployeeNotification')->findLastTeenByEmployee($user);
+
+        $serializer = SerializerBuilder::create()->build();
+
+        return new JsonResponse(
+            $serializer->serialize(
+                $lastTeenNotifications,
+                'json',
+                SerializationContext::create()->setGroups(array('notification'))
+            )
+        );
+    }
+
+
+    /**
+     * @Route("/intranet/teen-notifications", name="teen-notifications")
+     * @return Response
+     */
+    public function jsonTeenNotificationsAction(Request $request)
+    {
+        $offset = $request->query->get('index');
+        $user = $this->getUser();
+
+        $lastTeenNotifications = $this->getNotificationManager()->findLastByEmployeeWithOffset($user, $offset);
 
         $serializer = SerializerBuilder::create()->build();
 

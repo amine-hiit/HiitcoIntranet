@@ -74,9 +74,9 @@ class EmployeeNotificationRepository extends \Doctrine\ORM\EntityRepository
             ->andWhere('en.archived = false')
 
             ->setParameter('employee', $employee)
-            ->orderBy('n.createdAt', 'ASC')
-            ->setMaxResults(4)
-            ->setFirstResult( 4 )
+            ->orderBy('n.createdAt', 'DESC')
+            ->setMaxResults(10)
+            ->setFirstResult( $offset )
         ;
         return  $qb->getQuery()->getResult();
 

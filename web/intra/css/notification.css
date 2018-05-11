@@ -1,6 +1,24 @@
 
-li .unseen {
-    background-color:#e8f0ff;
-}
+ .unseen {
+     background-color:#e8f0ff;
+     border-radius: 0%;
+ }
 
+ .list-group {
+     border-radius: 0px;
 
+ }
+ .list-group-item {
+     border-bottom: 1px;
+     border-left: 0px;
+     border-right: 0px;
+     border-radius: 0px;
+ }
+ .list-group-item:last-child {
+     border-bottom: 0;
+     border-radius: 0%;
+ }
+ .list-group-item:first-child {
+     border-top: 0;
+     border-radius: 0%;
+ }

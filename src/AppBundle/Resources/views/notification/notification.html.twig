@@ -5,23 +5,13 @@
 
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="../../bower_components/select2/dist/css/select2.min.css">
-    <link rel="stylesheet" href="../../bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }} ">
     <link rel="stylesheet" href="{{ asset('intra/css/notification.css') }}">
+
     <style>.spc{margin-right: 50px;}
 
-        .list-group .list-group-item {
-            border-bottom: 1px;
-            border-left: 0px;
-            border-right: 0px;
-        }
-        .list-group .list-group-item:last-child {
-            border-bottom: 0;
-        }
-        .list-group .list-group-item:first-child {
-            border-top: 0;
-        }
-    </style>>
+    </style>
 {% endblock %}
 
 
@@ -32,13 +22,12 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Votres notifications
+            Notifications
             <small></small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-users"></i> Espace RH</a></li>
-            <li><a href="#">Congé</a></li>
-            <li class="active">Demander congé </li>
+            <li><a href="#"><i class="fa fa fa-bell-o"></i> Application</a></li>
+            <li class="active">Notifications</li>
         </ol>
     </section>
 
@@ -54,21 +43,10 @@
             <!-- /.box-header -->
 
 
+            <div class="list-group notifications">
 
-            <ul class="list-group">
-                {% for lastTeenNotification in lastTeenNotifications %}
-                <li class="list-group-item" id = "{{ lastTeenNotification.id }}">
-                    <a href="{{ lastTeenNotification.notification.url }}">
-                        {{ lastTeenNotification.notification.message }}</a>
-                </li>
-                {% endfor %}
-            </ul>
+            </div>
 
-            <!--'<li id = "'+notificationId+'"class="'+seen+'">' +
-                '<a href="#"><i class="fa fa-users text-aqua"></i>'+
-                    notifications[indice].notification.message+
-                    '</a></li>');
-            -->
             <!-- /.box-body -->
             <div class="box-footer">
             </div>

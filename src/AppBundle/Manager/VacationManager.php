@@ -79,16 +79,20 @@ class VacationManager
 
     }
 
-
-
-
-
-
     public function adminValidation(Vacation &$vacation, $isValid, $refuseReason)
     {
         if ('accepter' === $isValid) {
+
             $vacation->setValidationStatus('2');
             $vacation->setRefuseReason('');
+
+
+            $notifConcernedEmployees = $this->em->getRepository('AppBundle:Employee')
+                ->findByRole(Employee::ROLE_ADMIN);
+
+            $this->generateNotification(self::VACATION_HRM_ACCEPTATION_NOTIF,
+                array('le service rh'), 'url', $notifConcernedEmployees);
+
         } elseif ('refuser' === $isValid) {
             $vacation->setValidationStatus('-1');
             $vacation->setRefuseReason($refuseReason);
@@ -103,6 +107,7 @@ class VacationManager
         if ('accepter' === $isValid) {
             $vacation->setValidationStatus('1');
             $vacation->setRefuseReason('');
+
             $notifConcernedEmployees = $this->em->getRepository('AppBundle:Employee')
                 ->findByRole(Employee::ROLE_ADMIN);
             $this->generateNotification(self::VACATION_HRM_ACCEPTATION_NOTIF,
@@ -119,11 +124,6 @@ class VacationManager
     {
         $this->nm->generateNotification($notifType, $args, $url, $employees);
     }
-
-
-
-
-
 
     public function calculateWeekEndDaysNumberIncluded($vacation)
     {
