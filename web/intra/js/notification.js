@@ -14,6 +14,9 @@ $().ready(function(){
                 if(data.unseen_notification_number > 0) {
                     $('.count').html(data.unseen_notification_number);
                 }
+                else if(data.unseen_notification_number == 0) {
+                    $('.count').empty();
+                }
             }
 
         });
@@ -42,7 +45,7 @@ $().ready(function(){
                         htmlNotificationList.push(
                             '<li id = "'+notificationId+'"class="'+seen+'">' +
                             '<a href="#"><i class="fa fa-users text-aqua"></i>'+
-                            notifications[indice].notification.url+
+                            notifications[indice].notification.message+
                             '</a></li>');
                     }
                     $('#notifications').html(
@@ -54,14 +57,6 @@ $().ready(function(){
         }
         load_last_teen_notification();
     });
-
-
-
-
-
-
-
-
 
 
 

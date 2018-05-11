@@ -7,6 +7,7 @@ use AppBundle\Entity\Notification;
 use Assetic\Exception\Exception;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * EmployeeNotificationRepository
@@ -56,27 +57,29 @@ class EmployeeNotificationRepository extends \Doctrine\ORM\EntityRepository
             ->andWhere('en.archived = false')
 
             ->setParameter('employee', $employee)
-            ->orderBy('n.createdAt', 'ASC')
+            ->orderBy('n.createdAt', 'DESC')
             ->setMaxResults(10)
         ;
         return $qb->getQuery()
             ->getResult();
     }
 
-    public function findLastTeenWithIndexByEmployee(Employee $employee, $offset)
+    public function findLastByEmployeeWithOffset(Employee $employee, $offset)
     {
         $qb = $this->createQueryBuilder('en')
+            ->select('en')
+            ->addSelect('n')
             ->innerJoin('en.notification', 'n')
             ->andWhere('en.employee = :employee')
             ->andWhere('en.archived = false')
 
             ->setParameter('employee', $employee)
             ->orderBy('n.createdAt', 'ASC')
-            ->setMaxResults(10)
-            ->setFirstResult( $offset )
+            ->setMaxResults(4)
+            ->setFirstResult( 4 )
         ;
-        return $qb->getQuery()
-            ->getResult();
+        return  $qb->getQuery()->getResult();
+
     }
 
 }

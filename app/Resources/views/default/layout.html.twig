@@ -41,7 +41,8 @@
     <!-- Google Font -->
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-    {% block stylesheet %}{% endblock %}
+    {% block stylesheet %}
+    {% endblock %}
 
 
 </head>
@@ -275,8 +276,8 @@
 <script src="{{ asset('dist/js/demo.js') }}"></script>
 <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
 <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
-<!-- Intranet scripts-->
 <script src="{{ asset('intra/js/notification.js') }}"></script>
+<!-- Intranet scripts-->
 {% block script %}
 
 {% endblock %}

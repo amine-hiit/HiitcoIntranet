@@ -26,6 +26,7 @@ class NotificationController extends Controller
         $user = $this->getUser();
         //dump($notificationId);dump($user->getId());die;
         $this->getNotificationManager()->setSeenNotification($notificationId, $user);
+
         return new JsonResponse('done');
     }
 
@@ -37,6 +38,23 @@ class NotificationController extends Controller
     {
         $nm = $this->getNotificationManager();
         $user = $this->getUser();
+
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         */
         $unseenNotifNumber = $nm->countUnseenByEmployee($user);
 
         $lastTeenNotifications = $this->getDoctrine()->getManager()
@@ -44,10 +62,13 @@ class NotificationController extends Controller
 
         $serializer = SerializerBuilder::create()->build();
 
-        return new JsonResponse($serializer->serialize(
-            $lastTeenNotifications, 'json',
-            SerializationContext::create()->setGroups(array('notification'))
-        ));
+        return new JsonResponse(
+            $serializer->serialize(
+                $lastTeenNotifications,
+                'json',
+                SerializationContext::create()->setGroups(array('notification'))
+            )
+        );
     }
 
     /**
@@ -62,8 +83,51 @@ class NotificationController extends Controller
         $data = array(
             'unseen_notification_number' => $response,
         );
+
         return new Response(json_encode($data));
     }
+
+
+
+
+
+
+    /**
+     * @Route("intranet/notification-list", name="notification-list")
+     * @return Response
+     */
+    public function notificationListAction(Request $request)
+    {
+        $serializer = SerializerBuilder::create()->build();
+        $user = $this->getUser();
+
+        $offset = $request->get('offset');
+        $lastTeenNotifications = $this->getNotificationManager()->findLastByEmployeeWithOffset($user, 0);
+        $lastNotificationsWithOffset = $this->getNotificationManager()->findLastByEmployeeWithOffset($user, 3);
+        $ok =
+            $serializer->serialize(
+                $lastNotificationsWithOffset,
+                'json',
+                SerializationContext::create()->setGroups(array('notification'))
+        );
+        /*new JsonResponse(
+            $serializer->serialize(
+                $lastNotificationsWithOffset,
+                'json',
+                SerializationContext::create()->setGroups(array('notification'))
+            )
+        );*/
+
+        return $this->render('@App/notification/notification.html.twig', array(
+            'lastTeenNotifications' => $lastTeenNotifications,
+        ));
+    }
+
+
+
+
+
+
 
     /**
      * @return NotificationManager
@@ -73,5 +137,6 @@ class NotificationController extends Controller
         return $this->get('app.notification.manager');
     }
 }
+
 
 

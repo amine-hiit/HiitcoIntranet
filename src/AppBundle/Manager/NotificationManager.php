@@ -95,6 +95,15 @@ class NotificationManager
         $this->em->flush();
     }
 
+    /** return last with offset  */
+    public function findLastByEmployeeWithOffset(Employee $employee, $offset)
+    {
+        return
+            $this->em->getRepository('AppBundle:EmployeeNotification')
+            ->findLastByEmployeeWithOffset($employee, $offset)
+            ;
+    }
+
 
 
     public function findOneEmployeeNotification(Notification $notification, Employee $employee)
