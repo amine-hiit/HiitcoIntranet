@@ -12,9 +12,16 @@ use PhpOffice\PhpSpreadsheet\Calculation\DateTime;
 class VacationManager
 {
     const VACATION_REQUEST_NOTIF = 'vacation_request';
+
     const VACATION_ADMIN_ACCEPTATION_NOTIF = 'vacation_admin_acceptation';
     const VACATION_ADMIN_REFUSE_NOTIF = 'vacation_admin_refuse';
-    const VACATION_HRM_ACCEPTATION_NOTIF = 'vacation_hrm_acceptation';
+
+    const ADMIN_NOTIF_HRM_ACCEPTATION = 'admin_notification_vacation_hrm_acceptation';
+    const EMPLOYEE_NOTIF_REFUSE = 'employee_notification_vacation_refuse';
+
+    const ADMIN_NOTIF_REFUSE = 'admin_notification_vacation_refuse';
+
+    const EMPLOYEE_NOTIF_HRM_ACCEPTATION = 'employee_notification_vacation_rhm_acceptation';
     const VACATION_HRM_REFUSE_NOTIF = 'vacation_hrm_refuse';
 
     /**
@@ -79,6 +86,11 @@ class VacationManager
 
     }
 
+
+
+
+
+
     public function adminValidation(Vacation &$vacation, $isValid, $refuseReason)
     {
         if ('accepter' === $isValid) {
@@ -90,13 +102,13 @@ class VacationManager
             $notifConcernedEmployees = $this->em->getRepository('AppBundle:Employee')
                 ->findByRole(Employee::ROLE_ADMIN);
 
-            $this->generateNotification(self::VACATION_HRM_ACCEPTATION_NOTIF,
+            $this->generateNotification(self::ADMIN_NOTIF_HRM_ACCEPTATION,
                 array('le service rh'), 'url', $notifConcernedEmployees);
 
         } elseif ('refuser' === $isValid) {
             $vacation->setValidationStatus('-1');
             $vacation->setRefuseReason($refuseReason);
-            $this->generateNotification(self::VACATION_ADMIN_REFUSE_NOTIF, array('le directeur'));
+            $this->generateNotification(self::ADMIN_NOTIF_HRM_ACCEPTATION, array('le directeur'));
 
         }
         $this->flush();
@@ -104,46 +116,35 @@ class VacationManager
 
     public function hrmValidation(Vacation &$vacation, $isValid, $refuseReason)
     {
+        $admins = $this->em->getRepository('AppBundle:Employee')
+            ->findByRole(Employee::ROLE_ADMIN);
+
+        $concernedEmployees = $this->em->getRepository('AppBundle:Employee')
+            ->findBy(['id'=> $vacation->getEmployee()->getId()]);
+
         if ('accepter' === $isValid) {
             $vacation->setValidationStatus('1');
             $vacation->setRefuseReason('');
 
-            $notifConcernedEmployees = $this->em->getRepository('AppBundle:Employee')
-                ->findByRole(Employee::ROLE_ADMIN);
-            $this->generateNotification(self::VACATION_HRM_ACCEPTATION_NOTIF,
-                array('le service rh'), 'url', $notifConcernedEmployees);
-        } elseif ('refuser' === $isValid) {
+            $this->generateNotification(self::ADMIN_NOTIF_HRM_ACCEPTATION,
+                ['le service rh'], 'url', $admins);
+
+            $this->generateNotification(self::EMPLOYEE_NOTIF_HRM_ACCEPTATION,
+                ['le service rh'], 'url', $concernedEmployees);
+
+
+        }
+
+        elseif ('refuser' === $isValid) {
             $vacation->setValidationStatus('-1');
             $vacation->setRefuseReason($refuseReason);
-            $this->generateNotification(self::VACATION_HRM_REFUSE_NOTIF, array('le directeur'),'url', $notifConcernedEmployees);
+
+            $this->generateNotification(self::ADMIN_NOTIF_REFUSE,[], 'url', $admins);
+
+            $this->generateNotification(self::EMPLOYEE_NOTIF_REFUSE,
+                [], 'url', $concernedEmployees);
         }
         $this->flush();
-    }
-
-    public function generateNotification($notifType, $args, $url, $employees)
-    {
-        $this->nm->generateNotification($notifType, $args, $url, $employees);
-    }
-
-    public function calculateWeekEndDaysNumberIncluded($vacation)
-    {
-        $WeekEndDaysNumber = 0;
-        $startDate = $vacation->getStartDate();
-        $endDate = $vacation->getEndDate();
-        $endDate->modify('+1 day');
-        //because the end date is not included
-
-        $period = new \DatePeriod($startDate, new \DateInterval('P1D'), $endDate);
-
-        foreach ($period as $day) {
-
-            if ($day->format('D') == 'Sat' || $day->format('D') == 'Sun') {
-                $WeekEndDaysNumber++;
-            }
-        }
-        $endDate->modify('-1 day');
-
-        return $WeekEndDaysNumber;
     }
 
     /**calculation of the vacation days number*/
@@ -177,6 +178,32 @@ class VacationManager
         $nowTime = strtotime($now->format('d-m-Y'));
 
         return ($startTime - $nowTime) / (60 * 60 * 24);
+    }
+
+
+
+
+
+
+    public function calculateWeekEndDaysNumberIncluded($vacation)
+    {
+        $WeekEndDaysNumber = 0;
+        $startDate = $vacation->getStartDate();
+        $endDate = $vacation->getEndDate();
+        $endDate->modify('+1 day');
+        //because the end date is not included
+
+        $period = new \DatePeriod($startDate, new \DateInterval('P1D'), $endDate);
+
+        foreach ($period as $day) {
+
+            if ($day->format('D') == 'Sat' || $day->format('D') == 'Sun') {
+                $WeekEndDaysNumber++;
+            }
+        }
+        $endDate->modify('-1 day');
+
+        return $WeekEndDaysNumber;
     }
 
     function calculateVacationBalance(Employee $employee, $afterRequestApprove = false)
@@ -236,6 +263,11 @@ class VacationManager
                 return $vacationBalance;
             }
         }
+    }
+
+    public function generateNotification($notifType, $args, $url, $employees)
+    {
+        $this->nm->generateNotification($notifType, $args, $url, $employees);
     }
 
     public function persist($vacation)

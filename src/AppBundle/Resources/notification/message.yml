@@ -1,2 +1,15 @@
 admin_hrm_notification_fill_employee_form_invatation:
 admin_hrm_notification_employee_form_filled_out: %s a rempli sa fiche collabrateur
+
+
+employee_notification_vacation_rhm_acceptation: votre demande de congé a été acceptée par le rh
+employee_notification_vacation_admin_acceptation: votre demande de congé a été acceptée
+employee_notification_vacation_refuse: votre demande de congé a été refusée
+
+
+admin_hrm_notification_vacation_request: %s a demandé un congé %s
+
+admin_notification_vacation_hrm_refuse: %s a refusé une demande de congé
+admin_notification_vacation_hrm_acceptation: %s a accepté une demande de congé
+
+admin_notification_vacation_refuse: le service rh a refusé une demande de congé

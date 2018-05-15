@@ -35,12 +35,12 @@ class EmployeeController extends Controller
      */
     public function registerEmployeeAction(Request $request)
     {
-        $employee = new Employee();
+        $userManager = $this->get('fos_user.user_manager');
+        $employee = $userManager->createUser();
         $registrationForm = $this->createForm(RegistrationFormType::class, $employee);
         $registrationForm->handleRequest($request);
         if($registrationForm->isSubmitted()){
             if($registrationForm->isValid()){
-                $userManager = $this->get('fos_user.user_manager');
                 $exists = $userManager->findUserBy(array('email' => $employee->getEmail()));
                 if ($exists instanceof Employee) {
                     throw new HttpException(409, 'Email already taken');

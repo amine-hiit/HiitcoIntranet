@@ -110,7 +110,6 @@ class VacationController extends Controller
 
         if ($this->get('security.authorization_checker')->isGranted('ROLE_DIRECTOR')) {
             $vm->adminValidation($vacation, $approval, $refuseReason);
-
         }
 
         else if ($this->get('security.authorization_checker')->isGranted('ROLE_HR')) {
