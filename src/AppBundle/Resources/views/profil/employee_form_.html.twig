@@ -133,81 +133,95 @@
                             <div class="tab">
                                 <div class="row">
 
-                                    <div class=" col-sm-4">
+                                    <div class=" col-sm-8">
+                                        <div class="row">
 
-                                        <div class="form-group" >
-                                            {{ form_label(form.firstName) }}
-                                            {{ form_widget(form.firstName, {'attr':{
+                                            <div class=" col-sm-6">
 
-                                                'class':'form-control'
-                                            }}) }}
-                                        </div>
-
-                                        <div class="form-group" >
-                                            {{ form_label(form.lastName) }}
-                                            {{ form_widget(form.lastName, {'attr':{
-
-                                                'class':'form-control'
-                                            }}) }}
-                                        </div>
-
-
-                                        <div class="form-group " >
-                                            {{ form_label(form.birthday) }}
-                                            <div class="input-group date">
-                                                <div class="input-group-addon">
-                                                    <i class="fa fa-calendar"></i>
+                                                <div class="form-group" >
+                                                    {{ form_label(form.username) }}
+                                                    {{ form_widget(form.username, {'attr':{
+                                                        'class':'form-control',
+                                                        'disabled':''
+                                                    }}) }}
                                                 </div>
-                                                {{ form_widget(form.birthday, {'attr':{
 
-                                                    'class':'form-control pull-right datepicker'
+                                                <div class="form-group" >
+                                                    {{ form_label(form.firstName) }}
+                                                    {{ form_widget(form.firstName, {'attr':{
 
-                                                }}) }}
+                                                        'class':'form-control'
+                                                    }}) }}
+                                                </div>
+
+                                                <div class="form-group" >
+                                                    {{ form_label(form.lastName) }}
+                                                    {{ form_widget(form.lastName, {'attr':{
+
+                                                        'class':'form-control'
+                                                    }}) }}
+                                                </div>
+
+
+                                                <div class="form-group " >
+                                                    {{ form_label(form.birthday) }}
+                                                    <div class="input-group date">
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </div>
+                                                        {{ form_widget(form.birthday, {'attr':{
+
+                                                            'class':'form-control pull-right datepicker'
+
+                                                        }}) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class=" col-sm-6">
+                                                <div class="form-group ">
+                                                    {{ form_label(form.maritalStatus) }}
+                                                    {{ form_widget(form.maritalStatus, {'attr':{
+
+                                                        'class':'form-control'
+                                                    }}) }}
+                                                </div>
+
+                                                <div class="form-group">
+                                                    {{ form_label(form.dependentChild) }}
+                                                    {{ form_widget(form.dependentChild, {'attr':{
+
+                                                        'class':'form-control'
+                                                    }}) }}
+                                                </div>
+
+                                                <div class="form-group" >
+                                                    {{ form_label(form.cnssNumber) }}
+                                                    {{ form_widget(form.cnssNumber, {'attr':{
+
+                                                        'class':'form-control'
+                                                    }}) }}
+                                                </div>
+                                                <div class="form-group ">
+                                                    {{ form_label(form.phoneNumber) }}
+                                                    {{ form_widget(form.phoneNumber, {'attr':{
+
+                                                        'class':'form-control'
+                                                    }}) }}
+                                                </div>
+
                                             </div>
                                         </div>
+                                        <div class="row">
+                                            <div class=" col-sm-12 col-xs-12 ">
+                                                <div class="form-group" >
+                                                    {{ form_label(form.address) }}
+                                                    {{ form_widget(form.address, {'attr':{
 
-                                        <div class="form-group ">
-                                            {{ form_label(form.phoneNumber) }}
-                                            {{ form_widget(form.phoneNumber, {'attr':{
-
-                                                'class':'form-control'
-                                            }}) }}
-                                        </div>
-
-                                    </div>
-
-                                    <div class=" col-sm-4">
-
-                                        <div class="form-group ">
-                                            {{ form_label(form.maritalStatus) }}
-                                            {{ form_widget(form.maritalStatus, {'attr':{
-
-                                                'class':'form-control'
-                                            }}) }}
-                                        </div>
-
-                                        <div class="form-group">
-                                            {{ form_label(form.dependentChild) }}
-                                            {{ form_widget(form.dependentChild, {'attr':{
-
-                                                'class':'form-control'
-                                            }}) }}
-                                        </div>
-
-                                        <div class="form-group" >
-                                            {{ form_label(form.cnssNumber) }}
-                                            {{ form_widget(form.cnssNumber, {'attr':{
-
-                                                'class':'form-control'
-                                            }}) }}
-                                        </div>
-
-                                        <div class="form-group" >
-                                            {{ form_label(form.address) }}
-                                            {{ form_widget(form.address, {'attr':{
-
-                                                'class':'form-control'
-                                            }}) }}
+                                                        'class':'form-control'
+                                                    }}) }}
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 

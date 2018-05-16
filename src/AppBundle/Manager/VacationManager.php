@@ -35,13 +35,24 @@ class VacationManager
     private $nm;
 
     /**
+     * @var EmailManager
+     */
+    private $emailManager;
+
+
+    /**
      * VacationManager constructor.
      * @param EntityManagerInterface $em
      * @param NotificationManager $nm
+     * @param EmailManager $emailManager
      */
-
-    public function __construct(EntityManagerInterface $em, NotificationManager $nm)
+    public function __construct(
+        EntityManagerInterface $em,
+        NotificationManager $nm,
+        EmailManager $emailManager
+    )
     {
+        $this->emailManager = $emailManager;
         $this->em = $em;
         $this->nm = $nm;
     }
@@ -85,8 +96,6 @@ class VacationManager
         return $this->em->getRepository('AppBundle:Vacation')->findAll();
 
     }
-
-
 
 
 

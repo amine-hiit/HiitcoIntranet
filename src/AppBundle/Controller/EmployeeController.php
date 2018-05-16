@@ -9,13 +9,15 @@
 namespace AppBundle\Controller;
 
 
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
+use FOS\UserBundle\Form\Type\ChangePasswordFormType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 use FOS\UserBundle\Form\Type\RegistrationFormType;
+use FOS\UserBundle\Form\Type\ResettingFormType;
 
 use AppBundle\Entity\Employee;
 use AppBundle\Entity\Formation;
@@ -35,19 +37,17 @@ class EmployeeController extends Controller
      */
     public function registerEmployeeAction(Request $request)
     {
-        $userManager = $this->get('fos_user.user_manager');
-        $employee = $userManager->createUser();
+        $employeeManager = $this->get('app.employee.manager');
+
+        $employee = $employeeManager->createEmployee();
         $registrationForm = $this->createForm(RegistrationFormType::class, $employee);
         $registrationForm->handleRequest($request);
+
         if($registrationForm->isSubmitted()){
             if($registrationForm->isValid()){
-                $exists = $userManager->findUserBy(array('email' => $employee->getEmail()));
-                if ($exists instanceof Employee) {
-                    throw new HttpException(409, 'Email already taken');
-                }
-                $employee->setEnabled(true);
-                $userManager->updateUser($employee);
+                $employeeManager->registerNewEmployee($employee);
             }
+
             return $this->redirect($this->generateUrl('employees-list'));
         }
         return $this->render('@App/profil/register_new_employee.html.twig', array(
@@ -94,6 +94,58 @@ class EmployeeController extends Controller
         ));
     }
 
+    /**
+     * @Route("/intranet/new-password", name="new-password")
+     * @Route("/new-password/{token}", name="new-emplyee-password")
+     */
+    public function newPasswordAction(Request $request, $token)
+    {
+        $employeeManager = $this->get('app.employee.manager');
+        $employee = $this->getUser();
+        if( null === $employee)
+            $employee = $employeeManager->findEmployeeByToken($token);
+
+        $newPasswordForm = $this->createForm(ResettingFormType::class, $employee);
+
+        if($request->isMethod('POST'))
+        {
+            $newPasswordForm->handleRequest($request);
+            $employeeManager->updateEmployee($employee);
+            return $this->redirectToRoute('homepage');
+        }
+
+        return $this->render('@App/profil/set_password.html.twig',
+            [
+                'form' => $newPasswordForm->createView(),
+            ]);
+    }
+
+    /**
+     * @Route("/intranet/change-password", name="change-password")
+     */
+    public function changePasswordAction(Request $request)
+    {
+
+        $employeeManager = $this->get('app.employee.manager');
+        $employee = $this->getUser();
+
+
+        $newPasswordForm = $this->createForm(ChangePasswordFormType::class, $employee);
+
+        if($request->isMethod('POST'))
+        {
+            $newPasswordForm->handleRequest($request);
+            $employeeManager->updateEmployee($employee);
+
+            return $this->redirectToRoute('homepage');
+        }
+
+        return $this->render('@App/profil/change_password.html.twig',
+            [
+                'form' => $newPasswordForm->createView(),
+            ]);
+    }
+
 
 
     /**
@@ -110,19 +162,17 @@ class EmployeeController extends Controller
                 'employee' => $employee,
             ));
 
-        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $employee = $this->get('security.token_storage')->getToken()->getUser();
 
         $lastFormations = $employeemanager->findEmployeeLastFormation($employee);
         $formations = $employeemanager->findEmployeeAllFormations($employee);
         $experiences = $employeemanager->findEmployeeAllExperiences($employee);
 
 
-        $employeeFormation =  $employeemanager->create();
+        $employeeFormation =  $employeemanager->createEmployeeFormation();
         $experience = new Experience();
 
-
         $employeeFormationForm = $this->get('form.factory')->create(EmployeeFormationType::class, $employeeFormation);
-        //$formationForm = $this->get('form.factory')->create(FormationType::class, $employeeFormation);
         $experienceForm = $this->get('form.factory')->create(ExperienceType::class, $experience);
 
         /* to be deleted from controller and used in manager */
@@ -130,22 +180,21 @@ class EmployeeController extends Controller
         {
             if ($employeeFormationForm->handleRequest($request)->isValid())
             {
-                $employeemanager->setUserToAtribut($employeeFormation, $user );
-                $employeemanager->persistAtribut($employeeFormation);
-                $employeemanager->flush();
+                $employeemanager->setUserToAttribute($employeeFormation, $employee );
+                $employeemanager->persistAttribute($employeeFormation);
+                $employeemanager->updateEmployee($employee);
 
-                return $this->redirect('/intranet/employee/'.$user->getId());
+                return $this->redirect('/intranet/employee/'.$employee->getId());
             }
             else if ($experienceForm->handleRequest($request)->isValid())
             {
-                $employeemanager->setUserToAtribut($experience, $user );
-                $employeemanager->persistAtribut($experience);
-                $employeemanager->flush();
+                $employeemanager->setUserToAttribute($experience, $employee );
+                $employeemanager->persistAttribute($experience);
+                $employeemanager->updateEmployee($employee);
 
-                return $this->redirect('/intranet/employee/'.$user->getId());
+                return $this->redirect('/intranet/employee/'.$employee->getId());
             }
         }
-
 
 
 
@@ -153,7 +202,7 @@ class EmployeeController extends Controller
             'formationForm' =>$employeeFormationForm->createView(),
             'experienceForm' => $experienceForm->createView(),
             'employee' => $employee,
-            'profileOwner' => ($employee->getId()==$user->getId()),
+            'profileOwner' => ($employee->getId()==$employee->getId()),
             'lastFormations' => $lastFormations,
             'formations' => $formations,
             'experiences' => $experiences

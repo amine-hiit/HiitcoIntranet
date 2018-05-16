@@ -53,6 +53,7 @@ class VacationController extends Controller
      */
     public function showSoldAction(Request $request)
     {
+
         $employee = $this->get('security.token_storage')->getToken()->getUser();
         $vm = $this->get('app.vacation.manager');
         $soldAfterAppovingRequestes = $vm->calculateVacationBalance($employee, true);
@@ -69,9 +70,6 @@ class VacationController extends Controller
     public function approveListAction(Request $request)
     {
 
-
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-
         $vm = $this->get('app.vacation.manager');
         $listVacation = $vm->findAll();
         return $this->render('@App/vacation/requests.html.twig', array(
@@ -85,6 +83,8 @@ class VacationController extends Controller
      */
     public function myListAction(Request $request)
     {
+
+
 
 
         $user = $this->get('security.token_storage')->getToken()->getUser();
