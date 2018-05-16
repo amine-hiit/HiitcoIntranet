@@ -32,7 +32,7 @@ services:
     app.vacation.manager:
         class: 'AppBundle\Manager\VacationManager'
         public: true
-        arguments: ['@doctrine.orm.entity_manager','@app.notification.manager']
+        arguments: ['@doctrine.orm.entity_manager','@app.notification.manager','@app.email.manager']
 
     app.notification.manager:
         class: 'AppBundle\Manager\NotificationManager'
@@ -51,12 +51,16 @@ services:
     app.employee.manager:
         class: 'AppBundle\Manager\EmployeeManager'
         public: true
-        arguments: ['@doctrine.orm.entity_manager']
 
     app.employee_formation.manager:
         class: 'AppBundle\Manager\EmployeeFormationManager'
         public: true
         arguments: ['@doctrine.orm.entity_manager']
+
+    app.email.manager:
+        class: 'AppBundle\Manager\EmailManager'
+        public: true
+        arguments : ['@service_container']
 
     employee.subscriber:
         class: 'AppBundle\EventListener\EmployeeSubscriber'

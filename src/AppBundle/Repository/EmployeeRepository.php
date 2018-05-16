@@ -2,6 +2,9 @@
 
 namespace AppBundle\Repository;
 
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
+
 /**
  * AvatarRepository
  *
@@ -19,5 +22,21 @@ class EmployeeRepository extends \Doctrine\ORM\EntityRepository
             ->setParameter('roles', '%"'.$role.'"%');
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function findEmployeeByToken($token)
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->where('u.confirmationToken = :token')
+            ->setParameter('token', $token);
+
+        try{
+            $result = $qb
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $nure){
+        }
+
+        return $result;
     }
 }

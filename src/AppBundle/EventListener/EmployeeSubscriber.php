@@ -22,16 +22,21 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 class EmployeeSubscriber implements EventSubscriberinterface
 {
 
-    const INVALID_EMPLOYEE_ALLOWED_ROUTES = [
+    const INVALID_EMPLOYEE_ALLOWED_ROUTES =  [
         'employee-form',
         'new-formation',
         'fos_user_security_login',
         'homepage',
         '_wdt',
+        'see-notification',
+        'last-teen-notifications',
+        'unseen-notifications',
+        'teen-notifications',
         'intranet-homepage',
         'intranet',
         'fos_js_routing_js',
     ];
+
     /**
      * @var TokenStorageInterface
      */
@@ -68,7 +73,6 @@ class EmployeeSubscriber implements EventSubscriberinterface
             || !($this->tokenStorage->getToken() instanceof TokenInterface)
             || !($this->tokenStorage->getToken()->getUser() instanceof Employee)
         ) {
-            // don't do anything
             return;
         }
         $currentRoute = $event->getRequest()->get('_route');
