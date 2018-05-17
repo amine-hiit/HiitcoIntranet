@@ -162,11 +162,12 @@ class EmployeeController extends Controller
                 'employee' => $employee,
             ));
 
-        $employee = $this->get('security.token_storage')->getToken()->getUser();
+        $user = $this->get('security.token_storage')->getToken()->getUser();
 
         $lastFormations = $employeemanager->findEmployeeLastFormation($employee);
         $formations = $employeemanager->findEmployeeAllFormations($employee);
         $experiences = $employeemanager->findEmployeeAllExperiences($employee);
+
 
 
         $employeeFormation =  $employeemanager->createEmployeeFormation();
@@ -202,7 +203,7 @@ class EmployeeController extends Controller
             'formationForm' =>$employeeFormationForm->createView(),
             'experienceForm' => $experienceForm->createView(),
             'employee' => $employee,
-            'profileOwner' => ($employee->getId()==$employee->getId()),
+            'profileOwner' => ($employee->getId()===$user->getId()),
             'lastFormations' => $lastFormations,
             'formations' => $formations,
             'experiences' => $experiences
