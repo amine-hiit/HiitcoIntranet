@@ -197,8 +197,6 @@ class EmployeeController extends Controller
             }
         }
 
-
-
         return  $this->render('@App/profil/employee.html.twig', array(
             'formationForm' =>$employeeFormationForm->createView(),
             'experienceForm' => $experienceForm->createView(),

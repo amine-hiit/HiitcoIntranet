@@ -185,6 +185,14 @@ class Employee extends BaseUser
     private $projects;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @ORM\OneToMany(targetEntity="Cooptation", mappedBy="employee",cascade={"persist","remove"})
+     *
+     */
+    private $cooptations;
+
+
+    /**
      * @var Avatar
      *
      * @ORM\OneToOne(targetEntity="Avatar", cascade={"persist","remove"})
@@ -696,5 +704,68 @@ class Employee extends BaseUser
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * Add notification.
+     *
+     * @param \AppBundle\Entity\EmployeeNotification $notification
+     *
+     * @return Employee
+     */
+    public function addNotification(\AppBundle\Entity\EmployeeNotification $notification)
+    {
+        $this->notifications[] = $notification;
+
+        return $this;
+    }
+
+    /**
+     * Remove notification.
+     *
+     * @param \AppBundle\Entity\EmployeeNotification $notification
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeNotification(\AppBundle\Entity\EmployeeNotification $notification)
+    {
+        return $this->notifications->removeElement($notification);
+    }
+
+    /**
+     * Add cooptation.
+     *
+     * @param \AppBundle\Entity\Cooptation $cooptation
+     *
+     * @return Employee
+     */
+    public function addCooptation(\AppBundle\Entity\Cooptation $cooptation)
+    {
+        $cooptation->setEmployee($this);
+        $this->cooptations[] = $cooptation;
+
+        return $this;
+    }
+
+    /**
+     * Remove cooptation.
+     *
+     * @param \AppBundle\Entity\Cooptation $cooptation
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeCooptation(\AppBundle\Entity\Cooptation $cooptation)
+    {
+        return $this->cooptations->removeElement($cooptation);
+    }
+
+    /**
+     * Get cooptations.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCooptations()
+    {
+        return $this->cooptations;
     }
 }

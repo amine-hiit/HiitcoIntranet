@@ -48,6 +48,10 @@ services:
         class: 'AppBundle\File\Manager\ExcelManager'
         public: true
 
+    app.cooptation.manager:
+        class: 'AppBundle\Manager\CooptationManager'
+        public: true
+
     app.employee.manager:
         class: 'AppBundle\Manager\EmployeeManager'
         public: true
