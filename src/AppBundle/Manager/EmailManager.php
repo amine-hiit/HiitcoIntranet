@@ -9,6 +9,7 @@
 namespace AppBundle\Manager;
 
 
+use AppBundle\Entity\Resume;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Validator\Constraints\Email;
@@ -17,29 +18,39 @@ class EmailManager
 {
 
     /**
+     * @var EntityManagerInterface
+     */
+    private $em;
+
+    /**
      * @var ContainerInterface
      */
     private $container;
 
     /**
      * EmailManager constructor.
+     * @param EntityManagerInterface $em
      * @param ContainerInterface $container
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(EntityManagerInterface $em, ContainerInterface $container)
     {
+        $this->em = $em;
         $this->container = $container;
     }
+
 
     public function send(
         $subject,
         $from,
         $to,
         $template,
-        array $args
+        array $args,
+        array $filesPaths = null
+
     )
     {
         $mailer = $this->container->get('mailer');
-        $message = $this->create($subject, $from, $to, $template, $args);
+        $message = $this->create($subject, $from, $to, $template, $args, $filesPaths );
         $mailer->send($message);
     }
 
@@ -48,21 +59,33 @@ class EmailManager
         $from,
         $to,
         $template,
-        array $args
+        array $args,
+        array $filesPaths = null
     )
     {
         $templating = $this->container->get('templating');
         try {
             $rendredTemplate = $templating->render($template, $args);
         }catch (\Twig\Error\Error $e){
-            $this->container->get('logger')->log($e,'Twig Error, Email non envoyé');
-            return;
+            dump($e);die;
         }
-        return  \Swift_Message::newInstance()
+
+        $rootDir = $this->container->get('kernel')->getRootDir();
+
+        $message = \Swift_Message::newInstance()
             ->setSubject($subject)
             ->setFrom($from)
             ->setTo($to)
             ->setBody($rendredTemplate,'text/html');
+
+
+        if($filesPaths !== null && count($filesPaths) != 0){
+            foreach ($filesPaths as $filePath) {
+                $message->attach(\Swift_Attachment::fromPath($rootDir.'/../web/'.$filePath));
+            }
+        }
+
+        return $message;
     }
 
 

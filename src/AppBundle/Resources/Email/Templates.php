@@ -12,5 +12,6 @@ namespace AppBundle\Resources\Email;
 class Templates
 {
     const SET_NEW_PASSWORD = '@App\emails\password\new-password.html.twig';
+    const COOPTATION_REQUEST = '@App\emails\cooptation.html.twig';
     const FILL_EMPLOYEE_FORM = '@App\emails\new-employee\fill-employee-form.html.twig';
 }

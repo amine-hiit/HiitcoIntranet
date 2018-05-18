@@ -10,6 +10,7 @@ namespace AppBundle\Controller;
 
 
 use AppBundle\Entity\Cooptation;
+use AppBundle\Entity\Employee;
 use AppBundle\Form\CooptationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\BrowserKit\Response;
@@ -33,7 +34,7 @@ class CooptationController extends Controller
             if($form->isValid()){
                 $this->getCooptationManager()->uploadCooptation($cooptation);
             }
-            return $this->redirect($this->generateUrl('cooptation'));
+            return $this->redirect($this->generateUrl('homepage'));
         }
         return $this->render('@App/cooptation/cooptation_request.html.twig', array(
             'form' => $form->createView(),

@@ -24,6 +24,39 @@ class EmployeeRepository extends \Doctrine\ORM\EntityRepository
         return $qb->getQuery()->getResult();
     }
 
+
+    public function findByRoles($roles)
+    {
+
+        $qb = $this->_em->createQueryBuilder();
+        $i = 0;
+        $query = '';
+        foreach ($roles as $role)
+        {
+            if ($i == count($roles)-1)
+            $query .= 'u.roles LIKE :role'.$i.' ';
+        else
+            $query .= 'u.roles LIKE :role'.$i.' OR ';
+            $i++;
+        }
+
+        $qb->select('u')
+            ->from($this->_entityName, 'u')
+            ->where($query);
+        $i = 0 ;
+        foreach ($roles as $role)
+        {
+            $qb->setParameter('role'.$i, '%"'.$role.'"%');
+            $i++;
+        }
+
+
+        return
+            $qb->getQuery()->getResult();
+    }
+
+
+
     public function findEmployeeByToken($token)
     {
         $qb = $this->createQueryBuilder('u')
