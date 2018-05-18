@@ -143,6 +143,20 @@ class EmployeeManager
         $this->em->flush();
     }
 
+    public function getEmails(array $employees)
+    {
+        $emails = [];
+        foreach ($employees as $employee)
+        {
+            array_push($emails,$employee->getEmail());
+        }
+        return $emails;
+    }
+
+    public function findByRoles(array $roles)
+    {
+        return $this->em->getRepository(Employee::class)->findByRoles($roles);
+    }
 
     public function completeEmployeeForm(Employee $employee)
     {
@@ -157,7 +171,6 @@ class EmployeeManager
     {
         $this->um->updateUser($employee);
     }
-
 
 
     /******* Emails Section *************/
