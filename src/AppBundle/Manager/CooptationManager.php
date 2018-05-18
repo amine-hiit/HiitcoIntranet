@@ -16,6 +16,8 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class CooptationManager
 {
+
+    const COOPTATION_REQUEST = 'cooptation_request';
     /**
      * @var EntityManagerInterface
      */
@@ -38,22 +40,30 @@ class CooptationManager
     private $employeeManager;
 
     /**
+     * @var NotificationManager
+     */
+    private $nm;
+
+    /**
      * CooptationManager constructor.
      * @param EntityManagerInterface $em
      * @param TokenStorageInterface $token
      * @param EmailManager $emailManager
      * @param EmployeeManager $employeeManager
+     * @param NotificationManager $nm
      */
     public function __construct(
         EntityManagerInterface $em,
         TokenStorageInterface $token,
         EmailManager $emailManager,
-        EmployeeManager $employeeManager
+        EmployeeManager $employeeManager,
+        NotificationManager $nm
     ) {
         $this->em = $em;
         $this->token = $token;
         $this->emailManager = $emailManager;
         $this->employeeManager = $employeeManager;
+        $this->nm = $nm;
     }
 
 
@@ -63,9 +73,14 @@ class CooptationManager
         $cooptation->setEmployee($employee);
         $cooptation->getResumee()->upload();
 
+
+
+        //FOR SENDIG EMAIL
+        $concernedEmployees = $this->employeeManager->findByRoles(array(
+            "ROLE_HR","ROLE_ADMIN"
+        ));
         $subject = 'demande de cooptation';
         $from = 'mo.amine.jabri@gmail.com';
-
         $to = $this->employeeManager->getEmails($this->employeeManager->findByRoles(array(
             "ROLE_HR","ROLE_ADMIN"
         )));
@@ -74,11 +89,18 @@ class CooptationManager
             'recommender' => $employee,
             'recommended' => $cooptation,
         ];
-
         $filesPaths = [$cooptation->getResumee()->getUrl()];
 
-
         $this->sendEmail($subject,$from,$to,$template,$args,$filesPaths);
+
+
+        //FOR NOTIFICATION
+
+
+        $this->nm->generateNotification(self::COOPTATION_REQUEST,
+            array($employee->getFirstName()), 'url', $concernedEmployees);
+
+
         $this->em->persist($cooptation);
         $this->em->flush();
     }
