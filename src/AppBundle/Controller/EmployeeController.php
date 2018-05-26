@@ -61,13 +61,13 @@ class EmployeeController extends Controller
     public function ficheAction(Request $request)
     {
 
-        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $user = $this->getUser();
         $form = $this->get('form.factory')->create(EmployeeType::class, $user);
         $employeeManager = $this->get('app.employee.manager');
 
         if ($request->isMethod('POST'))
         {
-            if ($form->handleRequest($request)->isValid())
+            if ($form->handleRequest($request))
             {
                 $employeeManager->completeEmployeeForm($user);
                 return $this->redirect('/intranet/employee/'.$user->getId());

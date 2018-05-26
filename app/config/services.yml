@@ -64,7 +64,6 @@ services:
     app.email.manager:
         class: 'AppBundle\Manager\EmailManager'
         public: true
-        arguments : ['@service_container']
 
     employee.subscriber:
         class: 'AppBundle\EventListener\EmployeeSubscriber'
