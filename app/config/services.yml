@@ -65,6 +65,10 @@ services:
         class: 'AppBundle\Manager\EmailManager'
         public: true
 
+    app.docs.manager:
+        class: 'AppBundle\Manager\docsManager'
+        public: true
+
     employee.subscriber:
         class: 'AppBundle\EventListener\EmployeeSubscriber'
         public: true
