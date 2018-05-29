@@ -1,8 +1,9 @@
+{% set default_avatar =  asset('/uploads/img/avatar/default_avatar.png') %}
 {% if app.user.avatar.name  is defined %}
     {% set avatar_url = app.user.avatar.url %}
     {% set avatar_alt = app.user.avatar.url %}
 {% else %}
-    {% set avatar_url =  asset('/uploads/img/avatar/default_avatar.png') %}
+    {% set avatar_url = default_avatar %}
     {% set avatar_alt =  'avatar' %}
 {% endif %}
 
@@ -13,6 +14,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Hiit Consulting | {{ title }}</title>
+    <link rel="stylesheet" href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}">
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
@@ -174,11 +176,11 @@
             </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="/intranet/my-leave-requests"><i class="fa fa-circle-o"></i>Congés</a></li>
+                        <li><a href="/intranet/my-vacation-requests"><i class="fa fa-circle-o"></i>Congés</a></li>
                         <li><a href="/intranet/request-a-doc"><i class="fa fa-circle-o"></i> Demander document</a></li>
                         <li><a href="/intranet/cooptation"><i class="fa fa-circle-o"></i> Cooptations</a></li>
                         {% if is_granted('ROLE_HR') %}
-                            <li><a href="/intranet/employees"><i class="fa fa-circle-o"></i> Employées</a></li>
+                            <li><a href="/intranet/hrm/employees"><i class="fa fa-circle-o"></i> Employés</a></li>
                         {% endif %}
                     </ul>
                 </li>
@@ -189,8 +191,8 @@
                             <i class="fa fa-black-tie"></i>
                             <span>Espace recrutement</span>
                             <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
+                                <i class="fa fa-angle-left pull-right"></i>
+                             </span>
                         </a>
                         <ul class="treeview-menu">
                             <li><a href="#"><i class="fa fa-circle-o"></i> Poster une offre</a></li>
@@ -251,6 +253,7 @@
 </div>
 <!-- ./wrapper -->
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
 <!-- jQuery 3 -->
 <script src="{{ asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
 <!-- Bootstrap 3.3.7 -->
@@ -263,6 +266,9 @@
 <script src="{{ asset('dist/js/adminlte.min.js') }}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{{ asset('dist/js/demo.js') }}"></script>
+<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+<script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+
 {% block script %}
 
 {% endblock %}

@@ -1,0 +1,35 @@
+<div class="box box-success box-solid flat ">
+    <div class="box-header with-border">
+        <h3 class="box-title">Nouvelle langue</h3>
+
+        <div class="box-tools pull-right">
+            <a  class="removing btn btn-box-tool" ></a>
+        </div>
+        <!-- /.box-tools -->
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body">
+
+        <div class='col-sm-4 col-xs-12'>
+            <div class='form-group' style="width: 90%;">
+                {{ form_label(item.level) }}
+                {{ form_widget(item.level, {'attr':{
+                    'class':'form-control select2'
+                }}) }}
+            </div>
+        </div>
+        <div class='col-sm-4 col-xs-12'>
+            <div class='form-group' style="width: 90%;" >
+                {{ form_label(item.language) }}
+                {{ form_widget(item.language, {'attr':{
+                    'class':'form-control select2 ',
+                }}) }}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+

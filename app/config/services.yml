@@ -29,8 +29,8 @@ services:
         public: true
         tags: ['controller.service_arguments']
     
-    app.leave.manager:
-        class: 'AppBundle\Manager\LeaveManager'
+    app.vacation.manager:
+        class: 'AppBundle\Manager\VacationManager'
         public: true
         arguments: ['@doctrine.orm.entity_manager']
 
@@ -59,3 +59,11 @@ services:
         arguments : ['@security.token_storage','@security.authorization_checker','@router']
         tags:
             - { name : kernel.event_subscriber }
+
+    vacation_date_validator:
+        class: 'AppBundle\Validator\Constraints\VacationPeriodeValidator'
+        arguments: ['@doctrine.orm.entity_manager','@app.vacation.manager','@security.token_storage']
+        tags:
+            -
+                name: 'validator.constraint_validator'
+                alias: 'vacation_date_validator'

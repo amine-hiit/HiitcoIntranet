@@ -1,0 +1,11 @@
+<center>
+    <a type="button" class="btn btn-default btn-flat disabled"> Mes congés </a>
+    <a type="button" class="btn btn-default btn-flat"> Mon solde </a>
+    <a type="button" class="btn btn-default btn-flat" href="/intranet/request-a-vacation"> Demander
+        congé </a>
+
+    {% if is_granted('ROLE_HR') %}
+        <a type="button" class="btn btn-default btn-flat " href="/intranet/hrm/vacation-requests">
+            Liste des demandes </a>
+    {% endif %}
+</center>

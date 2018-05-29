@@ -131,4 +131,28 @@ class Project
     {
         return $this->description;
     }
+
+    /**
+     * Set employee.
+     *
+     * @param \AppBundle\Entity\Employee $employee
+     *
+     * @return Project
+     */
+    public function setEmployee(\AppBundle\Entity\Employee $employee)
+    {
+        $this->employee = $employee;
+
+        return $this;
+    }
+
+    /**
+     * Get employee.
+     *
+     * @return \AppBundle\Entity\Employee
+     */
+    public function getEmployee()
+    {
+        return $this->employee;
+    }
 }

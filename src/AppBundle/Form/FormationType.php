@@ -15,9 +15,29 @@ class FormationType extends AbstractType
     {
         $builder
             ->add('diploma')
-            ->add('organization')
+            ->add('level')
             ->add('speciality')
-            ->add('counrty');
+        ;
+
+
+
+        $formModifier = function (FormInterface $form, Formation $formation = null) {
+            $form->add('formation', EntityType::class, array(
+                'class' => 'AppBundle:Formation',
+                'choice_label' => 'fullName',
+                'placeholder' => $formation,
+                'query_builder' => function ( \AppBundle\Repository\FormationRepository $fr) {
+                    return $fr->createQueryBuilder('f')
+                        ->orderBy('f.level', 'ASC')
+                        ->addOrderBy('f.diploma', 'ASC')
+                        ->addOrderBy('f.speciality', 'ASC')
+                        ;}
+            ));
+        };
+
+
+
+
     }/**
  * {@inheritdoc}
  */
@@ -35,6 +55,5 @@ class FormationType extends AbstractType
     {
         return 'appbundle_formation';
     }
-
-
 }
+

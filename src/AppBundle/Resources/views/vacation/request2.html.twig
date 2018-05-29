@@ -1,0 +1,225 @@
+{% extends "default/layout.html.twig" %}
+
+{% set title = "Demander congé" %}
+{% set profile = "profile" %}
+{% set root = "Espace RH" %}
+{% set iroot = "fa-users" %}
+{% set dir1 = "congé" %}
+{% set dir2 = "demander congé" %}
+
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="../../bower_components/select2/dist/css/select2.min.css">
+    <link rel="stylesheet" href="../../bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+    <style>.spc{margin-right: 50px;}</style>{% endblock %}
+
+
+{% block content %}
+
+
+    {{ form_start(form) }}
+    {% if not form.vars.valid %}
+        <div class="alert alert-danger alert-dismissible flat">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            {{ form_errors(form) }}
+        </div>
+    {% endif %}
+    {{ form_row(form._token) }}
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Demander congé
+            <small></small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i> Espace RH</a></li>
+            <li><a href="#">Congé</a></li>
+            <li class="active">Demander congé </li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+
+    <section class="content">
+
+        <div class="box">
+            <div class="box-header">
+                <center>
+                    <a type="button" class="btn btn-default btn-flat" href="/intranet/my-vacation-requests">   Mes congés       </a>
+                    <a type="button" class="btn btn-default btn-flat" href="/intranet/sold">   Mon solde        </a>
+                    <a type="button" class="btn btn-default btn-flat disabled">   Demander congé   </a>
+                    {% if is_granted('ROLE_HR') %}
+                        <a type="button" class="btn btn-default btn-flat " href="/intranet/hrm/vacation-requests">  Liste des demandes   </a>
+                    {% endif %}
+                </center>
+            </div>
+
+            <!-- /.box-header -->
+
+            <div class="box-body">
+                <div class="col-sm-6 col-xs-12">
+                    <div class="form-group" >
+                        {{ form_label(form.type) }}
+                        {{ form_widget(form.type ,{'attr':{
+                            'class':'form-control vacation-type-select'
+                        }}) }}
+                    </div>
+                    </div>
+                <div id="the-rest" class="hidden">
+                    <div class="col-sm-12 col-xs-12">
+                        <div id="periode" class="hidden">
+                            <div class="row">
+
+                                <div class="col-sm-6 col-xs-12">
+
+                                    <div class="form-group" >
+                                        <label class="spc"> Période : </label>
+                                        <label  class="spc" >
+                                            <input type="radio" class = "periode" name="periode" value="one-day" />  Une journée
+                                        </label>
+
+                                        <label   class="spc">
+                                            <input type="radio" class = "periode" name="periode" value="more-than-one-day" checked/>  Ou plus
+                                        </label>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 col-xs-12">
+                                <div class="form-group">
+
+                                    {{ form_label(form.startDate) }}
+                                    <div class="input-group date">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        {{ form_widget(form.startDate, {'attr':{
+                                            'class':'form-control pull-right datepicker'
+                                        }}) }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class=" col-sm-6 col-xs-12 ">
+                                <div class="form-group more-than-one-day">
+                                    {{ form_label(form.endDate) }}
+                                    <div class="input-group date">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        {{ form_widget(form.endDate, {'attr':{
+                                            'class':'form-control pull-right datepicker '
+                                        }}) }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 col-xs-12 "><br/><br/>
+                                <div class="form-group one-day hidden" >
+                                        <div class="form-group">
+                                            {{ form_widget(form.dayPeriod) }}
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row absence">
+                            <div class="col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    {{ form_label(form.reason) }}
+                                    {{ form_widget(form.reason ,{'attr':{
+                                        'class':'form-control'
+                                    }}) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-xs-12">
+                        <div class="row">
+                            <div class="col-sm-6  col-xs-12">
+                                <button type="submit" class="btn bg-danger btn-flat " style="width:100%;">Annuler</button>
+                            </div>
+                            <div class="col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <button type="submit" class="btn bg-navy btn-flat  " style="width:100%;">Demander</button>
+                                    {% do form.refuseReason.setRendered %}
+                                    {% do form.reason.setRendered %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+                <!-- /.box-body -->
+                <div class="box-footer">
+                </div>
+            </div>
+        </div>
+    </section>
+    {{ form_end(form) }}
+
+
+{% endblock %}
+
+
+{% block script %}
+    <script src="../../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+
+{% endblock %}
+
+
+  {% block javascript %}
+  $(document).ready(function () {
+      $('input[name=periode][value=more-than-one-day]').prop('checked', true);
+      $('#appbundle_vacation_dayPeriod > label').each(function () {
+          $(this).addClass('spc');
+      });
+
+      $('.vacation-type-select').on('change', function() {
+      if($(this).val() != "" ){
+        $('#periode').removeClass('hidden');
+        $('#the-rest').removeClass('hidden');
+
+        if($(this).val() == 'vacation' ){
+          $('.absence').addClass('hidden');
+          $('.vacation').removeClass('hidden');
+        }
+
+        else if($(this).val() == 'absence' ){
+          $('.vacation').addClass('hidden');
+          $('.absence').removeClass('hidden');
+
+        }
+      }
+
+      else{
+        $('#the-rest').addClass('hidden');
+      }
+      });
+
+      $('.periode').on('click', function() {
+          if($('input[name=periode][value=more-than-one-day]').is(':checked') ){
+            $('.more-than-one-day').removeClass('hidden');
+            $('.one-day').addClass('hidden');
+            $('#appbundle_vacation_dayPeriod_2').prop('checked', true);
+          }
+
+          else if($('input[name=periode][value=one-day]').is(':checked') ){
+            $('.more-than-one-day').addClass('hidden');
+            $('.one-day').removeClass('hidden');
+            $('#appbundle_vacation_endDate').val('');
+          }
+
+      });
+
+
+      $('.datepicker').datepicker({
+      autoclose: true
+      });
+  });
+  {% endblock %}

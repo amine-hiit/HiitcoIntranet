@@ -1,0 +1,92 @@
+<div class="box box-success box-solid flat">
+    <div class="box-header with-border">
+        <h3 class="box-title">Nouvelle formation</h3>
+
+        <div class="box-tools pull-right">
+            <a  class="removing btn btn-box-tool" ></a>
+        </div>
+        <!-- /.box-tools -->
+    </div>
+    <!-- /.box-header -->
+
+
+    <div class="box-body">
+
+        <div class='col-sm-4 col-xs-12'>
+            <div class='form-group'>
+                {{ form_label(item.formation) }}<a data-toggle="modal" class="other-formation" data-target="#formationModal"> autre ?</a>
+
+                {{ form_widget(item.formation, {'attr':{
+                    'class':'form-control formation-select select2',
+                }}) }}
+            </div>
+        </div>
+        <div class='col-sm-4 col-xs-12'>
+            <div class='form-group' >
+                {{ form_label(item.organization) }}
+                {{ form_widget(item.organization, {'attr':{
+                    'class':'form-control'
+                }}) }}
+            </div>
+        </div>
+        <div class='col-sm-4 col-xs-12'>
+            <div class='form-group' >
+                {{ form_label(item.country) }}
+                {{ form_widget(item.country, {'attr':{
+                    'class':'form-control'
+                }}) }}
+            </div>
+        </div>
+        <div class='col-sm-4 col-xs-12'>
+            <div class='form-group'>
+                {{ form_label(item.startDate) }}
+                <div class='input-group date'>
+                    <div class='input-group-addon'>
+                        <i class='fa fa-calendar'></i>
+                    </div>
+                    {{ form_widget(item.startDate, {'attr':{
+
+                        'class':'form-control pull-right datepicker'
+                    }}) }}
+                </div>
+            </div>
+        </div>
+        <div class='col-sm-4 col-xs-12'>
+            <div class='form-group'>
+                {{ form_label(item.endDate) }}
+                <div class='input-group date'>
+                    <div class='input-group-addon'>
+                        <i class='fa fa-calendar'></i>
+                    </div>
+                    {{ form_widget(item.endDate, {'attr':{
+
+                        'class':'form-control pull-right datepicker'
+                    }}) }}
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="modal fade" id="formationModal" >
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <a class="close" data-dismiss="modal">×</a>
+            </div>
+            <div  id="new-formation-label">
+
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-success flat" id="formation-submit">Ajouter</a>
+                <a href="#" class="btn" data-dismiss="modal">Annuler</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+

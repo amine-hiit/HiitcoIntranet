@@ -15,6 +15,8 @@ class EmployeeFormationRepository extends \Doctrine\ORM\EntityRepository
         $qb
             ->where('e.employee = :employeeId')
             ->setParameter('employeeId',  $employee->getId())
+            ->orderBy('e.startDate','DESC')
+
         ;
 
         return $qb
