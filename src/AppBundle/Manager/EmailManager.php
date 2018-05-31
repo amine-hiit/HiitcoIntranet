@@ -18,23 +18,16 @@ class EmailManager
 {
 
     /**
-     * @var EntityManagerInterface
-     */
-    private $em;
-
-    /**
      * @var ContainerInterface
      */
     private $container;
 
     /**
      * EmailManager constructor.
-     * @param EntityManagerInterface $em
      * @param ContainerInterface $container
      */
-    public function __construct(EntityManagerInterface $em, ContainerInterface $container)
+    public function __construct( ContainerInterface $container)
     {
-        $this->em = $em;
         $this->container = $container;
     }
 
