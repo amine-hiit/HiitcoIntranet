@@ -49,6 +49,28 @@ class Employee extends BaseUser
     private $lastName;
 
     /**
+     * @var string
+     * @ORM\Column(name="civility" , type="string", nullable=true)
+     */
+    private $civility;
+
+    /**
+     * @return string
+     */
+    public function getCivility()
+    {
+        return $this->civility;
+    }
+
+    /**
+     * @param string $civility
+     */
+    public function setCivility($civility)
+    {
+        $this->civility = $civility;
+    }
+
+    /**
      * @var \DateTime
      * @ORM\Column(name="birthday" , type="date", nullable=true)
      */
