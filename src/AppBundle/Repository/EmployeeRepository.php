@@ -2,6 +2,9 @@
 
 namespace AppBundle\Repository;
 
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
+
 /**
  * AvatarRepository
  *
@@ -10,4 +13,63 @@ namespace AppBundle\Repository;
  */
 class EmployeeRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findByRole($role)
+    {
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select('u')
+            ->from($this->_entityName, 'u')
+            ->where('u.roles LIKE :roles')
+            ->setParameter('roles', '%"'.$role.'"%');
+
+        return $qb->getQuery()->getResult();
+    }
+
+
+    public function findByRoles($roles)
+    {
+
+        $qb = $this->_em->createQueryBuilder();
+        $i = 0;
+        $query = '';
+        foreach ($roles as $role)
+        {
+            if ($i == count($roles)-1)
+            $query .= 'u.roles LIKE :role'.$i.' ';
+        else
+            $query .= 'u.roles LIKE :role'.$i.' OR ';
+            $i++;
+        }
+
+        $qb->select('u')
+            ->from($this->_entityName, 'u')
+            ->where($query);
+        $i = 0 ;
+        foreach ($roles as $role)
+        {
+            $qb->setParameter('role'.$i, '%"'.$role.'"%');
+            $i++;
+        }
+
+
+        return
+            $qb->getQuery()->getResult();
+    }
+
+
+
+    public function findEmployeeByToken($token)
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->where('u.confirmationToken = :token')
+            ->setParameter('token', $token);
+
+        try{
+            $result = $qb
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $nure){
+        }
+
+        return $result;
+    }
 }

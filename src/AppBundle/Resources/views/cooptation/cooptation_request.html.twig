@@ -1,0 +1,168 @@
+{% extends "default/layout.html.twig" %}
+
+{% set title = "Demande de cooptation" %}
+{% set profile = "profile" %}
+
+{% block stylesheet %}
+
+    <link rel="stylesheet" href="{{ asset('intra/css/file-upload.css')}}">
+
+    <style>
+
+
+        @media screen and (min-width: 768px) {
+
+        }
+
+        /*upload file*/
+        .upload-btn-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .btn-upload {
+            border: 1px solid gray;
+            color: gray;
+            background-color: white;
+            padding: 8px 20px;
+            border-radius: 0 px;
+            font-size: 12px;
+        }
+
+        .upload-btn-wrapper input[type=file] {
+            border: 1px solid gray;
+            font-size: 100px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+        }
+
+        /* Hide all steps by default: */
+        .tab {
+            display: none;
+        }
+        button:hover {
+            opacity: 0.8;
+        }
+
+        /* Make circles that indicate the steps of the form: */
+        .step {
+            height: 15px;
+            width: 15px;
+            margin: 0 2px;
+            background-color: #bbbbbb;
+            border: none;
+            border-radius: 50%;
+            display: inline-block;
+            opacity: 0.2;
+        }
+        .step.active {
+            opacity: 1;
+        }
+
+        /* Mark the steps that are finished and valid: */
+        .step.finish {
+            background-color: #c9d5ea;
+        }
+
+        /* if the input is invalid */
+        input.invalid {
+            background-color: #ffdddd;
+        }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Demande de cooptation
+            <small></small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i> Espace RH</a></li>
+            <li><a href="#">Cooptations</a></li>
+            <li><a href="#">Demander cooptation</a></li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="col-sm-12 col-xs-12 ">
+            <div class="box box-info">
+                {{ form_start(form) }}
+                <div class="box-header with-border">
+                    <div class="box-header">
+                        {% if is_granted('ROLE_HR') %}
+                        <center>
+                            <a type="button" class="btn btn-default btn-flat disabled" href="/intranet/cooptation-request">   Demander cooptation       </a>
+                            <a type="button" class="btn btn-default btn-flat " href="/intranet/hrm/cooptations">  Liste des cooptations   </a>
+                        </center>
+                        {% endif %}
+                    </div>
+
+                </div>
+                <div class="box-body">
+                    <div class="col-sm-12 col-xs-12">
+                        <div class="form-group" >
+                            {{ form_label(form.name) }}
+                            {{ form_widget(form.name, {'attr':{
+
+                                'class':'form-control'
+                            }}) }}
+                        </div>
+                        <div class="form-group" >
+                            {{ form_label(form.phoneNumber) }}
+                            {{ form_widget(form.phoneNumber, {'attr':{
+
+                                'class':'form-control'
+                            }}) }}
+                        </div>
+                        <div class="form-group" >
+                            {{ form_label(form.email) }}
+                            {{ form_widget(form.email, {'attr':{
+
+                                'class':'form-control'
+                            }}) }}
+                        </div>
+                        <div class="form-group" >
+                            {{ form_label(form.profil) }}
+                            {{ form_widget(form.profil, {'attr':{
+
+                                'class':'form-control'
+                            }}) }}
+                        </div>
+                        <div class="form-group" >
+                            <div class="file-upload-box js">
+                                {% form_theme form 'form/file.html.twig' %}
+                                {{ form_widget(form.resumee) }}
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <div class="col-sm-12 col-xs-12">
+
+                        <input type="submit" class="btn bg-navy btn-flat pull-right" value="Envoyer" />
+
+                    </div>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </section>{% endblock %}
+
+{% block script %}
+    {# <script src="{{ asset('https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')}}"></script>#}
+    <script src="{{ asset('intra/js/file-upload.js')}}"></script>
+{% endblock %}
+
+{% block javascript %}
+
+{% endblock %}

@@ -53,6 +53,7 @@ class VacationController extends Controller
      */
     public function showSoldAction(Request $request)
     {
+
         $employee = $this->get('security.token_storage')->getToken()->getUser();
         $vm = $this->get('app.vacation.manager');
         $soldAfterAppovingRequestes = $vm->calculateVacationBalance($employee, true);
@@ -69,9 +70,6 @@ class VacationController extends Controller
     public function approveListAction(Request $request)
     {
 
-
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-
         $vm = $this->get('app.vacation.manager');
         $listVacation = $vm->findAll();
         return $this->render('@App/vacation/requests.html.twig', array(
@@ -85,6 +83,8 @@ class VacationController extends Controller
      */
     public function myListAction(Request $request)
     {
+
+
 
 
         $user = $this->get('security.token_storage')->getToken()->getUser();
@@ -110,14 +110,12 @@ class VacationController extends Controller
 
         if ($this->get('security.authorization_checker')->isGranted('ROLE_DIRECTOR')) {
             $vm->adminValidation($vacation, $approval, $refuseReason);
-
         }
 
         else if ($this->get('security.authorization_checker')->isGranted('ROLE_HR')) {
             $vm->hrmValidation($vacation, $approval, $refuseReason);
         }
 
-        $vm->flush();
         return $this->redirect('/intranet/hrm/vacation-requests');
     }
 }

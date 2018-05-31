@@ -23,6 +23,8 @@ class EmployeeType extends AbstractType
         $builder
             ->add('firstName',TextType::class, array(
                 'required' => true))
+            ->add('username',TextType::class, array(
+                'disabled' => true))
             ->add('lastName',TextType::class, array(
                 'required' => true))
 

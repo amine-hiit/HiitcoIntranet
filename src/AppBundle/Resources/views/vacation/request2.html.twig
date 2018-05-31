@@ -69,23 +69,16 @@
                     <div class="col-sm-12 col-xs-12">
                         <div id="periode" class="hidden">
                             <div class="row">
-
-                                <div class="col-sm-6 col-xs-12">
-
-                                    <div class="form-group" >
-                                        <label class="spc"> Période : </label>
-                                        <label  class="spc" >
+                                <div class="form-group col-sm-6 col-xs-12">
+                                        <label class=" col-xs-12 col-sm-3">Durée:</label>
+                                        <label  class=" col-xs-12 col-sm-5" >
                                             <input type="radio" class = "periode" name="periode" value="one-day" />  Une journée
                                         </label>
-
-                                        <label   class="spc">
+                                        <label   class=" col-xs-12 col-sm-4">
                                             <input type="radio" class = "periode" name="periode" value="more-than-one-day" checked/>  Ou plus
                                         </label>
-
-                                    </div>
                                 </div>
                             </div>
-
                         </div>
                         <div class="row">
                             <div class="col-sm-6 col-xs-12">
@@ -117,11 +110,12 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-6 col-xs-12 "><br/><br/>
-                                <div class="form-group one-day hidden" >
-                                        <div class="form-group">
-                                            {{ form_widget(form.dayPeriod) }}
-                                        </div>
+                            <div class="form-group one-day hidden col-sm-6 col-xs-12 ">
+                                <label>
+                                    Période
+                                </label>
+                                <div class="form-group">
+                                    {{ form_widget(form.dayPeriod) }}
                                 </div>
                             </div>
                         </div>

@@ -32,7 +32,12 @@ services:
     app.vacation.manager:
         class: 'AppBundle\Manager\VacationManager'
         public: true
-        arguments: ['@doctrine.orm.entity_manager']
+        arguments: ['@doctrine.orm.entity_manager','@app.notification.manager','@app.email.manager']
+
+    app.notification.manager:
+        class: 'AppBundle\Manager\NotificationManager'
+        public: true
+
 
     # add more services, or override services that need manual wiring
     # AppBundle\Service\ExampleService:
@@ -43,15 +48,23 @@ services:
         class: 'AppBundle\File\Manager\ExcelManager'
         public: true
 
+    app.cooptation.manager:
+        class: 'AppBundle\Manager\CooptationManager'
+        public: true
+
     app.employee.manager:
         class: 'AppBundle\Manager\EmployeeManager'
         public: true
-        arguments: ['@doctrine.orm.entity_manager']
 
     app.employee_formation.manager:
         class: 'AppBundle\Manager\EmployeeFormationManager'
         public: true
         arguments: ['@doctrine.orm.entity_manager']
+
+    app.email.manager:
+        class: 'AppBundle\Manager\EmailManager'
+        public: true
+        arguments : ['@service_container']
 
     employee.subscriber:
         class: 'AppBundle\EventListener\EmployeeSubscriber'

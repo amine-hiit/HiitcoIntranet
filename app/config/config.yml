@@ -32,7 +32,7 @@ framework:
     php_errors:
         log: true
     templating:
-        engines: ['twig']    
+        engines: ['twig']
 
 # Twig Configuration
 twig:
@@ -69,6 +69,8 @@ swiftmailer:
     transport: '%mailer_transport%'
     host: '%mailer_host%'
     username: '%mailer_user%'
+    encryption: '%mailer_enc%'
+    port: '%mailer_port%'
     password: '%mailer_password%'
     spool: { type: memory }
 
