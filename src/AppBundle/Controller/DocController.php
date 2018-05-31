@@ -72,4 +72,13 @@ class DocController extends Controller
         $dm->update($docRequest);
         return $this->redirect('/intranet/doc-requests-list');
     }
+
+    /**
+     * @Route("/intranet/validate-doc-request", name="validate-doc-request")
+     */
+    public function generatePdf(Request $request)
+    {
+        $pm = $this->get('app.pdf.manager');
+
+    }
 }

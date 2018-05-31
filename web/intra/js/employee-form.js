@@ -142,8 +142,8 @@ jQuery(document).ready(function () {
 
         $collectionHolder = $('#formation-fields-list');
 
-        $collectionHolder.find('.formation').each(function() {
-            if (!$(this).hasClass("dirty")) {
+        $collectionHolder.find('.formation').each(function(index) {
+            if (!$(this).hasClass("dirty") && index != 0) {
                 addTagFormDeleteLink($(this));
             }
         });

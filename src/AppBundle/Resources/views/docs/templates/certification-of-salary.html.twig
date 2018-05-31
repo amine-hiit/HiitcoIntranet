@@ -1,0 +1,74 @@
+<style>
+    @element 'div'{
+    $this{
+        padding: 1cm;
+        height: eval("offsetWidth*1.4142/(getAttribute('width')/getAttribute('height'))")px;
+    }
+    }
+    .footer {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        padding: 1rem;
+        background-color: #74a6f7;
+        color: #fff;
+        text-align: center;
+    }
+    body {
+        position: relative;
+        margin: 0;
+        padding-bottom: 6rem;
+        min-height: 100%;
+    }
+</style>
+<script src=http://elementqueries.com/EQCSS.js></script>
+
+
+<div width=50 height=50>
+
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p></p>
+    <table border="0" width="100%" cellspacing="0" cellpadding="9">
+        <tbody>
+        <tr style="height: 160px;" valign="TOP">
+            <td style="height: 160px; width: 37%;">&nbsp;<img src="ok/ok/output_html_cc6646f2eb5c31a7.png" width="100%" /></td>
+            <td style="height: 160px; width: 32%;">
+                <p align="CENTER">&nbsp;</p>
+                <p ><span style="font-size: 12pt;"><strong>Certificat de Travail</strong></span></p>
+            </td>
+            <td style="height: 160px; width: 31%;">
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <p><span >Date : {{ "now"|date("d/m/Y") }}</span></p>
+                <p><span>Soci&eacute;t&eacute; : HiiT Consulting</span></p>
+                <p><span >Page 1 sur 1</span></p>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p><span style="font-size: 12pt;">Je soussign&eacute;, M. Hicham EL FASSI, G&eacute;rant de la soci&eacute;t&eacute; HiiT Consulting, domicili&eacute;e au 6 Rue Ahmed EL BRIHI, Ben Jdia, Casablanca, </span></p>
+    <p>&nbsp;</p>
+    <p><a name="_GoBack"></a><span style="font-size: 12pt;">certifie par la pr&eacute;sente que {{ employee.civility }} {{ employee.firstName }} {{ employee.lastName|upper }},</span></p>
+    <p>&nbsp;</p>
+    <p><span style="font-size: 12pt;">Est sous contrat CDI aupr&egrave;s de notre firme depuis le {{ employee.startDate|date("d/m/Y") }}</span></p>
+    <p>&nbsp;</p>
+    <p><span style="font-size: 12pt;">{% if  employee.civility == 'M.' %}Il {% else %}Elle {% endif %} est employé{% if  employee.civility != 'M.' %}e{% endif %} en qualit&eacute; de {{ employee. }}.</span></p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p align="RIGHT">&nbsp;</p>
+    <p align="RIGHT"><span style="font-size: 12pt;">A Casablanca, le 18 Mai 2018.</span></p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p><span style="font-size: 12pt;"><strong>Signature et Cachet de l&rsquo;entreprise</strong></span></p>
+    <p>&nbsp;</p>
+</div>
+<div class="footer">
+    <p>6 Rue Ahmed El Brihi, ben Jdia, Casablanca | contact@hiitconsulting.com | (+212)6 00 06-97-74</p>
+</div>
