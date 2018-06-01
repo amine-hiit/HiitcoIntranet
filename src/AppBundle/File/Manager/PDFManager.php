@@ -2,38 +2,58 @@
 /**
  * Created by PhpStorm.
  * User: amine
- * Date: 5/29/18
- * Time: 10:49 AM
+ * Date: 5/31/18
+ * Time: 1:27 PM
  */
 
 namespace AppBundle\File\Manager;
 
 use Knp\Snappy\Pdf;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Templating\EngineInterface;
 
 class PDFManager
 {
     /**
-     * @var ContainerInterface
+     * @var Pdf
      */
-    private $container;
+    private $pm;
+
+    /**
+     * @var EngineInterface
+     */
+    private $tm;
 
     /**
      * PDFManager constructor.
-     * @param ContainerInterface $container
+     * @param Pdf $pm
+     * @param EngineInterface $tm
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(Pdf $pm, EngineInterface $tm)
     {
-        $this->container = $container;
+        $this->pm = $pm;
+        $this->tm = $tm;
     }
 
-
-    public function makePDF(array $strings, $template)
+    public function generate()
     {
+        $array = [
+            'employee' => [
+                'civility' => 'M.',
+                'firstName' => 'fn',
+                'lastName' => 'ln',
+                'startDate' => new \DateTime('now'),
+                'currentPosition' => 'position'
+            ]
+        ];
+        try {
+            $this->pm->generateFromHtml(
+                $this->tm->render('@App/docs/templates/certification-of-salary.html.twig', $array)
+                ,
+                'test.pdf'
+            );
+        } catch (\Exceptione $e){
 
-        $pdf = $this->container->get('app.pdf.manager');
-        $pdf->generateFromHtml($template);
+        }
+
     }
-
 }
