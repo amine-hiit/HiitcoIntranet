@@ -81,9 +81,8 @@ class NotificationManager
     }
 
     /** create message from message structure */
-    public function generateNotification($notificationTypeLabel, $args, $url, $employees)
+    public function generateNotification($notificationTypeLabel, array $args = null, $url, $employees)
     {
-
         $notification = new Notification();
         $notificationType = $this->findOneByLabel($notificationTypeLabel);
         $notification->setMessage($this->createMessage($notificationTypeLabel, $args));

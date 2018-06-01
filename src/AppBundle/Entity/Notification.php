@@ -229,11 +229,20 @@ class Notification
      */
     public function setEmployeeNotifications($employees)
     {
-        foreach ($employees as $employee){
+
+        if ($employees instanceof Employee){
             $employeeNotification = new EmployeeNotification();
-            $employeeNotification->setEmployee($employee);
+            $employeeNotification->setEmployee($employees);
             $employeeNotification->setNotification($this);
             $this->addEmployeeNotification($employeeNotification);
+        }
+        else {
+            foreach ($employees as $employee) {
+                $employeeNotification = new EmployeeNotification();
+                $employeeNotification->setEmployee($employee);
+                $employeeNotification->setNotification($this);
+                $this->addEmployeeNotification($employeeNotification);
+            }
         }
     }
 

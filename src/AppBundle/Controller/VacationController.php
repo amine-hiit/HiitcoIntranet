@@ -26,21 +26,15 @@ class VacationController extends Controller
 
         if ($request->isMethod('POST' ) && $form->handleRequest($request)) {
             if ($form->isValid()) {
-                $startDate = $form['startDate']->getData();
-                $dayPeriod = $form['dayPeriod']->getData();
-
-                if ( Vacation::ALL_DAY !== $dayPeriod)
-                    $vacation->setEndDate($startDate);
-
                 $vacation->setEmployee($this->getUser());
-
-                $vm->persist($vacation);
-                $vm->flush();
-
+                $vm->request($vacation);
                 return $this->redirect($this->get('router')
                     ->generate('my_vacations_requests'));
             }
         }
+
+
+
         return $this->render('@App/vacation/request2.html.twig', array(
             'form' => $form->createView(),
         ));
