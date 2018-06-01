@@ -12,7 +12,7 @@ jQuery(document).ready(function () {
         addFormation(this,e);
         requestForm();
 
-    });
+        });
 
 
     jQuery('.add-language-collection-widget').click(function (e) {

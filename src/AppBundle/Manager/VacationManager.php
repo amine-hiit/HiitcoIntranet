@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use AppBundle\Entity\Vacation;
 use AppBundle\Entity\Employee;
 use PhpOffice\PhpSpreadsheet\Calculation\DateTime;
+use Psr\Log\LoggerInterface;
 
 
 class VacationManager
@@ -22,6 +23,8 @@ class VacationManager
     const ADMIN_NOTIF_REFUSE = 'admin_notification_vacation_refuse';
 
     const EMPLOYEE_NOTIF_HRM_ACCEPTATION = 'employee_notification_vacation_rhm_acceptation';
+    const EMPLOYEE_NOTIF_ADMIN_ACCEPTATION = 'employee_notification_vacation_admin_acceptation';
+
     const VACATION_HRM_REFUSE_NOTIF = 'vacation_hrm_refuse';
 
     /**
@@ -39,22 +42,28 @@ class VacationManager
      */
     private $emailManager;
 
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
     /**
      * VacationManager constructor.
      * @param EntityManagerInterface $em
      * @param NotificationManager $nm
      * @param EmailManager $emailManager
+     * @param LoggerInterface $logger
      */
     public function __construct(
         EntityManagerInterface $em,
         NotificationManager $nm,
-        EmailManager $emailManager
-    )
-    {
-        $this->emailManager = $emailManager;
+        EmailManager $emailManager,
+        LoggerInterface $logger
+    ) {
         $this->em = $em;
         $this->nm = $nm;
+        $this->emailManager = $emailManager;
+        $this->logger = $logger;
     }
 
 
@@ -102,44 +111,86 @@ class VacationManager
 
     public function adminValidation(Vacation &$vacation, $isValid, $refuseReason)
     {
+        $admins = $this->em->getRepository('AppBundle:Employee')
+            ->findByRole(Employee::ROLE_ADMIN);
+        $employee = $vacation->getEmployee();
+
         if ('accepter' === $isValid) {
 
             $vacation->setValidationStatus('2');
             $vacation->setRefuseReason('');
 
+            try {
+                $this->generateNotification(
+                    self::EMPLOYEE_NOTIF_ADMIN_ACCEPTATION,
+                    [],
+                    'url',
+                    $employee
+                );
 
-            $notifConcernedEmployees = $this->em->getRepository('AppBundle:Employee')
-                ->findByRole(Employee::ROLE_ADMIN);
-
-            $this->generateNotification(self::ADMIN_NOTIF_HRM_ACCEPTATION,
-                array('le service rh'), 'url', $notifConcernedEmployees);
-
-        } elseif ('refuser' === $isValid) {
+                $this->generateNotification(
+                    self::ADMIN_NOTIF_HRM_ACCEPTATION,
+                    array('le service rh'),
+                    'url',
+                    $admins
+                );
+            }catch (\Exception $exception){
+                $this->logger->error($exception->getMessage());
+            }
+        }
+        elseif ('refuser' === $isValid) {
             $vacation->setValidationStatus('-1');
             $vacation->setRefuseReason($refuseReason);
-            $this->generateNotification(self::ADMIN_NOTIF_HRM_ACCEPTATION, array('le directeur'));
+            try {
+                $this->generateNotification(
+                    self::EMPLOYEE_NOTIF_REFUSE,
+                    [],
+                    'url',
+                    $employee);
+            }catch (\Exception $exception){
+                $this->logger->error($exception->getMessage());
+            }
 
         }
+
         $this->flush();
     }
+
+
+
+
+
 
     public function hrmValidation(Vacation &$vacation, $isValid, $refuseReason)
     {
         $admins = $this->em->getRepository('AppBundle:Employee')
             ->findByRole(Employee::ROLE_ADMIN);
 
-        $concernedEmployees = $this->em->getRepository('AppBundle:Employee')
-            ->findBy(['id'=> $vacation->getEmployee()->getId()]);
+        $employee = $vacation->getEmployee();
 
         if ('accepter' === $isValid) {
             $vacation->setValidationStatus('1');
             $vacation->setRefuseReason('');
 
-            $this->generateNotification(self::ADMIN_NOTIF_HRM_ACCEPTATION,
-                ['le service rh'], 'url', $admins);
 
-            $this->generateNotification(self::EMPLOYEE_NOTIF_HRM_ACCEPTATION,
-                ['le service rh'], 'url', $concernedEmployees);
+            try {
+
+                $this->generateNotification(
+                    self::EMPLOYEE_NOTIF_HRM_ACCEPTATION,
+                    ['Le responsable rh'],
+                    'url',
+                    $employee
+                );
+                $this->generateNotification(
+                    self::ADMIN_NOTIF_HRM_ACCEPTATION,
+                    ['Le responsable rh'],
+                    'url',
+                    $admins
+                );
+            }catch (\Exception $exception){
+                $this->logger->error($exception->getMessage());
+            }
+
 
 
         }
@@ -150,8 +201,17 @@ class VacationManager
 
             $this->generateNotification(self::ADMIN_NOTIF_REFUSE,[], 'url', $admins);
 
-            $this->generateNotification(self::EMPLOYEE_NOTIF_REFUSE,
-                [], 'url', $concernedEmployees);
+            try {
+
+                $this->generateNotification(
+                    self::EMPLOYEE_NOTIF_REFUSE,
+                    [''],
+                    'url',
+                    $employee
+                );
+            }catch (\Exception $exception){
+                $this->logger->error($exception->getMessage());
+            }
         }
         $this->flush();
     }
@@ -202,7 +262,9 @@ class VacationManager
         $endDate->modify('+1 day');
         //because the end date is not included
 
-        $period = new \DatePeriod($startDate, new \DateInterval('P1D'), $endDate);
+        $period = new \DatePeriod($startDate,
+            new \DateInterval('P1D'),
+            $endDate);
 
         foreach ($period as $day) {
 
@@ -274,9 +336,42 @@ class VacationManager
         }
     }
 
-    public function generateNotification($notifType, $args, $url, $employees)
+    public function generateNotification($notifType,array $args = null, $url, $employees)
     {
         $this->nm->generateNotification($notifType, $args, $url, $employees);
+    }
+
+    public function request(Vacation &$vacation)
+    {
+        $startDate = $vacation->getStartDate();
+        $dayPeriod = $vacation->getDayPeriod();
+
+        if ( Vacation::ALL_DAY !== $dayPeriod)
+            $vacation->setEndDate($startDate);
+
+        $notifConcerned = [];
+        $notifConcerned = array_merge($notifConcerned,$this->em->getRepository('AppBundle:Employee')
+            ->findByRole(Employee::ROLE_HR));
+        $notifConcerned = array_merge($notifConcerned,$this->em->getRepository('AppBundle:Employee')
+            ->findByRole(Employee::ROLE_ADMIN));
+
+
+
+        try {
+
+            $this->generateNotification(
+                self::VACATION_REQUEST_NOTIF,
+                array($vacation->getEmployee()->getUsername()),
+                'url',
+                $notifConcerned
+            );
+        }catch (\Exception $exception){
+            $this->logger->error($exception->getMessage());
+        }
+
+
+        $this->persist($vacation);
+        $this->flush();
     }
 
     public function persist($vacation)

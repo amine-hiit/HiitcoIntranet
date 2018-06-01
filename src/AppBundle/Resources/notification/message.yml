@@ -14,4 +14,6 @@ admin_notification_vacation_hrm_acceptation: %s a accepté une demande de congé
 
 admin_notification_vacation_refuse: le service rh a refusé une demande de congé
 
-cooptation_request: %s a  recommander une personne
+vacation_request: %s a demandé un congé
+
+cooptation_request: %s a  recommandé une personne

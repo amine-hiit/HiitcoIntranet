@@ -41,6 +41,14 @@ class EmployeeType extends AbstractType
                     'Divorcé' => 'Divorcé',
                 ),
             ))
+            ->add('civility',ChoiceType::class, array(
+                'choices'  => array(
+                    'Choisir' => '' ,
+                    'M.' => 'M.',
+                    'Mme' => 'Mme',
+                    'Melle' => 'Melle',
+                ),
+            ))
             ->add('dependentChild', IntegerType::class ,array(
                 'attr' => array('min' => 0)))
             ->add('cnssNumber')
