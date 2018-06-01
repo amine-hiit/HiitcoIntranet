@@ -44,7 +44,7 @@ class VacationPeriodeValidator extends ConstraintValidator
         $vacationDuration = $this->vm->calculateDuration($object);
         $vacationBalance = $this->vm->calculateVacationBalance(
             $employee,
-            false
+            true
         );
         $daysUntilStartDate = $this->vm
             ->calculateDaysUntilStartDate($object);
