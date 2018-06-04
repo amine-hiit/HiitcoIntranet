@@ -18,6 +18,8 @@ class Document
     const DOC_READY = 'document  prêt';
     const CERTIFICATION_OF_SALARY = 'attestation de salaire';
     const ATTESTATION_OF_EMPLOYMENT   = 'attestation de travail';
+    const CERTIFICATION_OF_SALARY_VIEW = 'some view';
+    const ATTESTATION_OF_EMPLOYMENT_VIEW   = '@App/docs/templates/certification-of-salary.html.twig';
 
 
     /**
@@ -56,6 +58,13 @@ class Document
      * @ORM\JoinColumn(name ="employee_id",referencedColumnName="id", nullable=false)
      */
     private $employee;
+
+    /**
+     * @var Pdf
+     * @ORM\ManyToOne(targetEntity="Pdf", cascade={"persist"})
+     * @ORM\JoinColumn(name ="pdf_id",referencedColumnName="id", nullable=true)
+     */
+    private $pdf;
 
 
     /**
@@ -175,5 +184,29 @@ class Document
     public function getEmployee()
     {
         return $this->employee;
+    }
+
+    /**
+     * Set pdf.
+     *
+     * @param \AppBundle\Entity\Pdf|null $pdf
+     *
+     * @return Document
+     */
+    public function setPdf(\AppBundle\Entity\Pdf $pdf = null)
+    {
+        $this->pdf = $pdf;
+
+        return $this;
+    }
+
+    /**
+     * Get pdf.
+     *
+     * @return \AppBundle\Entity\Pdf|null
+     */
+    public function getPdf()
+    {
+        return $this->pdf;
     }
 }

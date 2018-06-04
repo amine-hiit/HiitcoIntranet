@@ -16,6 +16,7 @@ class DocumentRepository extends \Doctrine\ORM\EntityRepository
     {
         return  $this->createQueryBuilder('d')
             ->where('d.employee = :employee')
+            ->orderBy('d.requestDate ', 'DESC')
             ->setParameter('employee', $employee)
             ->getQuery()
             ->getResult();

@@ -226,6 +226,9 @@
 
 
     <!-- Content Wrapper. Contains page content -->
+
+    <!-- /.content-wrapper -->
+
     <div class="content-wrapper">
 
         {% if  not app.user.valid %}
@@ -233,13 +236,19 @@
                 <a href="/intranet/form"> Veuillez Remplir votre fiche Collaborateur</a>
             </div>
         {% endif %}
+        {% for type, flashes in app.session.flashbag.all %}
+            {% for flash in flashes %}
+                <div class="flat alert alert-{{ type }} fade in">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {{ flash }}
+                </div>
+            {% endfor %}
+        {% endfor %}
 
         {% block content %}
+
         {% endblock %}
     </div>
-
-    <!-- /.content-wrapper -->
-
     <footer class="main-footer">
         <div class="container">
             <p align="center">HiitConsulting | 6, Rue Ahmed El Brihi, ben Jdia, Casablanca | contact@hiitconsulting.com
@@ -275,8 +284,12 @@
 
 <script>
     $(document).ready(function () {
-        $('.sidebar-menu').tree()
+        $('.sidebar-menu').tree();
+
     })
+    setTimeout(function(){
+        $('.alert').fadeOut()
+    }, 5000);
 
     {% block javascript %}
 

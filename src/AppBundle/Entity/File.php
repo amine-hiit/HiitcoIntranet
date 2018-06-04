@@ -92,7 +92,7 @@ abstract class File
      */
     public function setUrl($url = null)
     {
-        $this->url = url;
+        $this->url = $url;
 
         return $this;
     }
@@ -123,8 +123,6 @@ abstract class File
     {
         $this->file = $file;
     }
-
-
 
     public function upload()
     {

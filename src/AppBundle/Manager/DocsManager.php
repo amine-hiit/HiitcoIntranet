@@ -12,6 +12,8 @@ namespace AppBundle\Manager;
 use AppBundle\Entity\Document;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\UserBundle\Model\User;
+use Symfony\Component\Routing\RouterInterface;
+use Knp\Snappy\Pdf;
 
 class DocsManager
 {
@@ -22,13 +24,28 @@ class DocsManager
     private $em;
 
     /**
+     * @var Pdf
+     */
+    private $pdf;
+
+    /**
+     * @var RouterInterface
+     */
+    private $router;
+
+    /**
      * DocsManager constructor.
      * @param EntityManagerInterface $em
+     * @param Pdf $pdf
+     * @param RouterInterface $router
      */
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, Pdf $pdf, RouterInterface $router)
     {
         $this->em = $em;
+        $this->pdf = $pdf;
+        $this->router = $router;
     }
+
 
     public function findAll()
     {
@@ -56,5 +73,21 @@ class DocsManager
         $this->em->persist($docRequest);
         $this->em->flush();
     }
+
+/*
+    public function generatePdfFromUrl($route,$output)
+    {
+        dump($PHPSESSID_KEY );dump( $PHPSESSID);die;
+
+        $pdf = $this->pdf;
+        $pdf->generate($this->router->generate($route, [], 0),
+            $output,
+            array(
+                'cookie' => array(
+                    $PHPSESSID_KEY => $PHPSESSID
+                ))
+        );
+    }
+*/
 
 }

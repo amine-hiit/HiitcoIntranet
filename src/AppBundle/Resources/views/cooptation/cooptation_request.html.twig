@@ -5,7 +5,7 @@
 
 {% block stylesheet %}
 
-    <link rel="stylesheet" href="{{ asset('intra/css/file-upload.css')}}">
+    <link rel="stylesheet" href="{{ asset('intra/css/file-upload.css') }}">
 
     <style>
 
@@ -26,7 +26,7 @@
             color: gray;
             background-color: white;
             padding: 8px 20px;
-            border-radius: 0 px;
+            border-radius: 0px;
             font-size: 12px;
         }
 
@@ -43,6 +43,7 @@
         .tab {
             display: none;
         }
+
         button:hover {
             opacity: 0.8;
         }
@@ -58,6 +59,7 @@
             display: inline-block;
             opacity: 0.2;
         }
+
         .step.active {
             opacity: 1;
         }
@@ -79,6 +81,7 @@
 
     <!-- Content Header (Page header) -->
     <section class="content-header">
+
         <h1>
             Demande de cooptation
             <small></small>
@@ -92,77 +95,83 @@
 
     <!-- Main content -->
     <section class="content">
-        <div class="col-sm-12 col-xs-12 ">
-            <div class="box box-info">
-                {{ form_start(form) }}
-                <div class="box-header with-border">
-                    <div class="box-header">
-                        {% if is_granted('ROLE_HR') %}
+    <div class="col-sm-12 col-xs-12 ">
+        <div class="box box-info">
+            {{ form_start(form) }}
+            <div class="box-header with-border">
+                <div class="box-header">
+                    {% if is_granted('ROLE_HR') %}
                         <center>
-                            <a type="button" class="btn btn-default btn-flat disabled" href="/intranet/cooptation-request">   Demander cooptation       </a>
-                            <a type="button" class="btn btn-default btn-flat " href="/intranet/hrm/cooptations">  Liste des cooptations   </a>
+                            <a type="button" class="btn btn-default btn-flat disabled"
+                               href="/intranet/cooptation-request"> Demander cooptation </a>
+                            <a type="button" class="btn btn-default btn-flat " href="/intranet/hrm/cooptations"> Liste
+                                des cooptations </a>
                         </center>
-                        {% endif %}
-                    </div>
-
+                    {% endif %}
                 </div>
-                <div class="box-body">
-                    <div class="col-sm-12 col-xs-12">
-                        <div class="form-group" >
-                            {{ form_label(form.name) }}
-                            {{ form_widget(form.name, {'attr':{
 
-                                'class':'form-control'
-                            }}) }}
-                        </div>
-                        <div class="form-group" >
-                            {{ form_label(form.phoneNumber) }}
-                            {{ form_widget(form.phoneNumber, {'attr':{
-
-                                'class':'form-control'
-                            }}) }}
-                        </div>
-                        <div class="form-group" >
-                            {{ form_label(form.email) }}
-                            {{ form_widget(form.email, {'attr':{
-
-                                'class':'form-control'
-                            }}) }}
-                        </div>
-                        <div class="form-group" >
-                            {{ form_label(form.profil) }}
-                            {{ form_widget(form.profil, {'attr':{
-
-                                'class':'form-control'
-                            }}) }}
-                        </div>
-                        <div class="form-group" >
-                            <div class="file-upload-box js">
-                                {% form_theme form 'form/file.html.twig' %}
-                                {{ form_widget(form.resumee) }}
-
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="box-footer">
-                    <div class="col-sm-12 col-xs-12">
-
-                        <input type="submit" class="btn bg-navy btn-flat pull-right" value="Envoyer" />
-
-                    </div>
-                </div>
-                {{ form_end(form) }}
             </div>
+            <div class="box-body">
+                <div class="col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        {{ form_label(form.name) }}
+                        {{ form_widget(form.name, {'attr':{
+
+                            'class':'form-control'
+                        }}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.phoneNumber) }}
+                        {{ form_widget(form.phoneNumber, {'attr':{
+
+                            'class':'form-control'
+                        }}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.email) }}
+                        {{ form_widget(form.email, {'attr':{
+
+                            'class':'form-control'
+                        }}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.profil) }}
+                        {{ form_widget(form.profil, {'attr':{
+
+                            'class':'form-control'
+                        }}) }}
+                    </div>
+                    <div class="form-group">
+                        <div class="file-upload-box js">
+                            {% form_theme form 'form/file.html.twig' %}
+                            {{ form_widget(form.resumee) }}
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="box-footer">
+                <div class="col-sm-12 col-xs-12">
+
+                    <input type="submit" class="btn bg-navy btn-flat pull-right" value="Envoyer"/>
+
+                </div>
+            </div>
+            {{ form_end(form) }}
         </div>
+    </div>
     </section>{% endblock %}
 
 {% block script %}
     {# <script src="{{ asset('https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')}}"></script>#}
-    <script src="{{ asset('intra/js/file-upload.js')}}"></script>
+    <script src="{{ asset('intra/js/file-upload.js') }}"></script>
 {% endblock %}
 
 {% block javascript %}
+
+setTimeout(function () {
+    $('.alert').fadeOut()
+}, 5000);
 
 {% endblock %}

@@ -32,6 +32,13 @@
             <div class="col-xs-12">
                 <div class="box">
                     <div class="box-header">
+                        <center>
+                            <a href="/intranet/hrm/docs" type="button" class="btn btn-default btn-flat ">   Demander document   </a>
+                            <a href="/intranet/my-docs" type="button " class="btn btn-default btn-flat "> Mes demandes </a>
+                            {% if is_granted('ROLE_HR') %}
+                                <a type="button" class="btn btn-default btn-flat disabled" href="/intranet/hrm/docs"> Liste des demandes   </a>
+                            {% endif %}
+                        </center>
                     </div>
 
 
@@ -65,7 +72,8 @@
                                         </form>
                                     </td>
                                     {% endif %}
-                                    <td></td>
+                                    <td>{% if request.pdf is defined  and request.pdf is not null%}
+                                        <a href="{{ asset(request.pdf.url) }}">{{ request.pdf.name }}</a>{% endif %}</td>
                                 </tr>
                             {% endfor %}
 

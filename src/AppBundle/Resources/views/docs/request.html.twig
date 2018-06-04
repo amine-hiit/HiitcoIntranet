@@ -107,20 +107,21 @@
                 <div class="box-header">
                     <center>
                         <a type="button" class="btn btn-default btn-flat disabled">   Demander document   </a>
-                        <a href="/intranet/docs" type="button" class="btn btn-default btn-flat ">   Mes demandes </a>
+                        <a href="/intranet/my-docs" type="button disabled" class="btn btn-default btn-flat ">   Mes demandes </a>
                         {% if is_granted('ROLE_HR') %}
-                            <a type="button" class="btn btn-default btn-flat " href="/intranet/hrm/vacation-requests">  Liste des demandes   </a>
+                            <a type="button" class="btn btn-default btn-flat " href="/intranet/hrm/docs">  Liste des demandes   </a>
                         {% endif %}
                     </center>
                 </div>
-                <form class="docForm">
-                    <div class="list-group borderless">
-                        <a id="{{ certSalary }}" class="list-group-item borderless">Demander une certifcat de travail</a>
-                        <a id="{{ attEmpl }}" class="list-group-item">Demander une attestation de salaire</a>
-                        <a class="list-group-item">Autre</a>
-                    </div>
-                </form>
-
+                {{ form_start(form) }}
+                <div class="form-group">
+                    {{ form_label(form.type) }}
+                    {{ form_widget(form.type, {'attr':{
+                        'class':'form-control'
+                    }}) }}
+                </div>
+                <input type="submit" class="btn bg-navy btn-flat" value="Demander" style="width: 100%"/>
+                {{ form_end(form) }}
 
             </div>
             <div class="box-footer">
