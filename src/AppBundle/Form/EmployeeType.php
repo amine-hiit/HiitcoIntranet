@@ -72,7 +72,14 @@ class EmployeeType extends AbstractType
                     'CDD' => 'CDD',
                 ),
             ))
-
+            ->add('civility',ChoiceType::class, array(
+                'choices'  => array(
+                    'Choisir' => '' ,
+                    'Mme' => 'Mme',
+                    'Melle' => 'Melle',
+                    'M.' => 'M.',
+                ),
+            ))
             ->add('employee_formations', CollectionType::class, array(
                 'entry_type' => EmployeeFormationType::class,
                 'allow_add' => true,

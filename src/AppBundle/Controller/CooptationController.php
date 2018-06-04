@@ -34,6 +34,7 @@ class CooptationController extends Controller
             if($form->isValid()){
                 $this->getCooptationManager()->uploadCooptation($cooptation);
             }
+            $this->addFlash('success', 'Cooptation bien effectuée');
             return $this->redirect($this->generateUrl('homepage'));
         }
         return $this->render('@App/cooptation/cooptation_request.html.twig', array(

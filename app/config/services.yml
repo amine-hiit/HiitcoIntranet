@@ -64,7 +64,14 @@ services:
     app.email.manager:
         class: 'AppBundle\Manager\EmailManager'
         public: true
-        arguments : ['@service_container']
+
+    app.pdf.manager:
+        class: 'AppBundle\File\Manager\PDFManager'
+        public: true
+
+    app.docs.manager:
+        class: 'AppBundle\Manager\docsManager'
+        public: true
 
     employee.subscriber:
         class: 'AppBundle\EventListener\EmployeeSubscriber'

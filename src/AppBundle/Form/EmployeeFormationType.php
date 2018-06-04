@@ -42,7 +42,6 @@ class EmployeeFormationType extends AbstractType
             ->add('employee')
 
             ->add('formation', EntityType::class, array(
-
                 'class' => 'AppBundle:Formation',
                 'choice_label' => 'fullName',
                 'placeholder' => 'Veuillez selectionner une formation',
