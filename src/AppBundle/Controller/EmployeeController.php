@@ -110,6 +110,7 @@ class EmployeeController extends Controller
         if($request->isMethod('POST'))
         {
             $newPasswordForm->handleRequest($request);
+            $employee->setConfirmationToken(null);
             $employeeManager->updateEmployee($employee);
             return $this->redirectToRoute('homepage');
         }

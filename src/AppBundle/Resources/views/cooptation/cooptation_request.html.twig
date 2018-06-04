@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="{{ asset('intra/css/file-upload.css') }}">
 
     <style>
+        .required:after {
+            content: " *";
+            color: red;
+        }
 
 
         @media screen and (min-width: 768px) {
@@ -142,6 +146,7 @@
                         }}) }}
                     </div>
                     <div class="form-group">
+                        <label for="appbundle_cooptation_phoneNumber" class="required">CV</label>
                         <div class="file-upload-box js">
                             {% form_theme form 'form/file.html.twig' %}
                             {{ form_widget(form.resumee) }}

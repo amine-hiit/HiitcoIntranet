@@ -51,8 +51,12 @@ class EmployeeType extends AbstractType
             ))
             ->add('dependentChild', IntegerType::class ,array(
                 'attr' => array('min' => 0)))
-            ->add('cnssNumber')
-            ->add('phoneNumber')
+            ->add('cnssNumber',TextType::class,array(
+                'required' => true,
+            ))
+            ->add('phoneNumber',TextType::class,array(
+                'required' => true,
+            ))
             ->add('address',TextType::class,array('by_reference' => false))
 
 
@@ -90,6 +94,7 @@ class EmployeeType extends AbstractType
                 'by_reference' => false,
             ))
             ->add('experiences', CollectionType::class, array(
+                'required' => false,
                 'entry_type' => ExperienceType::class,
                 'allow_add' => true,
                 'delete_empty' => true,
@@ -100,6 +105,7 @@ class EmployeeType extends AbstractType
 
             ))
             ->add('employee_languages', CollectionType::class, array(
+
                 'entry_type' => EmployeeLanguageType::class,
                 'allow_add' => true,
                 'delete_empty' => true,
@@ -110,6 +116,7 @@ class EmployeeType extends AbstractType
 
             ))
             ->add('projects', CollectionType::class, array(
+                'required' => false,
                 'entry_type' => ProjectType::class,
                 'allow_add' => true,
                 'delete_empty' => true,
