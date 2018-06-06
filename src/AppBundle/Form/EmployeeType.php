@@ -34,19 +34,11 @@ class EmployeeType extends AbstractType
                 'required' => true))
             ->add('maritalStatus',ChoiceType::class, array(
                 'choices'  => array(
-                    'Choisir' => '' ,
-                    'Célibataire' => 'Célibataire',
-                    'veuf' => 'veuf',
-                    'marié' => 'marié',
-                    'Divorcé' => 'Divorcé',
-                ),
-            ))
-            ->add('civility',ChoiceType::class, array(
-                'choices'  => array(
-                    'Choisir' => '' ,
-                    'M.' => 'M.',
-                    'Mme' => 'Mme',
-                    'Melle' => 'Melle',
+                    'select' => '' ,
+                    'single' => 'Célibataire',
+                    'married' => 'married',
+                    'divorced' => 'divorced',
+                    'widower' => 'widower',
                 ),
             ))
             ->add('dependentChild', IntegerType::class ,array(
@@ -78,10 +70,10 @@ class EmployeeType extends AbstractType
             ))
             ->add('civility',ChoiceType::class, array(
                 'choices'  => array(
-                    'Choisir' => '' ,
-                    'Mme' => 'Mme',
-                    'Melle' => 'Melle',
-                    'M.' => 'M.',
+                    'select' => '' ,
+                    'mme' => 'mme',
+                    'ms' => 'ms',
+                    'mr' => 'mr',
                 ),
             ))
             ->add('employee_formations', CollectionType::class, array(

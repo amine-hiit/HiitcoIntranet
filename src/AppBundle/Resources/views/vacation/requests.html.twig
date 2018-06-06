@@ -81,7 +81,7 @@
                             <tbody>
                             {% for Vacation in listVacation %}
                                 <tr>
-                                    <td>{{ Vacation.type }}</td>
+                                    <td>{{ Vacation.type | trans | capitalize}}</td>
                                     <td>{{ Vacation.employee.userName }}</td>
                                     <td>{{ Vacation.startDate | date("d/m/Y") }}</td>
                                     <td>{{ Vacation.endDate | date("d/m/Y") }}</td>
@@ -131,9 +131,15 @@
 
                                                 {% endif %}
                                             {% elseif Vacation.validationStatus== 2 %}
-                                                <td colspan="2"><span class="label label-success flat">Déjà approuvée</span></td>
+                                                <td colspan="2"><span class="label label-success flat">approuvée</span></td>
                                             {% elseif Vacation.validationStatus== -1 %}
-                                                <td colspan="2"><span class="label label-danger flat ">Déja refusée</span></td>
+                                                {% if Vacation.refuseReason is defined and Vacation.refuseReason is not null%}
+                                                    <td><span class="label label-danger flat ">refusée</span></td>
+                                                    <td> {{ Vacation.refuseReason }}</td>
+
+                                                {% else %}
+                                                    <td colspan="2"><span class="label label-danger flat ">refusée</span></td>
+                                                {% endif %}
                                             {% endif %}
                                 </tr>
                             {% endfor %}
