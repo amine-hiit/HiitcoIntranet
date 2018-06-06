@@ -13,7 +13,6 @@ marital.status: état matrimonial
 civility: civilité
 dependent.child: enfants dépendants
 cnss.number: cnss
-address: address
 start.date: date du début
 avatar: avatar
 current.position: position courante
@@ -22,17 +21,65 @@ employee.formations: Formations
 experiences: expériences
 employee.languages: langues parlées
 projects: projets
+address: address
 project: projet
 add.formation: ajouter formation
 add.language: ajouter langue
+add.project: ajouter projet
+add.experience: ajouter expérience
 language: langue
 position: position
 employer: employeur
 city: ville
-endDate: date de fin
+end.date: date de fin
 country: pays
 description: description
 formation: formation
 organization: organisation
 level: niveau
 date: date
+current.password: mot de passe actuel
+new.password: nouveau mot de passe
+new.password.verification: vérification du nouveau mot de passe
+change.password: changer mot de passe
+update: modifier
+delete: supprimer
+cancel: annuler
+submit: envoyer
+new.experience: nouvelle expérience
+new.project: nouvelle projets
+new.formarion: nouvelle formation
+new.language: nouvelle langue
+password.verification: vérification mot de passe
+password: mot de passe
+insert.password: inssérer mot de passe
+type: type
+reason: raison
+vacation: congé
+absence: abscence
+
+select: selectionner
+attestation.of.employment: certificat de travail
+certification.of.salary: attestation de salaire
+other: autre
+
+mr: M.
+ms: Melle
+mme: Mme
+
+single: célibataire
+widower.male: veuf
+widower.female: veuve
+married.male: marrié
+married.female: marriée
+divorced.male: divorcé
+divorced.female: divorcée
+
+widower: veuf(ve)
+married: marrié(e)
+divorced: divorcé(e)
+
+beginner: débutant
+intermediate: intérmediaire
+advanced: avancé
+native: langue maternelle

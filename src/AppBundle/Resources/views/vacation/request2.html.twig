@@ -89,7 +89,7 @@
                             <div class="col-sm-6 col-xs-12">
                                 <div class="form-group">
 
-                                    {{ form_label(form.startDate) }}
+                                    {{ form_label(form.startDate, 'start.date'|trans|capitalize) }}
                                     <div class="input-group date">
                                         <div class="input-group-addon">
                                             <i class="fa fa-calendar"></i>
@@ -103,7 +103,7 @@
 
                             <div class=" col-sm-6 col-xs-12 ">
                                 <div class="form-group more-than-one-day">
-                                    {{ form_label(form.endDate) }}
+                                    {{ form_label(form.endDate, 'end.date'|trans|capitalize ) }}
                                     <div class="input-group date">
                                         <div class="input-group-addon">
                                             <i class="fa fa-calendar"></i>
@@ -127,7 +127,7 @@
                         <div class="row absence">
                             <div class="col-sm-12 col-xs-12">
                                 <div class="form-group">
-                                    {{ form_label(form.reason) }}
+                                    {{ form_label(form.reason, 'reason'|trans|capitalize) }}
                                     {{ form_widget(form.reason ,{'attr':{
                                         'class':'form-control'
                                     }}) }}
@@ -138,11 +138,11 @@
                     <div class="col-sm-12 col-xs-12">
                         <div class="row">
                             <div class="col-sm-6  col-xs-12">
-                                <button type="submit" class="btn bg-danger btn-flat " style="width:100%;">Annuler</button>
+                                <button  class="btn bg-danger btn-flat " style="width:100%;">{{ 'cancel'|trans|capitalize }}</button>
                             </div>
                             <div class="col-sm-6 col-xs-12">
                                 <div class="form-group">
-                                    <button type="submit" class="btn bg-navy btn-flat  " style="width:100%;">Demander</button>
+                                    <button type="submit" class="btn bg-navy btn-flat  " style="width:100%;">{{ 'submit'|trans|capitalize }}</button>
                                     {% do form.refuseReason.setRendered %}
                                     {% do form.reason.setRendered %}
                                 </div>

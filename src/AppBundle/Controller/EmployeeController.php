@@ -96,7 +96,7 @@ class EmployeeController extends Controller
 
     /**
      * @Route("/intranet/new-password", name="new-password")
-     * @Route("/new-password/{token}", name="new-emplyee-password")
+         * @Route("/new-password/{token}", name="new-emplyee-password")
      */
     public function newPasswordAction(Request $request, $token)
     {

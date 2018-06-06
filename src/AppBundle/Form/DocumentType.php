@@ -18,10 +18,10 @@ class DocumentType extends AbstractType
         $builder
             ->add('type',ChoiceType::class, [
                 'choices'  => array(
-                    'Choisir' => '' ,
-                    'Certificat de travail' => Document::ATTESTATION_OF_EMPLOYMENT  ,
-                    'Attestation de salaire' => Document::CERTIFICATION_OF_SALARY,
-                    'Autre' => 'M.',)
+                    'select' => '',
+                    'certification.of.salary' => 'certification.of.salary'  ,
+                    'attestation.of.employment' => 'attestation.of.employment',
+                    'other' => 'other',)
 
             ]);
     }/**
