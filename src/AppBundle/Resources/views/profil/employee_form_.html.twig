@@ -158,7 +158,7 @@
                                         <div class=" col-sm-6">
 
                                             <div class="form-group">
-                                                {{ form_label(form.username) }}
+                                                {{ form_label(form.username, 'user.name'|trans|capitalize) }}
                                                 {{ form_widget(form.username, {'attr':{
                                                     'class':'form-control',
                                                     'disabled':''
@@ -166,7 +166,7 @@
                                             </div>
 
                                             <div class="form-group">
-                                                {{ form_label(form.firstName) }}
+                                                {{ form_label(form.firstName, 'first.name'|trans|capitalize) }}
                                                 {{ form_widget(form.firstName, {'attr':{
 
                                                     'class':'form-control'
@@ -174,7 +174,7 @@
                                             </div>
 
                                             <div class="form-group">
-                                                {{ form_label(form.lastName) }}
+                                                {{ form_label(form.lastName, 'last.name'|trans|capitalize) }}
                                                 {{ form_widget(form.lastName, {'attr':{
 
                                                     'class':'form-control'
@@ -183,7 +183,7 @@
 
 
                                             <div class="form-group ">
-                                                {{ form_label(form.birthday) }}
+                                                {{ form_label(form.birthday, 'birthday'|trans|capitalize) }}
                                                 <div class="input-group date">
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-calendar"></i>
@@ -196,7 +196,7 @@
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                {{ form_label(form.address) }}
+                                                {{ form_label(form.address, 'address'|trans|capitalize) }}
                                                 {{ form_widget(form.address, {'attr':{
 
                                                     'class':'form-control'
@@ -207,13 +207,13 @@
 
                                         <div class=" col-sm-6">
                                             <div class="form-group ">
-                                                {{ form_label(form.civility) }}
+                                                {{ form_label(form.civility, 'civility'|trans|capitalize) }}
                                                 {{ form_widget(form.civility, {'attr':{
                                                     'class':'form-control'
                                                 }}) }}
                                             </div>
                                             <div class="form-group ">
-                                                {{ form_label(form.maritalStatus) }}
+                                                {{ form_label(form.maritalStatus, 'marital.status'|trans|capitalize) }}
                                                 {{ form_widget(form.maritalStatus, {'attr':{
 
                                                     'class':'form-control'
@@ -221,7 +221,7 @@
                                             </div>
 
                                             <div class="form-group">
-                                                {{ form_label(form.dependentChild) }}
+                                                {{ form_label(form.dependentChild, 'dependent.child'|trans|capitalize) }}
                                                 {{ form_widget(form.dependentChild, {'attr':{
 
                                                     'class':'form-control'
@@ -229,14 +229,14 @@
                                             </div>
 
                                             <div class="form-group">
-                                                {{ form_label(form.cnssNumber) }}
+                                                {{ form_label(form.cnssNumber, 'cnss.number'|trans|capitalize) }}
                                                 {{ form_widget(form.cnssNumber, {'attr':{
 
                                                     'class':'form-control'
                                                 }}) }}
                                             </div>
                                             <div class="form-group ">
-                                                {{ form_label(form.phoneNumber) }}
+                                                {{ form_label(form.phoneNumber, 'phone.number'|trans|capitalize) }}
                                                 {{ form_widget(form.phoneNumber, {'attr':{
 
                                                     'class':'form-control'
@@ -271,7 +271,7 @@
                             <div class="row">
                                 <div class="col-sm-4 col-xs-12">
                                     <div class="form-group ">
-                                        {{ form_label(form.startDate) }}
+                                        {{ form_label(form.startDate, 'start.date'|trans|capitalize) }}
                                         <div class="input-group date">
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
@@ -286,7 +286,7 @@
                                 <div class="col-sm-4 col-xs-12">
 
                                     <div class="form-group">
-                                        {{ form_label(form.currentPosition) }}
+                                        {{ form_label(form.currentPosition, 'current.position'|trans|capitalize) }}
                                         {{ form_widget(form.currentPosition, {'attr':{
 
                                             'class':'form-control'
@@ -295,7 +295,7 @@
                                 </div>
                                 <div class="col-sm-4 col-xs-12">
                                     <div class="form-group">
-                                        {{ form_label(form.status) }}
+                                        {{ form_label(form.status, 'status'|trans|capitalize) }}
                                         {{ form_widget(form.status, {'attr':{
 
                                             'class':'form-control'
@@ -303,7 +303,7 @@
                                     </div>
                                 </div>
                             </div>
-                            {{ form_label(form.experiences) }}
+                            {{ form_label(form.experiences, 'experiences'|trans|capitalize) }}
                             <div class="row">
                                 <div class="col-sm-12 col-xs-12">
                                     <div id="experience-fields-list"
@@ -323,7 +323,7 @@
                                     </a>
                                 </div>
                             </div>
-                            {{ form_label(form.projects) }}
+                            {{ form_label(form.projects, 'projects'|trans|capitalize) }}
                             <div class="row">
                                 <div class="col-sm-12 col-xs-12">
                                     <div id="project-fields-list"
@@ -346,7 +346,7 @@
                             </div>
                         </div>
                         <div class="tab">
-                            {{ form_label(form.employee_formations) }}
+                            {{ form_label(form.employee_formations, 'employee.formations'|trans|capitalize) }}
                             <div class="row">
                                 <div class="col-sm-12 col-xs-12">
                                     <div id="formation-fields-list"
@@ -363,13 +363,14 @@
                                        class="add-formation-collection-widget"
                                        data-list="#formation-fields-list"
                                     >
-                                        Ajouter formation
+
+                                        {{ 'add.formation'|trans|capitalize }}
                                     </a>
                                 </div>
                             </div>
 
 
-                            {{ form_label(form.employee_languages) }}
+                            {{ form_label(form.employee_languages, 'employee.languages'|trans|capitalize) }}
                             <div class="row">
                                 <div class="col-sm-12 col-xs-12">
                                     <div id="language-fields-list"
@@ -386,7 +387,7 @@
                                        class="add-language-collection-widget"
                                        data-list="#language-fields-list"
                                     >
-                                        Ajouter langue
+                                        {{ 'add.language'|trans|capitalize }}
                                     </a>
                                 </div>
                             </div>

@@ -1,0 +1,38 @@
+# messages.fr.yml
+
+name: nom
+profil: profile
+phone.number: Numéro de téléphone
+email: email
+resume: cv
+first.name: prenom
+user.name: Non d'utilisateur
+last.name: nom
+birthday: anniversaire
+marital.status: état matrimonial
+civility: civilité
+dependent.child: enfants dépendants
+cnss.number: cnss
+address: address
+start.date: date du début
+avatar: avatar
+current.position: position courante
+status: status
+employee.formations: Formations
+experiences: expériences
+employee.languages: langues parlées
+projects: projets
+project: projet
+add.formation: ajouter formation
+add.language: ajouter langue
+language: langue
+position: position
+employer: employeur
+city: ville
+endDate: date de fin
+country: pays
+description: description
+formation: formation
+organization: organisation
+level: niveau
+date: date

@@ -25,7 +25,6 @@ class CooptationController extends Controller
      */
     public function addAction(Request $request)
     {
-
         $cooptation = new Cooptation();
         $form = $this->createForm(CooptationType::class, $cooptation);
         $form->handleRequest($request);

@@ -12,7 +12,7 @@
 
         <div class='col-sm-6 col-xs-12'>
             <div class='form-group' >
-                {{ form_label(item.name) }}
+                {{ form_label(item.name,'name'|trans|capitalize) }}
                 {{ form_widget(item.name, {'attr':{
                     'class':'form-control'
                 }}) }}
@@ -20,7 +20,7 @@
         </div>
         <div class='col-sm-6 col-xs-12'>
             <div class='form-group'>
-                {{ form_label(item.date) }}
+                {{ form_label(item.date,'date'|trans|capitalize) }}
                 <div class='input-group date'>
                     <div class='input-group-addon'>
                         <i class='fa fa-calendar'></i>
@@ -34,7 +34,7 @@
         </div>
         <div class='col-sm-12 col-xs-12'>
             <div class='form-group' >
-                {{ form_label(item.description) }}
+                {{ form_label(item.description,'description'|trans|capitalize) }}
                 {{ form_widget(item.description, {'attr':{
                     'class':'form-control'
                 }}) }}

@@ -14,7 +14,7 @@
 
         <div class='col-sm-4 col-xs-12'>
             <div class='form-group'>
-                {{ form_label(item.formation) }}<a data-toggle="modal" class="other-formation" data-target="#formationModal"> autre ?</a>
+                {{ form_label(item.formation, 'formation'|trans|capitalize) }}<a data-toggle="modal" class="other-formation" data-target="#formationModal"> autre ?</a>
 
                 {{ form_widget(item.formation, {'attr':{
                     'class':'form-control formation-select select2',
@@ -23,7 +23,7 @@
         </div>
         <div class='col-sm-4 col-xs-12'>
             <div class='form-group' >
-                {{ form_label(item.organization) }}
+                {{ form_label(item.organization, 'organization'|trans|capitalize) }}
                 {{ form_widget(item.organization, {'attr':{
                     'class':'form-control'
                 }}) }}
@@ -31,7 +31,7 @@
         </div>
         <div class='col-sm-4 col-xs-12'>
             <div class='form-group' >
-                {{ form_label(item.country) }}
+                {{ form_label(item.country, 'country'|trans|capitalize) }}
                 {{ form_widget(item.country, {'attr':{
                     'class':'form-control'
                 }}) }}
@@ -39,7 +39,7 @@
         </div>
         <div class='col-sm-4 col-xs-12'>
             <div class='form-group'>
-                {{ form_label(item.startDate) }}
+                {{ form_label(item.startDate, 'start.date'|trans|capitalize) }}
                 <div class='input-group date'>
                     <div class='input-group-addon'>
                         <i class='fa fa-calendar'></i>
@@ -53,7 +53,7 @@
         </div>
         <div class='col-sm-4 col-xs-12'>
             <div class='form-group'>
-                {{ form_label(item.endDate) }}
+                {{ form_label(item.endDate, 'endDate'|trans|capitalize) }}
                 <div class='input-group date'>
                     <div class='input-group-addon'>
                         <i class='fa fa-calendar'></i>

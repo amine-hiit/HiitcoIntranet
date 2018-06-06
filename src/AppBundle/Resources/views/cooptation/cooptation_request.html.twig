@@ -118,35 +118,35 @@
             <div class="box-body">
                 <div class="col-sm-12 col-xs-12">
                     <div class="form-group">
-                        {{ form_label(form.name) }}
+                        {{ form_label(form.name, 'name'|trans|capitalize) }}
                         {{ form_widget(form.name, {'attr':{
 
                             'class':'form-control'
                         }}) }}
                     </div>
                     <div class="form-group">
-                        {{ form_label(form.phoneNumber) }}
+                        {{ form_label(form.phoneNumber, 'phone.number'|trans|capitalize) }}
                         {{ form_widget(form.phoneNumber, {'attr':{
 
                             'class':'form-control'
                         }}) }}
                     </div>
                     <div class="form-group">
-                        {{ form_label(form.email) }}
+                        {{ form_label(form.email, 'email'|trans|capitalize) }}
                         {{ form_widget(form.email, {'attr':{
 
                             'class':'form-control'
                         }}) }}
                     </div>
                     <div class="form-group">
-                        {{ form_label(form.profil) }}
+                        {{ form_label(form.profil, 'profil'|trans|capitalize) }}
                         {{ form_widget(form.profil, {'attr':{
 
                             'class':'form-control'
                         }}) }}
                     </div>
                     <div class="form-group">
-                        <label for="appbundle_cooptation_phoneNumber" class="required">CV</label>
+                        <label for="appbundle_cooptation_phoneNumber" class="required">{{ 'resume' |trans|upper }}</label>
                         <div class="file-upload-box js">
                             {% form_theme form 'form/file.html.twig' %}
                             {{ form_widget(form.resumee) }}
