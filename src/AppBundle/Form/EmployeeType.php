@@ -32,50 +32,15 @@ class EmployeeType extends AbstractType
                 'format' => 'MM/dd/yyyy',
                 'widget' => 'single_text',
                 'required' => true))
-            ->add('maritalStatus',ChoiceType::class, array(
-                'choices'  => array(
-                    'select' => '' ,
-                    'single' => 'Célibataire',
-                    'married' => 'married',
-                    'divorced' => 'divorced',
-                    'widower' => 'widower',
-                ),
-            ))
             ->add('dependentChild', IntegerType::class ,array(
                 'attr' => array('min' => 0)))
-            ->add('cnssNumber',TextType::class,array(
-                'required' => true,
-            ))
             ->add('phoneNumber',TextType::class,array(
                 'required' => true,
             ))
             ->add('address',TextType::class,array('by_reference' => false))
 
 
-            ->add('startDate',DateType::class, array(
-                'format' => 'MM/dd/yyyy',
-                'widget' => 'single_text',
-                'required' => true))
             ->add('avatar',     AvatarType::class)
-
-            ->add('currentPosition',TextType::class, array(
-                'required' => true))
-            ->add('status',ChoiceType::class, array(
-                'choices'  => array(
-                    'Choisir' => '' ,
-                    'CDI' => 'CDI',
-                    'CTT' => 'CTT',
-                    'CDD' => 'CDD',
-                ),
-            ))
-            ->add('civility',ChoiceType::class, array(
-                'choices'  => array(
-                    'select' => '' ,
-                    'mme' => 'mme',
-                    'ms' => 'ms',
-                    'mr' => 'mr',
-                ),
-            ))
             ->add('employee_formations', CollectionType::class, array(
                 'entry_type' => EmployeeFormationType::class,
                 'allow_add' => true,
