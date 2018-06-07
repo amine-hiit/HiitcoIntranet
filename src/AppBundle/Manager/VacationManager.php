@@ -280,8 +280,7 @@ class VacationManager
 
         foreach (self::HOLLIDAYS as $key => $value)
         {
-            if ($day->format('d') == $value['d'] &&  $day->format('m') == $value['m'] )
-                return true;
+            return ($day->format('d') == $value['d'] &&  $day->format('m') == $value['m'] );
         }
         return false;
     }
