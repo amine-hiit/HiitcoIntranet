@@ -57,7 +57,7 @@
                             {% for request in requests %}
                                 <tr>
 
-                                    <td>{{ request.type }}</td>
+                                    <td>{{ request.type |trans|capitalize }}</td>
                                     <td>{{ request.requestDate|date("d/m/Y") }}</td>
                                     {% if request.status == ready  %}
                                         <td><span class="label label-success flat ">{{ ready }}</span></td>

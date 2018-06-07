@@ -9,6 +9,7 @@
 namespace AppBundle\Controller;
 
 
+use AppBundle\Form\EmployeeRegistrationType;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use FOS\UserBundle\Form\Type\ChangePasswordFormType;
@@ -40,18 +41,21 @@ class EmployeeController extends Controller
         $employeeManager = $this->get('app.employee.manager');
 
         $employee = $employeeManager->createEmployee();
-        $registrationForm = $this->createForm(RegistrationFormType::class, $employee);
-        $registrationForm->handleRequest($request);
+        $form = $this->createForm(EmployeeRegistrationType::class, $employee);
+        $form->handleRequest($request);
 
-        if($registrationForm->isSubmitted()){
-            if($registrationForm->isValid()){
+        if( $form->isSubmitted() ){
+
+            if($form->isValid()){
+                $employee->addRole("ROLE_EMPLOYEE");
                 $employeeManager->registerNewEmployee($employee);
+                $this->addFlash('success',$this->trans('flash.employee.registred'));
             }
 
             return $this->redirect($this->generateUrl('employees-list'));
         }
         return $this->render('@App/profil/register_new_employee.html.twig', array(
-            'form' => $registrationForm->createView(),
+            'form' => $form->createView(),
         ));
     }
 
@@ -208,6 +212,8 @@ class EmployeeController extends Controller
             'experiences' => $experiences
         ));
     }
-
+    private function trans($id){
+        return $this->get('translator')->trans($id);
+    }
 }
 
