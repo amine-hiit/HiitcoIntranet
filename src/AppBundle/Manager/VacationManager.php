@@ -27,6 +27,19 @@ class VacationManager
 
     const VACATION_HRM_REFUSE_NOTIF = 'vacation_hrm_refuse';
 
+
+    const HOLLIDAYS = [
+        'NEW_YEAR_S_DAY' => ['d' => '01' , 'm' => '01'],
+        'THE_INDEPENDENCE_MANIFESTO' => ['d' => '11' , 'm' => '01'],
+        'LABOUR_DAY' => ['d' => '01' , 'm' => '05'],
+        'FEAST_OF_THE_THRONE' => ['d' => '30' , 'm' => '07'],
+        'THE_RECOVERY_OUED_ED_DAHAB' => ['d' => '14' , 'm' => '08'],
+        'REVOLUTION_OF_THE_KING_AND_THE_PEOPLE' => ['d' => '20' , 'm' => '08'],
+        'YOUTH_DAY' => ['d' => '21' , 'm' => '08'],
+        'GREEN_MARCH' => ['d' => '06' , 'm' => '11'],
+        'INDEPENDENCE_DAY' => ['d' => '18' , 'm' => '11'],
+    ];
+
     /**
      * @var EntityManagerInterface
      */
@@ -217,11 +230,17 @@ class VacationManager
     }
 
     /**calculation of the vacation days number*/
-    public function calculateDuration($vacation, $weekEndIncluded = true)
+    public function calculateDuration($vacation, $weekEndIncluded = true, $hollidayIncluded = true)
     {
         if ($vacation->getDayPeriod() !== 'allDay') {
-            return $weekEndIncluded && boolval($this->calculateWeekEndDaysNumberIncluded($vacation)) ? 0 : 0.5;
+            return $weekEndIncluded && $hollidayIncluded
+            && boolval($this->calculateWeekEndDaysNumberIncluded($vacation))
+            && boolval($this->calculateHolliDaysNumberIncluded($vacation)) ?
+                0 : 0.5;
         }
+
+        if($vacation->getStartDate() == $vacation->getEndDate() && $this->isWeekEnd($vacation->getStartDate()))
+            return 0;
 
         $endDate = $vacation->getEndDate();
         $endDate->modify('+1 day');
@@ -230,9 +249,9 @@ class VacationManager
         $startTime = strtotime($vacation->getStartDate()->format('d-m-Y'));
         $endTime = strtotime($vacation->getEndDate()->format('d-m-Y'));
 
-
         $duration = $weekEndIncluded ? ($endTime - $startTime) / (60 * 60 * 24)
             - $this->calculateWeekEndDaysNumberIncluded($vacation)
+            - $this->calculateHolliDaysNumberIncluded($vacation)
             : ($endTime - $startTime) / (60 * 60 * 24);
 
         $endDate->modify('-1 day');
@@ -253,6 +272,18 @@ class VacationManager
 
 
 
+    private function isWeekEnd(\DateTime $day){
+       return ($day->format('D') == 'Sat' || $day->format('D') == 'Sun');
+    }
+
+    private function isHolliDay(\DateTime $day){
+
+        foreach (self::HOLLIDAYS as $key => $value)
+        {
+            return ($day->format('d') == $value['d'] &&  $day->format('m') == $value['m'] );
+        }
+        return false;
+    }
 
     public function calculateWeekEndDaysNumberIncluded($vacation)
     {
@@ -268,7 +299,7 @@ class VacationManager
 
         foreach ($period as $day) {
 
-            if ($day->format('D') == 'Sat' || $day->format('D') == 'Sun') {
+            if($this->isWeekEnd($day)) {
                 $WeekEndDaysNumber++;
             }
         }
@@ -277,8 +308,32 @@ class VacationManager
         return $WeekEndDaysNumber;
     }
 
+    public function calculateHolliDaysNumberIncluded($vacation)
+    {
+        $holliDaysNumber = 0;
+        $startDate = $vacation->getStartDate();
+        $endDate = $vacation->getEndDate();
+        $endDate->modify('+1 day');
+        //because the end date is not included
+
+        $period = new \DatePeriod($startDate,
+            new \DateInterval('P1D'),
+            $endDate);
+
+        foreach ($period as $day) {
+
+            if($this->isHolliDay($day)) {
+                $holliDaysNumber++;
+            }
+        }
+        $endDate->modify('-1 day');
+
+        return $holliDaysNumber;
+    }
+
     function calculateVacationBalance(Employee $employee, $afterRequestApprove = false)
     {
+
         $startDate = $employee->getStartDate();
         $hrmApprovedVacations = $this->findByStatusAndUser(1, $employee);
         $adminApprovedVacations = $this->findByStatusAndUser(2, $employee);
@@ -296,7 +351,13 @@ class VacationManager
 
         if ($currentMonth == $startMonth && $currentYear == $startYear) {
             return $vacationBalance;
-        } else {
+        }
+        else {
+            if(date_diff( new \DateTime("now"), $startDate)->days  >= 365*2)
+            {
+                $vacationBalance += (int)((date_diff( new \DateTime("now"),$startDate )
+                            ->days- 365*2 ) / 183);
+            }
 
             if ($startDay > 0 && $startDay <= 10) {
                 $vacationBalance += 1.5;
@@ -306,31 +367,36 @@ class VacationManager
                 $vacationBalance += 0.5;
             }
 
-            foreach ($adminApprovedVacations as $adminApprovedVacation) {
-                $vacationBalance -= $adminApprovedVacation->getDuration();
-            }
-            foreach ($hrmApprovedVacations as $hrmApprovedVacation) {
-                $vacationBalance -= $hrmApprovedVacation->getDuration();
-            }
-            if ($afterRequestApprove) {
-                foreach ($untreatedVacations as $untreatedVacation) {
-                    $vacationBalance -= $untreatedVacation->getDuration();
+                foreach ($adminApprovedVacations as $adminApprovedVacation) {
+                    $vacationBalance -= $adminApprovedVacation->getDuration();
                 }
-            }
+                foreach ($hrmApprovedVacations as $hrmApprovedVacation) {
+                    $vacationBalance -= $hrmApprovedVacation->getDuration();
+                }
+
+            if ($afterRequestApprove) {
+                    foreach ($untreatedVacations as $untreatedVacation) {
+                        $vacationBalance -= $untreatedVacation->getDuration();
+                    }
+                }
+
 
             if ($currentMonth == $startMonth + 1 && $currentYear == $startYear) {
                 return $vacationBalance;
-            } else {
+            }
+            else {
+
                 if ($currentMonth >= $startMonth) {
                     $vacationBalance += (($currentYear - $startYear) * 12
                             + $currentMonth - 1 - $startMonth)
                         * Vacation::VACATION_DAYS_PER_MONTH;
-                } else {
-                    $vacationBalance += (($currentYear - $startYear) * 12 +
-                            12 - ($currentMonth - 1 - $startMonth))
-                        * Vacation::VACATION_DAYS_PER_MONTH;
-                }
 
+                }
+                else {
+                    $vacationBalance += (($currentYear - $startYear - 1) * 12 + (12 - $startMonth + $currentMonth -1 ))
+                        * Vacation::VACATION_DAYS_PER_MONTH;
+
+                }
                 return $vacationBalance;
             }
         }
@@ -374,6 +440,10 @@ class VacationManager
         $this->flush();
     }
 
+
+
+
+
     public function persist($vacation)
     {
         //set duration attribute before persisting
@@ -381,7 +451,6 @@ class VacationManager
 
         $this->em->persist($vacation);
     }
-
 
     public function flush()
     {
