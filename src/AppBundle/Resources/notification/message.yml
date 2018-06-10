@@ -17,3 +17,6 @@ admin_notification_vacation_refuse: le service rh a refusé une demande de cong�
 vacation_request: %s a demandé un congé
 
 cooptation_request: %s a  recommandé une personne
+
+document_ready: Votre document demandé est disponible
+document_request: %s a demandé une %s

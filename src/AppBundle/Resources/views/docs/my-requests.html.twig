@@ -60,9 +60,9 @@
                                     <td>{{ request.type |trans|capitalize }}</td>
                                     <td>{{ request.requestDate|date("d/m/Y") }}</td>
                                     {% if request.status == ready  %}
-                                        <td><span class="label label-success flat ">{{ ready }}</span></td>
-                                    {% elseif request.status == notReady  %}
-                                        <td><span class="label label-warning flat">{{ notReady }}</span></td>
+                                        <td><span class="label label-success flat ">{{ ready|trans|capitalize }}</span></td>
+                                    {% else  %}
+                                        <td><span class="label label-warning flat">{{ notReady|trans|capitalize }}</span></td>
                                     {% endif %}
 
                                 </tr>

@@ -28,7 +28,7 @@ $().ready(function(){
                     var url = notifications[indice].notification.url;
 
                     htmlNotificationList.push(`
-                        <a id = "${ notificationId }" href="#" class="list-group-item ${ seen }">
+                        <a id = "${ notificationId }" href="${ url }" class="list-group-item ${ seen }">
                         ${ message }
                         </a>`
                     );
@@ -76,7 +76,6 @@ $().ready(function(){
     });
 
     $('.notifications').on('click','a',function () {
-        alert($(this).attr('id'));
         var notification = {
             'id': $(this).attr('id'),
         };

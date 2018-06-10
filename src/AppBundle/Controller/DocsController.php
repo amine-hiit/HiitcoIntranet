@@ -13,15 +13,14 @@ use AppBundle\Entity\Document;
 use AppBundle\Entity\Employee;
 use AppBundle\Form\DocumentType;
 use AppBundle\Entity\Pdf as DocPdf;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Knp\Snappy\Pdf;
 
-class DocController extends Controller
+class DocsController extends Controller
 {
-
+    use ControllerTrait;
     /**
      * @Route("/intranet/request-doc", name="doc-request")
      */
@@ -34,9 +33,19 @@ class DocController extends Controller
         {
             if ($form->handleRequest($request) && $form->isValid())
             {
+
                 $docRequest->setEmployee($this->getUser());
                 $dm->update($docRequest);
-                $this->addFlash('success', 'Demande effectuée');
+                $this->addFlash('success', $this->trans('request.success'));
+/*                $this->get('app.notification.manager')->generateNotification(
+                    'document_request',
+                    [
+                        $docRequest->getEmployee()->getUsername(),
+                        $this->trans($docRequest->getType())
+                    ],
+                    '/intranet/hrm/docs',
+
+                );*/
                 return $this->redirectToRoute('my-docs');
             }
         }
@@ -67,44 +76,21 @@ class DocController extends Controller
     }
 
     /**
+     * @Route("/intranet/set-doc-ready", name="set-doc-ready")
+     */
+    public function setDocReadyAction(Request $request)
+    {
+        $this->get('app.docs.manager')->setDocReadyAction($request->get('request_id'));
+        return $this->redirect('/intranet/hrm/docs');
+    }
+
+    /**
      * @Route("/intranet/validate-doc-request", name="validate-doc-request")
      */
     public function validateAction(Request $request)
     {
-        $dm = $this->get('app.docs.manager');
-        $docRequest = $dm->findOneById($request->get('request_id'));
-        $docRequest->setStatus(Document::DOC_READY);
-        $this->generatePdfFromUrl($docRequest);
-        $dm->update($docRequest);
+        $this->get('app.docs.manager')->validateRequest($request->get('request_id'));
         return $this->redirect('/intranet/hrm/docs');
-    }
-
-    private function generatePdfFromUrl(Document &$document )
-    {
-        $employee = $document->getEmployee();
-        $array = [
-            'employee' => $employee
-        ];
-
-        $docPdf = new DocPdf();
-        $docPdf->setName($document->getType().'_'.$employee->getUsername().'_'.time().'.pdf');
-        $docPdf->setUrl($docPdf->getUploadDir().'/'.$docPdf->getName());
-        $output =$docPdf->getUrl();
-
-        $document->setPdf($docPdf);
-
-        $this->getDoctrine()->getManager()->persist($document);
-        $this->getDoctrine()->getManager()->flush();
-
-        $pdf = $this->get('knp_snappy.pdf');
-        try{
-            $pdf->generateFromHtml($this->renderView(Document::ATTESTATION_OF_EMPLOYMENT_VIEW, $array),$output);
-        }catch (\Exception $exception)
-        {
-            $this->get('logger')->error($exception->getMessage());
-        }
-
-
     }
 
 }

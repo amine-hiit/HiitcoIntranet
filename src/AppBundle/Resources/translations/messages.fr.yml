@@ -8,7 +8,7 @@ resume: cv
 first.name: prenom
 user.name: Non d'utilisateur
 last.name: nom
-birthday: anniversaire
+birthday: date de naissance
 marital.status: état matrimonial
 civility: civilité
 dependent.child: enfants dépendants
@@ -46,6 +46,9 @@ update: modifier
 delete: supprimer
 cancel: annuler
 submit: envoyer
+validate: valider
+set.ready: mettre disponible
+
 new.experience: nouvelle expérience
 new.project: nouvelle projets
 new.formarion: nouvelle formation
@@ -102,3 +105,15 @@ month: mois
 balance.at.first: solde au début
 vacation.requests.duration: durée de congés demandés
 balance.left: solde restant
+
+doc.not.ready: non disponible
+doc.validated: validé
+doc.ready: disponible
+
+request.success: la demande est bien effectuée
+doc.validated.success: la demande est bien validée
+doc.ready.success: le document est bien disponible
+
+configuration: configuration
+parameters: parametres
+emails: emails
