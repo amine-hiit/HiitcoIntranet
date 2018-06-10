@@ -56,6 +56,30 @@ class VacationRepository extends EntityRepository
             ;
     }
 
+
+    public function findByStatusAndUserAndDateInterval(
+        $status ,
+        Employee $employee,
+        \DateTime $end)
+    {
+        $qb = $this->createQueryBuilder('v');
+
+        $qb
+            ->where('v.employee = :employeeId')
+            ->andWhere('v.validationStatus =  :status')
+            ->andWhere('v.type = :type')
+            ->setParameter('employeeId', $employee->getId())
+            ->setParameter('status', $status)
+            ->setParameter('type', Vacation::VACATION)
+        ;
+        return $qb
+            ->getQuery()
+            ->getResult()
+                ;
+    }
+
+
+
 	public function findAllByUser(Employee $employee)
 	{
 	  $qb = $this->createQueryBuilder('v');

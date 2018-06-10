@@ -84,3 +84,21 @@ intermediate: intérmediaire
 advanced: avancé
 native: langue maternelle
 flash.employee.registred: employé bien inscrit
+
+Jan: janvier
+Feb: février
+Mar: mars
+Apr: avril
+May: mai
+Jun: juin
+Jul: juillet
+Aug: aout
+Sep: septembre
+Oct: octobre
+Nov: novembre
+Dec: decembre
+
+month: mois
+balance.at.first: solde au début
+vacation.requests.duration: durée de congés demandés
+balance.left: solde restant

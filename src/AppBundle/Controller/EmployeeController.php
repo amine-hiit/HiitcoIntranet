@@ -64,7 +64,6 @@ class EmployeeController extends Controller
      */
     public function ficheAction(Request $request)
     {
-
         $user = $this->get('security.token_storage')->getToken()->getUser();
         $form = $this->get('form.factory')->create(EmployeeType::class, $user);
         $employeeManager = $this->get('app.employee.manager');
