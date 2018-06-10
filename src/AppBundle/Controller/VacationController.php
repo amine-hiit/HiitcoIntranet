@@ -50,11 +50,15 @@ class VacationController extends Controller
 
         $employee = $this->get('security.token_storage')->getToken()->getUser();
         $vm = $this->get('app.vacation.manager');
+
+        $years = $vm->calculateMonthlyVacationBalance($employee);
+
         $soldAfterAppovingRequestes = $vm->calculateVacationBalance($employee, true);
         $soldBeforeAppovingRequestes = $vm->calculateVacationBalance($employee, false);
-        return new Response('apres validation des demandes pécedentes: ' .$soldAfterAppovingRequestes.'<br/>'
-        .'avant validation des demandes pécedentes: '. $soldBeforeAppovingRequestes
-        );
+        return $this->render('@App/vacation/vacation-balance.html.twig',
+            [
+                'years' => $years,
+            ] );
     }
 
 

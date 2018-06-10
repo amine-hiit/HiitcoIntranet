@@ -1,16 +1,8 @@
 {% extends "default/layout.html.twig" %}
 
-{% set title = "Liste des congés" %}
+{% set title = "Solde de congés" %}
 {% set profile = "profile" %}
-{% set root = "Espace RH" %}
-{% set iroot = "fa-users" %}
-{% set dir1 = "congé" %}
-{% set dir2 = " liste des congés" %}
 
-{% block stylesheet %}
-    <style>
-    </style>
-{% endblock %}
 
 
 {% block content %}
@@ -19,13 +11,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Liste des congés
+            Mon solde de congés
             <small></small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-users"></i> Espace RH</a></li>
             <li><a href="#">Congé</a></li>
-            <li class="active">Mes congés</li>
+            <li class="active">Mon solde</li>
         </ol>
     </section>
 
@@ -37,8 +29,8 @@
                 <div class="box">
                     <div class="box-header">
                         <center>
-                            <a type="button" class="btn btn-default btn-flat disabled"> Mes congés </a>
-                            <a type="button" class="btn btn-default btn-flat" href="/intranet/sold"> Mon solde </a>
+                            <a type="button" class="btn btn-default btn-flat" href="/intranet/my-vacation-requests"> Mes congés </a>
+                            <a type="button" class="btn btn-default btn-flat disabled "> Mon solde </a>
                             <a type="button" class="btn btn-default btn-flat" href="/intranet/request-a-vacation"> Demander
                                 congé </a>
 
@@ -72,40 +64,27 @@
                             </div>
                         </div>
                     </div>
-                    <!-- /.box-header -->
-
 
                     <div class="box-body">
                         <table id="example2" class="table table-bordered table-hover">
                             <thead>
                             <tr class="success">
-                                <th>Date début</th>
-                                <th>Date fin</th>
-                                <th>type</th>
-                                <th>raison</th>
-                                <th>Status</th>
-                                <th>raison au cas de refus</th>
-
+                                <th>{{ 'month'|trans|capitalize }}</th>
+                                <th>{{ 'balance.at.first'|trans|capitalize }}</th>
+                                <th>{{ 'vacation.requests.duration'|trans|capitalize }}</th>
+                                <th>{{ 'balance.left'|trans|capitalize }}</th>
                             </tr>
                             </thead>
                             <tbody>
-                            {% for Vacation in listVacation %}
-                                <tr>
-
-                                    <td>{{ Vacation.startDate | date("d/m/Y") }}</td>
-                                    <td>{{ Vacation.endDate | date("d/m/Y") }}</td>
-                                    <td>{{ Vacation.type }}</td>
-                                    <td>{{ Vacation.reason }}</td>
-                                    {% if Vacation.validationStatus==-1 %}
-                                        <td><span class="label label-danger flat ">Refusée</span></td>
-                                    {% elseif Vacation.validationStatus==0 or Vacation.validationStatus==1 %}
-                                        <td><span class="label label-warning flat">Non traitée</span></td>
-                                    {% elseif Vacation.validationStatus==2 %}
-                                        <td><span class="label label-success flat">Approuvée</span></td>
-                                    {% endif %}
-                                    <td>{{ Vacation.refuseReason }}</td>
-
-                                </tr>
+                            {% for year in years %}
+                                {% for month in year %}
+                                    <tr>
+                                        <td>{{ date('2019-' ~ loop.index ~ '-01') |date('M')|trans|capitalize }}</td>
+                                        <td>{{ month[0] }}</td>
+                                        <td>{{ month[0]|number_format - month[1]|number_format  }}</td>
+                                        <td>{{ month[1] }}</td>
+                                    </tr>
+                                {% endfor %}
                             {% endfor %}
 
                         </table>
@@ -130,21 +109,21 @@
     <script src="{{ asset('bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
 {% endblock %}
 
-  {% block javascript %}
-      $(document).ready(function () {
-          $('.sidebar-menu').tree();
-          $(function () {
-              $('#example2').DataTable({
-                  'paging': true,
-                  'lengthChange': false,
-                  'pageLength':1,
-                  'searching': false,
-                  'ordering': true,
-                  'info': true,
-                  'autoWidth': false
+{% block javascript %}
+          $(document).ready(function () {
+              $('.sidebar-menu').tree();
+              $(function () {
+                  $('#example2').DataTable({
+                      'paging': true,
+                      'lengthChange': false,
+                      'pageLength':12,
+                      'searching': false,
+                      'ordering': false,
+                      'info': false,
+                      'autoWidth': false
+                  });
               });
           });
-      });
   {% endblock %}
 
 
