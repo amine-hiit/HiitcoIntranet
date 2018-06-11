@@ -2,6 +2,11 @@
 
 {% set title = "Mes documents demandés" %}
 {% set profile = "profile" %}
+{% block stylesheet %}
+    <link rel="stylesheet" href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('bower_components/bower_components/bootstrap-select/dist/css/bootstrap-select.css') }}">
+
+{% endblock %}
 
 {% block content %}
 
@@ -34,12 +39,25 @@
 
 
                     <div class="box-body">
+                        <div class="form-group">
+                            <ul class="list-unstyled">
+
+                                {% for email in emails %}
+
+                                <li>
+                                    <span>{{ email.label }}  </span>
+                                    <a class="edit-email" id="edit-{{ email.id }}" href="#"><i class="fa fa-edit"></i></a>
+                                </li>
+                                <div class="form-holder" id="form-{{ email.id }}"></div>
+                            {% endfor %}
+                            </ul>
+
+                        </div>
 
                     </div>
-
-                </div>
                 <!-- /.box -->
             </div>
+        </div>
         </div>
     </section>
 
@@ -50,11 +68,37 @@
 
 {% endblock %}
 
-
 {% block script %}
+    {# <script src="{{ asset('https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')}}"></script>#}
+    <script src="{{ asset('intra/js/collection.js')}}"></script>
+    <script src="{{ asset('bower_components/select2/dist/js/select2.full.min.js') }}"></script>
+    <script src="{{ asset('bower_components/bower_components/bootstrap-select/dist/js/bootstrap-select.min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+
+            $('.edit-email').click(function() {
+                var id = $(this).attr('id').split('-')[1];
+
+                $.ajax({
+                    url: "/intranet/admin/update/"+id,
+                    method:'GET',
+                    success:function (data) {
+                        $('#form-'+id).html(data);
+                        $('.select2').select2();
+                        cancelEdit();
+                    }
+                });
+            });
+
+            function cancelEdit(){
+                $('.cancel-edit').click(function() {
+                    var id = $(this).attr('id').split('-')[2];
+                    //alert(id);
+
+                    $('#form-'+id).empty();
+                });
+            }
+        });
+    </script>
+
 {% endblock %}
-
-  {% block javascript %}
-  {% endblock %}
-
-

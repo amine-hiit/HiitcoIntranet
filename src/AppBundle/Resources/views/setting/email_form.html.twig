@@ -1,0 +1,30 @@
+{{ form_start(form) }}
+    <div class="row">
+        <div class="col-sm-12 col-xs-12">
+            <div class="form-group">
+                {{ form_label(form.employees) }}
+                {{ form_widget(form.employees, {'attr':{
+                    'class':'form-control select2 select2-multiple',
+                    }})
+                }}
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-xs-12">
+            <input class="hidden" name="id" value="{{ form.vars.data.id }}">
+            <div class="row">
+                <div class="col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <a  id ="cancel-edit-{{ form.vars.data.id }}" class="btn bg-danger btn-flat cancel-edit" style="width: 100%";>{{'cancel'|trans|capitalize}}</a>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <button  class="btn bg-navy btn-flat" type="submit" style="width: 100%">{{'submit'|trans|capitalize}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{{ form_end(form) }}
