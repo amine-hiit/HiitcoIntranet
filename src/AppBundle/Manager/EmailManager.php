@@ -9,6 +9,7 @@
 namespace AppBundle\Manager;
 
 
+use AppBundle\Entity\EmailType;
 use AppBundle\Entity\Resume;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -33,34 +34,49 @@ class EmailManager
 
 
     public function send(
-        $subject,
-        $from,
-        $to,
-        $template,
-        array $args,
+        EmailType $emailType = null,
+        $to = null,
+        array $args = null,
         array $filesPaths = null
-
     )
     {
         $mailer = $this->container->get('mailer');
-        $message = $this->create($subject, $from, $to, $template, $args, $filesPaths );
+        $message = $this->create(
+            'mo.amine.jabri@gmail.com',
+            $to,
+            $emailType,
+            $args,
+            $filesPaths
+            );
         $mailer->send($message);
     }
 
-
-    public function create($subject,
+    public function create(
         $from,
         $to,
-        $template,
+        EmailType $emailType,
         array $args,
         array $filesPaths = null
     )
     {
+        $subject = $this->container->get('translator')->trans($emailType->getLabel());
+        $template = $emailType->getTemplate();
+
+        if(null !== $emailType){
+            $employees = $emailType->getEmployees()->getValues();
+            $employeesByRoles = $this->container->get('app.employee.manager')
+                ->findEmployeesByRoles($emailType->getRoles());
+            $employees = array_merge($employees,$employeesByRoles );
+        foreach ($employees as $employee)
+            $to[] = $employee->getEmail();
+        }
+
         $templating = $this->container->get('templating');
+
         try {
             $rendredTemplate = $templating->render($template, $args);
         }catch (\Twig\Error\Error $e){
-            dump($e);die;
+            $this->container->get('logger')->log('error',$e->getMessage());
         }
 
         $rootDir = $this->container->get('kernel')->getRootDir();
@@ -69,18 +85,14 @@ class EmailManager
             ->setSubject($subject)
             ->setFrom($from)
             ->setTo($to)
-            ->setBody($rendredTemplate,'text/html');
-
+            ->setBody($rendredTemplate,'text/html')
+        ;
 
         if($filesPaths !== null && count($filesPaths) != 0){
             foreach ($filesPaths as $filePath) {
                 $message->attach(\Swift_Attachment::fromPath($rootDir.'/../web/'.$filePath));
             }
         }
-
         return $message;
     }
-
-
-
 }

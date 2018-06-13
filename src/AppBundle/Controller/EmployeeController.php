@@ -60,29 +60,6 @@ class EmployeeController extends Controller
     }
 
     /**
-     * @Route("/intranet/form", name="employee-form")
-     */
-    public function ficheAction(Request $request)
-    {
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-        $form = $this->get('form.factory')->create(EmployeeType::class, $user);
-        $employeeManager = $this->get('app.employee.manager');
-
-        if ($request->isMethod('POST'))
-        {
-            if ($form->handleRequest($request)->isValid())
-            {
-                $employeeManager->completeEmployeeForm($user);
-                return $this->redirect('/intranet/employee/'.$user->getId());
-
-            }
-        }
-        return $this->render('@App/profil/employee_form_.html.twig', array(
-            'form' => $form->createView(),
-        ));
-    }
-
-    /**
      * @Route("/intranet/hrm/employees", name="employees-list")
      */
     public function listAction(Request $request)
@@ -211,8 +188,33 @@ class EmployeeController extends Controller
             'experiences' => $experiences
         ));
     }
+
     private function trans($id){
         return $this->get('translator')->trans($id);
     }
+
+
+    /**
+     * @Route("/intranet/form", name="employee-form")
+     */
+    public function ficheAction(Request $request)
+    {
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $form = $this->get('form.factory')->create(EmployeeType::class, $user);
+        $employeeManager = $this->get('app.employee.manager');
+
+        if ($request->isMethod('POST'))
+        {
+            if ($form->handleRequest($request)->isValid())
+            {
+                $employeeManager->completeEmployeeForm($user);
+                return $this->redirect('/intranet/employee/'.$user->getId());
+            }
+        }
+        return $this->render('@App/profil/employee_form_.html.twig', array(
+            'form' => $form->createView(),
+        ));
+    }
+
 }
 

@@ -108,21 +108,18 @@ class NotificationController extends Controller
         $user = $this->getUser();
 
         $offset = $request->get('offset');
-        $lastTeenNotifications = $this->getNotificationManager()->findLastByEmployeeWithOffset($user, 0);
-        $lastNotificationsWithOffset = $this->getNotificationManager()->findLastByEmployeeWithOffset($user, 3);
+        $lastTeenNotifications = $this
+            ->getNotificationManager()
+            ->findLastByEmployeeWithOffset($user, 0);
+        $lastNotificationsWithOffset = $this
+            ->getNotificationManager()
+            ->findLastByEmployeeWithOffset($user, 3);
         $ok =
             $serializer->serialize(
                 $lastNotificationsWithOffset,
                 'json',
                 SerializationContext::create()->setGroups(array('notification'))
         );
-        /*new JsonResponse(
-            $serializer->serialize(
-                $lastNotificationsWithOffset,
-                'json',
-                SerializationContext::create()->setGroups(array('notification'))
-            )
-        );*/
 
         return $this->render('@App/notification/notification.html.twig', array(
             'lastTeenNotifications' => $lastTeenNotifications,

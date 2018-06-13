@@ -5,8 +5,8 @@
 {% set certSalary = constant("AppBundle\\Entity\\Document::CERTIFICATION_OF_SALARY") %}
 {% set attEmpl = constant("AppBundle\\Entity\\Document::ATTESTATION_OF_EMPLOYMENT") %}
 {% set notReady = constant("AppBundle\\Entity\\Document::DOC_NOT_READY") %}
+{% set validated = constant("AppBundle\\Entity\\Document::DOC_VALIDATED") %}
 {% set ready = constant("AppBundle\\Entity\\Document::DOC_READY") %}
-
 
 
 {% block content %}
@@ -62,13 +62,21 @@
                                     <td>{{ request.employee.username }}</td>
                                     <td>{{ request.requestDate|date("d/m/Y") }}</td>
                                     {% if request.status == ready  %}
-                                        <td><span class="label label-success flat ">{{ ready }}</span></td>
+                                        <td><span class="label label-success flat ">{{ ready|trans|capitalize }}</span></td>
                                     {% elseif request.status == notReady  %}
                                     <td>
                                         <form method="post" action="/intranet/validate-doc-request">
                                             <input type="hidden" name="request_id" value="{{ request.id }}"/>
                                             <input type="submit" name="action" class="btn btn-success btn-flat btn-sm"
-                                                   role="button" value="valider">
+                                                   role="button" value="{{ 'validate'|trans|capitalize }}">
+                                        </form>
+                                    </td>
+                                    {% elseif request.status == validated  %}
+                                    <td>
+                                        <form method="post" action="/intranet/set-doc-ready">
+                                            <input type="hidden" name="request_id" value="{{ request.id }}"/>
+                                            <input type="submit" name="action" class="btn btn-success btn-flat btn-sm"
+                                                   role="button" value="{{ 'set.ready'|trans|capitalize }}">
                                         </form>
                                     </td>
                                     {% endif %}

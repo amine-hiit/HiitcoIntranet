@@ -624,7 +624,7 @@ class VacationManager
 
     public function generateNotification($notifType,array $args = null, $url, $employees)
     {
-        $this->nm->generateNotification($notifType, $args, $url, $employees);
+        $this->nm->generateNotification($notifType, $args, '/intranet/my-docs', $employees);
     }
 
     public function request(Vacation &$vacation)

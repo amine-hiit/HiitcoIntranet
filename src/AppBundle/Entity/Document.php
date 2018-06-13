@@ -14,8 +14,9 @@ use FOS\UserBundle\Model\User;
 class Document
 {
 
-    const DOC_NOT_READY = 'document non prêt';
-    const DOC_READY = 'document  prêt';
+    const DOC_NOT_READY = 'doc.not.ready';
+    const DOC_VALIDATED = 'doc.validated';
+    const DOC_READY = 'doc.ready';
     const CERTIFICATION_OF_SALARY = 'attestation de salaire';
     const ATTESTATION_OF_EMPLOYMENT   = 'attestation de travail';
     const CERTIFICATION_OF_SALARY_VIEW = 'some view';
@@ -48,7 +49,7 @@ class Document
     /**
      * @var string
      *
-     * @ORM\Column(name="status", type="string", length=255)
+     * @ORM\Column(name="status", type="string", length=256)
      */
     private $status;
 
@@ -137,29 +138,6 @@ class Document
         return $this->requestDate;
     }
 
-    /**
-     * Set status.
-     *
-     * @param string $status
-     *
-     * @return Document
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get status.
-     *
-     * @return string
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
 
 
     /**
@@ -208,5 +186,29 @@ class Document
     public function getPdf()
     {
         return $this->pdf;
+    }
+
+    /**
+     * Set status.
+     *
+     * @param string $status
+     *
+     * @return Document
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status.
+     *
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->status;
     }
 }
