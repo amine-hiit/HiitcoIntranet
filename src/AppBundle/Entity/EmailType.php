@@ -36,8 +36,11 @@ class EmailType
      */
     private $template;
 
-
-
+    /**
+     * @var array
+     * @ORM\Column(type="array",name="roles", nullable=true)
+     */
+    private $roles;
 
     /**
      * @ORM\ManyToMany(targetEntity="Employee", cascade={"persist"})
@@ -140,7 +143,6 @@ class EmailType
      */
     public function removeEmployee(\AppBundle\Entity\Employee $employee)
     {
-        dump('test');die;
         return $this->employees->removeElement($employee);
     }
 
@@ -153,4 +155,60 @@ class EmailType
     {
         return $this->employees;
     }
+
+    /**
+     * Set roles.
+     *
+     * @param array|null $roles
+     *
+     * @return EmailType
+     */
+    public function setRoles($roles = null)
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * Get roles.
+     *
+     * @return array|null
+     */
+    public function getRoles()
+    {
+        return $this->roles;
+    }
+
+    /**
+     * Add employee.
+     *
+     * @param $role
+     *
+     * @return EmailType
+     */
+    public function addRole($role)
+    {
+        $this->roles[] = $role;
+        return $this;
+    }
+
+    /**
+     * Remove role.
+     *
+     * @param $role
+     *
+     * @return boolean TRUE if this array contained the specified element, FALSE otherwise.
+     */
+    public function removeRole($role)
+    {
+        $index = array_search($role,$this->roles);
+        if($index !== FALSE){
+            unset($this->roles[$index]);
+            return true;
+        }
+        return false;
+    }
+
+
 }

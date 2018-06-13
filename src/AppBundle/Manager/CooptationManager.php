@@ -8,6 +8,7 @@
 
 namespace AppBundle\Manager;
 
+use AppBundle\Entity\EmailType;
 use AppBundle\Entity\Employee;
 use AppBundle\Resources\Email;
 use AppBundle\Entity\Cooptation;
@@ -73,32 +74,30 @@ class CooptationManager
         $cooptation->setEmployee($employee);
         $cooptation->getResumee()->upload();
 
-
-
         //FOR SENDIG EMAIL
-        $concernedEmployees = $this->employeeManager->findByRoles(array(
-            "ROLE_HR","ROLE_ADMIN"
-        ));
-        $subject = 'demande de cooptation';
-        $from = 'mo.amine.jabri@gmail.com';
-        $to = $this->employeeManager->getEmails($this->employeeManager->findByRoles(array(
-            "ROLE_HR","ROLE_ADMIN"
-        )));
-        $template = Email\Templates::COOPTATION_REQUEST;
+
+        $emailType = $this->em->getRepository(EmailType::class)->findBy(['label' =>
+        Email\Subject::COOPTATION_REQUEST])[0];
         $args = [
             'recommender' => $employee,
             'recommended' => $cooptation,
         ];
-        $filesPaths = [$cooptation->getResumee()->getUrl()];
+        $filesPaths = [
+            $cooptation->getResumee()->getUrl()
+        ];
 
-        $this->sendEmail($subject,$from,$to,$template,$args,$filesPaths);
-
+        $this->sendEmail(
+            $emailType,
+            null,
+            $args,
+            $filesPaths
+        );
 
         //FOR NOTIFICATION
 
-
+        $concernedEmployees = $this->employeeManager->findEmployeesByRoles($emailType->getRoles());
         $this->nm->generateNotification(self::COOPTATION_REQUEST,
-            array($employee->getFirstName()), 'url', $concernedEmployees);
+            array($employee->getFirstName()), '#', $concernedEmployees);
 
 
         $this->em->persist($cooptation);
@@ -110,15 +109,20 @@ class CooptationManager
         return $this->em->getRepository(Cooptation::class)->findAll();
     }
 
-    private function sendEmail($subject,
-        $from,
-        $to,
-        $template,
-        array $args,
-        array $filesPaths
+    private function sendEmail(
+        EmailType $emailType = null,
+        $to = null,
+        array $args = null,
+        array $filesPaths = null
+
     )
     {
-        $this->emailManager->send($subject, $from, $to, $template, $args, $filesPaths);
+        $this->emailManager->send(
+            $emailType,
+            $to,
+            $args,
+            $filesPaths
+        );
     }
 
 }

@@ -5,6 +5,17 @@
 {% block stylesheet %}
     <link rel="stylesheet" href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('bower_components/bower_components/bootstrap-select/dist/css/bootstrap-select.css') }}">
+    <style>
+        .select2-selection__choice{
+            border-radius: 0 !important;
+            border: 0 !important;
+            background: #367fa9 !important;
+        }
+        .select2{
+            max-width: 100% !important;
+            min-width: 100% !important;
+        }
+    </style>
 
 {% endblock %}
 
@@ -37,27 +48,24 @@
 
                     </div>
 
-
                     <div class="box-body">
                         <div class="form-group">
                             <ul class="list-unstyled">
 
                                 {% for email in emails %}
-
                                 <li>
-                                    <span>{{ email.label }}  </span>
+                                    <span>{{ email.label|trans|capitalize }}  </span>
                                     <a class="edit-email" id="edit-{{ email.id }}" href="#"><i class="fa fa-edit"></i></a>
                                 </li>
                                 <div class="form-holder" id="form-{{ email.id }}"></div>
-                            {% endfor %}
+                                {% endfor %}
+
                             </ul>
-
                         </div>
-
                     </div>
-                <!-- /.box -->
+
+                </div>
             </div>
-        </div>
         </div>
     </section>
 

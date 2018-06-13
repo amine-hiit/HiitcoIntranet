@@ -65,6 +65,15 @@ class SettingController extends Controller
             $this->getDoctrine()->getManager()->persist($email);
             $this->getDoctrine()->getManager()->flush();
         }
-        return $this->render('@App/setting/email_form.html.twig',['form' => $form->createView()]);
+        return $this->render('@App/setting/email-default-receivers.html.twig',['form' => $form->createView()]);
+    }
+
+    /**
+     * @Route("/intranet/admin/test", name="test-edit")
+     */
+    public function testAction(Request $request)
+    {
+        $roles = ['ROLE_EMPLOYEE','ROLE_HR'];
+        dump($this->get('app.employee.manager')->findEmployeesByRoles($roles));die;
     }
 }

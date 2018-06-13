@@ -1,5 +1,9 @@
 # messages.fr.yml
 
+employee: employé
+employees: employés
+
+
 name: nom
 profil: profile
 phone.number: Numéro de téléphone
@@ -117,3 +121,16 @@ doc.ready.success: le document est bien disponible
 configuration: configuration
 parameters: parametres
 emails: emails
+
+role: rôle
+roles: rôles
+
+role.user: rôle d'utilisateur
+role.employee: rôle d'employé
+role.hr: rôle de responsable rh
+role.admin: rôle d'admin
+
+set.new.password: saisir nouveau mot de passe
+cooptation.request: demande de cooptation
+fill.employee.form: invitation pour remplir la fiche collaborateur
+other.email.type: autre réference d'email

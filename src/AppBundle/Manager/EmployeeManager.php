@@ -4,6 +4,7 @@
 namespace AppBundle\Manager;
 
 
+use AppBundle\Entity\EmailType;
 use AppBundle\Entity\Notification;
 use Doctrine\ORM\EntityManagerInterface;
 use AppBundle\Entity\EmployeeFormation;
@@ -16,6 +17,12 @@ use Symfony\Component\Routing\RouterInterface;
 
 class EmployeeManager
 {
+
+
+    /**
+     *
+     */
+    private $translator;
 
     /**
      * @var TokenGeneratorInterface
@@ -82,6 +89,19 @@ class EmployeeManager
     public function findEmployeeLastFormation(Employee $employee)
     {
         return $this->em->getRepository(EmployeeFormation::class)->findEmployeeLastFormation($employee);
+    }
+
+    public function findEmployeesByRoles(array $roles = null){
+        if (null === $roles)
+            return [];
+        $employees = [];
+        foreach ($roles as $role){
+            $results = $this->em->getRepository(Employee::class)->findByRole($role);
+            foreach ($results as $result) {
+                $employees[]=$result;
+            }
+        }
+        return $employees;
     }
 
     public function findEmployeeLastExperience(Employee $employee)
@@ -172,41 +192,32 @@ class EmployeeManager
         $this->um->updateUser($employee);
     }
 
-
     /******* Emails Section *************/
 
     public function sendNewEmployeeEmails(Employee $employee)
     {
         $token = $employee->getConfirmationToken();
-        $from = 'mo.amine.jabri@gmail.com';
-        $employeeEmail = $employee->getEmail();
+        $employeeFormEmail = $this->em->getRepository(EmailType::class)
+            ->findBy(['label' => Email\Subject::FILL_EMPLOYEE_FORM])[0];
+        $setPWEmail = $this->em->getRepository(EmailType::class)
+            ->findBy(['label' => Email\Subject::SET_NEW_PASSWORD])[0];
         $setNewPasswordUrl = 'http://localhost:8002/new-password/'.$token;
         $employeeFormUrl = 'http://localhost:8002'
             .$this->router->generate('employee-form');
 
-
-
         $this->emailManager->send(
-            Email\Subject::SET_NEW_PASSWORD,
-            $from,
-            $employeeEmail,
-            Email\Templates::SET_NEW_PASSWORD,
+            $setPWEmail,
+            $employee->getEmail(),
             [
                 'url' => $setNewPasswordUrl,
                 'userName' => $employee->getUsername(),
                 'action' => 'Clique ici'
-
             ]
         );
 
-
-
         $this->emailManager->send(
-            Email\Subject::FILL_EMPLOYEE_FORM,
-            $from,
-            $employeeEmail,
-            Email\Templates::FILL_EMPLOYEE_FORM,
-            [
+            $employeeFormEmail,
+            $employee->getEmail(),            [
                 'url' => $employeeFormUrl,
                 'action' => 'Clique ici'
             ]

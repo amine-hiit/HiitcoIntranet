@@ -21,6 +21,7 @@ class EmailTypeType extends AbstractType
         $builder
             ->add('employees', EntityType::class, array(
                 'class' => 'AppBundle:Employee',
+                'required' => false,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('u')
                         ->orderBy('u.username', 'ASC');
@@ -28,7 +29,20 @@ class EmailTypeType extends AbstractType
                 'choice_label' => 'username',
                 'multiple' => true,
                 'by_reference' => false
-            ));
+
+            ))
+            ->add('roles', ChoiceType::class,array(
+                'required' => false,
+                'choices'  => array(
+                    'role.user' => 'ROLE_USER',
+                    'role.employee' => 'ROLE_EMPLOYEE',
+                    'role.hr' => 'ROLE_HR',
+                    'role.admin' => 'ROLE_ADMIN',
+                ),
+                'multiple' => true,
+                )
+            )
+        ;
     }/**
      * {@inheritdoc}
      */
