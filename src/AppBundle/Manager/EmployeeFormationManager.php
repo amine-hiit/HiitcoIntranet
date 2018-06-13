@@ -5,7 +5,7 @@ namespace AppBundle\Manager;
 
 
 use AppBundle\Entity\Employee;
-use AppBundle\Entity\EmployeeFormation;
+use AppBundle\Entity\Formation;
 use Doctrine\ORM\EntityManagerInterface;
 
 class EmployeeFormationManager
@@ -29,28 +29,28 @@ class EmployeeFormationManager
 
     public function findEmployeeLastFormation($employee)
     {
-        return $this->em->getRepository(EmployeeFormation::class)->findEmployeeLastFormation($employee);
+        return $this->em->getRepository(Formation::class)->findEmployeeLastFormation($employee);
     }
 
     public function findEmployeeLastExperience($employee)
     {
-        return $this->em->getRepository(EmployeeFormation::class)->findEmployeeLastFormation($employee);
+        return $this->em->getRepository(Formation::class)->findEmployeeLastFormation($employee);
     }
 
     public function findAllEmployeeExperiences($employee)
     {
-        return $this->em->getRepository(EmployeeFormation::class)->findAllEmployeeExperiences($employee);
+        return $this->em->getRepository(Formation::class)->findAllEmployeeExperiences($employee);
     }
 
 
     public function findEmployeeAllFormations($employee)
     {
-        return $this->em->getRepository(EmployeeFormation::class)->findEmployeeAllFormations($employee);
+        return $this->em->getRepository(Formation::class)->findEmployeeAllFormations($employee);
     }
 
     public function create()
     {
-        return new EmployeeFormation();
+        return new Formation();
     }
 
 

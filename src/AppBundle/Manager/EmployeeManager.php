@@ -7,7 +7,7 @@ namespace AppBundle\Manager;
 use AppBundle\Entity\EmailType;
 use AppBundle\Entity\Notification;
 use Doctrine\ORM\EntityManagerInterface;
-use AppBundle\Entity\EmployeeFormation;
+use AppBundle\Entity\Formation;
 use AppBundle\Entity\Experience;
 use AppBundle\Entity\Employee;
 use AppBundle\Resources\Email;
@@ -88,7 +88,7 @@ class EmployeeManager
 
     public function findEmployeeLastFormation(Employee $employee)
     {
-        return $this->em->getRepository(EmployeeFormation::class)->findEmployeeLastFormation($employee);
+        return $this->em->getRepository(Formation::class)->findEmployeeLastFormation($employee);
     }
 
     public function findEmployeesByRoles(array $roles = null){
@@ -140,12 +140,12 @@ class EmployeeManager
 
     public function findEmployeeAllFormations(Employee $employee)
     {
-        return $this->em->getRepository(EmployeeFormation::class)->findEmployeeAllFormations($employee);
+        return $this->em->getRepository(Formation::class)->findEmployeeAllFormations($employee);
     }
 
     public function createEmployeeFormation()
     {
-        return new EmployeeFormation();
+        return new Formation();
     }
 
     public function setUserToAttribute($attribute,Employee $user)

@@ -30,7 +30,7 @@
                             <h3>{{ employee.firstName }} {{ employee.lastName }}</h3>
                             <h4 class="widget-user-desc">{{ employee.currentPosition }}</h4>
                             <span class="description-text">{{ lastFormations.organization }}
-                                . {{ lastFormations.formation.speciality }}</span>
+                                . {{ lastFormations.speciality }}</span>
                             <span class="description-text"></span>
                         </div>
                     </div>
@@ -45,7 +45,6 @@
 
         <ul class="timeline">
 
-            {% if  experiences|length > 0    %}
                 <li>
                     <i class="fa fa-black-tie bg-black"></i>
 
@@ -161,7 +160,68 @@
                         {% endif %}
                     </div>
                 </li>
-            {% endif %}
+
+                <li>
+                    <i class="fa fa-language bg-blue"></i>
+
+                    <div class="timeline-item flat">
+
+                        {% for language in languages %}
+
+                            <div class="timeline-body">
+                                <p><span>{{ language.language.label }}</span> - <span>{{ language.level|trans|capitalize }}</span></p>
+                            </div>
+
+                            {% if profileOwner %}
+                                <div class="timeline-footer">
+                                    <a class="btn btn-primary btn-xs flat">{{ 'update'|trans|capitalize }}</a>
+                                    <a class="btn btn-danger btn-xs flat">{{ 'delete'|trans|capitalize }}</a>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if profileOwner %}
+                            <div id="language-form-holder" class="hidden">
+                                {{ form_start(languageForm, {'attr': {'id': 'languageForm'}}) }}
+                                <div class="box-header with-border">
+                                    <h3 class="timeline-header"> {{ 'new.language'|trans|capitalize }} </h3>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-xs-12">
+                                        <div class='col-sm-4 col-xs-12'>
+                                            <div class='form-group' style="width: 90%;" >
+                                                {{ form_label(languageForm.language, 'language'|trans|capitalize) }}
+                                                {{ form_widget(languageForm.language, {'attr':{
+                                                    'class':'form-control select2 ',
+                                                }}) }}
+                                            </div>
+                                        </div>
+                                        <div class='col-sm-6 col-xs-12'>
+                                            <div class='form-group' style="width: 90%;">
+                                                {{ form_label(languageForm.level, 'level'|trans|capitalize) }}
+                                                {{ form_widget(languageForm.level, {'attr':{
+                                                    'class':'form-control select2'
+                                                }}) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a id="cancel-adding-new-language" class="btn btn-default flat col-sm-6 col-xs-6">
+                                    {{ 'cancel'|trans|capitalize }}
+                                </a>
+                                <button type="submit" class="btn btn-default flat col-sm-6 col-xs-6"
+                                >{{ 'submit'|trans|capitalize }}
+                                </button>
+
+                                {{ form_end(languageForm) }}
+                            </div>
+
+                            <a class="btn btn-default flat col-sm-12 col-xs-12 "
+                               id="add-language"
+                            >{{ 'add.language'|trans|capitalize }}</a>
+                        {% endif %}
+                    </div>
+                </li>
 
             <li>
                 <i class="fa fa-graduation-cap bg-blue"></i>
@@ -172,8 +232,8 @@
                         <h3 class="timeline-header ">{{ formation.organization }} </h3>
 
                         <div class="timeline-body">
-                            <p><span>{{ formation.formation.diploma }}</span> .
-                                <span>{{ formation.formation.speciality }}</span></p>
+                            <p><span>{{ formation.diploma }}</span> .
+                                <span>{{ formation.speciality }}</span></p>
                             <p><span>{{ formation.startDate|date("Y") }}</span> -
                                 <span>{{ formation.endDate|date("Y") }}</span></p>
                         </div>
@@ -201,6 +261,7 @@
 
                             <div class="box-body">
 
+                                {#
                                 <div class='col-sm-4 col-xs-12'>
                                     <div class='form-group'>
                                         {{ form_label(formationForm.formation, 'formation'|trans|capitalize ) }}<a href='#'> Autre?</a>
@@ -209,46 +270,80 @@
                                         }}) }}
                                     </div>
                                 </div>
-                                <div class='col-sm-4 col-xs-12'>
-                                    <div class='form-group'>
-                                        {{ form_label(formationForm.organization, 'organization'|trans|capitalize ) }}
-                                        {{ form_widget(formationForm.organization, {'attr':{
-                                            'class':'form-control'
-                                        }}) }}
-                                    </div>
-                                </div>
-                                <div class='col-sm-4 col-xs-12'>
-                                    <div class='form-group'>
-                                        {{ form_label(formationForm.country, 'country'|trans|capitalize ) }}
-                                        {{ form_widget(formationForm.country, {'attr':{
-                                            'class':'form-control'
-                                        }}) }}
-                                    </div>
-                                </div>
-                                <div class='col-sm-4 col-xs-12'>
-                                    <div class='form-group'>
-                                        {{ form_label(formationForm.startDate, 'start.date'|trans|capitalize ) }}
-                                        <div class='input-group date'>
-                                            <div class='input-group-addon'>
-                                                <i class='fa fa-calendar'></i>
-                                            </div>
-                                            {{ form_widget(formationForm.startDate, {'attr':{
+                                #}
+                                <div class="row">
+                                    <div class='col-sm-4 col-xs-12'>
+                                        <div class='form-group'>
+                                            {{ form_label(formationForm.level, 'level'|trans|capitalize) }}
+                                            {{ form_widget(formationForm.level, {'attr':{
 
-                                                'class':'form-control pull-right datepicker'
+                                                'class':'form-control'
+                                            }}) }}
+                                        </div>
+                                    </div>
+                                    <div class='col-sm-4 col-xs-12'>
+                                        <div class='form-group'>
+                                            {{ form_label(formationForm.speciality, 'speciality'|trans|capitalize) }}
+                                            {{ form_widget(formationForm.speciality, {'attr':{
+
+                                                'class':'form-control'
+                                            }}) }}
+                                        </div>
+                                    </div>
+                                    <div class='col-sm-4 col-xs-12'>
+                                        <div class='form-group'>
+                                            {{ form_label(formationForm.diploma, 'diploma'|trans|capitalize) }}
+                                            {{ form_widget(formationForm.diploma, {'attr':{
+
+                                                'class':'form-control'
                                             }}) }}
                                         </div>
                                     </div>
                                 </div>
-                                <div class='col-sm-4 col-xs-12'>
-                                    <div class='form-group'>
-                                        {{ form_label(formationForm.endDate, 'end.date'|trans|capitalize ) }}
-                                        <div class='input-group date'>
-                                            <div class='input-group-addon'>
-                                                <i class='fa fa-calendar'></i>
-                                            </div>
-                                            {{ form_widget(formationForm.endDate, {'attr':{
+                                <div class="row">
+                                    <div class='col-sm-4 col-xs-12'>
+                                        <div class='form-group' >
+                                            {{ form_label(formationForm.organization, 'organization'|trans|capitalize) }}
+                                            {{ form_widget(formationForm.organization, {'attr':{
+                                                'class':'form-control'
+                                            }}) }}
+                                        </div>
+                                    </div>
+                                    <div class='col-sm-4 col-xs-12'>
+                                        <div class='form-group'>
+                                            {{ form_label(formationForm.startDate, 'start.date'|trans|capitalize) }}
+                                            <div class='input-group date'>
+                                                <div class='input-group-addon'>
+                                                    <i class='fa fa-calendar'></i>
+                                                </div>
+                                                {{ form_widget(formationForm.startDate, {'attr':{
 
-                                                'class':'form-control pull-right datepicker'
+                                                    'class':'form-control pull-right datepicker'
+                                                }}) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='col-sm-4 col-xs-12'>
+                                        <div class='form-group'>
+                                            {{ form_label(formationForm.endDate, 'end.date'|trans|capitalize) }}
+                                            <div class='input-group date'>
+                                                <div class='input-group-addon'>
+                                                    <i class='fa fa-calendar'></i>
+                                                </div>
+                                                {{ form_widget(formationForm.endDate, {'attr':{
+
+                                                    'class':'form-control pull-right datepicker'
+                                                }}) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class='col-sm-4 col-xs-12'>
+                                        <div class='form-group' >
+                                            {{ form_label(formationForm.country, 'country'|trans|capitalize) }}
+                                            {{ form_widget(formationForm.country, {'attr':{
+                                                'class':'form-control'
                                             }}) }}
                                         </div>
                                     </div>
@@ -304,6 +399,11 @@
       jQuery(this).addClass('hidden');
       });
 
+      jQuery('#add-language').click(function (e) {
+      jQuery('#language-form-holder').removeClass('hidden')
+      jQuery(this).addClass('hidden');
+      });
+
       jQuery('#add-experience').click(function (e) {
       jQuery('#experience-form-holder').removeClass('hidden')
       jQuery(this).addClass('hidden');
@@ -312,6 +412,11 @@
       jQuery('#cancel-adding-new-experience').click(function (e) {
       jQuery('#experience-form-holder').addClass('hidden')
       jQuery('#add-experience').removeClass('hidden');
+      });
+
+      jQuery('#cancel-adding-new-language').click(function (e) {
+      jQuery('#language-form-holder').addClass('hidden')
+      jQuery('#add-language').removeClass('hidden');
       });
 
       jQuery('#cancel-adding-new-formation').click(function (e) {

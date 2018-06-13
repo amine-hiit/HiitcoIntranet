@@ -12,55 +12,81 @@
 
     <div class="box-body">
 
-        <div class='col-sm-4 col-xs-12'>
-            <div class='form-group'>
-                {{ form_label(item.formation, 'formation'|trans|capitalize) }}<a data-toggle="modal" class="other-formation" data-target="#formationModal"> autre ?</a>
 
-                {{ form_widget(item.formation, {'attr':{
-                    'class':'form-control formation-select select2',
-                }}) }}
-            </div>
-        </div>
-        <div class='col-sm-4 col-xs-12'>
-            <div class='form-group' >
-                {{ form_label(item.organization, 'organization'|trans|capitalize) }}
-                {{ form_widget(item.organization, {'attr':{
-                    'class':'form-control'
-                }}) }}
-            </div>
-        </div>
-        <div class='col-sm-4 col-xs-12'>
-            <div class='form-group' >
-                {{ form_label(item.country, 'country'|trans|capitalize) }}
-                {{ form_widget(item.country, {'attr':{
-                    'class':'form-control'
-                }}) }}
-            </div>
-        </div>
-        <div class='col-sm-4 col-xs-12'>
-            <div class='form-group'>
-                {{ form_label(item.startDate, 'start.date'|trans|capitalize) }}
-                <div class='input-group date'>
-                    <div class='input-group-addon'>
-                        <i class='fa fa-calendar'></i>
-                    </div>
-                    {{ form_widget(item.startDate, {'attr':{
+        <div class="row">
+            <div class='col-sm-4 col-xs-12'>
+                <div class='form-group'>
+                    {{ form_label(item.level, 'level'|trans|capitalize) }}
+                    {{ form_widget(item.level, {'attr':{
 
-                        'class':'form-control pull-right datepicker'
+                        'class':'form-control'
                     }}) }}
                 </div>
             </div>
-        </div>
-        <div class='col-sm-4 col-xs-12'>
-            <div class='form-group'>
-                {{ form_label(item.endDate, 'end.date'|trans|capitalize) }}
-                <div class='input-group date'>
-                    <div class='input-group-addon'>
-                        <i class='fa fa-calendar'></i>
-                    </div>
-                    {{ form_widget(item.endDate, {'attr':{
+            <div class='col-sm-4 col-xs-12'>
+                <div class='form-group'>
+                    {{ form_label(item.speciality, 'speciality'|trans|capitalize) }}
+                    {{ form_widget(item.speciality, {'attr':{
 
-                        'class':'form-control pull-right datepicker'
+                        'class':'form-control'
+                    }}) }}
+                </div>
+            </div>
+            <div class='col-sm-4 col-xs-12'>
+                <div class='form-group'>
+                    {{ form_label(item.diploma, 'diploma'|trans|capitalize) }}
+                    {{ form_widget(item.diploma, {'attr':{
+
+                        'class':'form-control'
+                    }}) }}
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class='col-sm-4 col-xs-12'>
+                <div class='form-group' >
+                    {{ form_label(item.organization, 'organization'|trans|capitalize) }}
+                    {{ form_widget(item.organization, {'attr':{
+                        'class':'form-control'
+                    }}) }}
+                </div>
+            </div>
+            <div class='col-sm-4 col-xs-12'>
+                <div class='form-group'>
+                    {{ form_label(item.startDate, 'start.date'|trans|capitalize) }}
+                    <div class='input-group date'>
+                        <div class='input-group-addon'>
+                            <i class='fa fa-calendar'></i>
+                        </div>
+                        {{ form_widget(item.startDate, {'attr':{
+
+                            'class':'form-control pull-right datepicker'
+                        }}) }}
+                    </div>
+                </div>
+            </div>
+            <div class='col-sm-4 col-xs-12'>
+                <div class='form-group'>
+                    {{ form_label(item.endDate, 'end.date'|trans|capitalize) }}
+                    <div class='input-group date'>
+                        <div class='input-group-addon'>
+                            <i class='fa fa-calendar'></i>
+                        </div>
+                        {{ form_widget(item.endDate, {'attr':{
+
+                            'class':'form-control pull-right datepicker'
+                        }}) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class='col-sm-4 col-xs-12'>
+                <div class='form-group' >
+                    {{ form_label(item.country, 'country'|trans|capitalize) }}
+                    {{ form_widget(item.country, {'attr':{
+                        'class':'form-control'
                     }}) }}
                 </div>
             </div>
@@ -68,7 +94,6 @@
 
     </div>
 </div>
-
 
 <div class="modal fade" id="formationModal" >
     <div class="modal-dialog">
@@ -86,7 +111,6 @@
                 <a href="#" class="btn" data-dismiss="modal">Annuler</a>
             </div>
         </div>
-
     </div>
 </div>
 

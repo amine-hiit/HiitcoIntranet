@@ -183,9 +183,9 @@ class Employee extends BaseUser
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
-     * @ORM\OneToMany(targetEntity="EmployeeFormation", mappedBy="employee", cascade={"persist","remove"})
+     * @ORM\OneToMany(targetEntity="Formation", mappedBy="employee", cascade={"persist","remove"})
      */
-    private $employeeFormations;
+    private $formations;
 
     /**
      * @var EmployeeLanguage
@@ -606,40 +606,40 @@ class Employee extends BaseUser
 
 
     /**
-     * Add employeeFormation.
+     * Add formation.
      *
-     * @param \AppBundle\Entity\EmployeeFormation $employeeFormation
+     * @param \AppBundle\Entity\Formation $formation
      *
      * @return Employee
      */
-    public function addEmployeeFormation(\AppBundle\Entity\EmployeeFormation $employeeFormation)
+    public function addFormation(\AppBundle\Entity\Formation $formation)
     {
-        $employeeFormation->setEmployee($this);
-        $this->employeeFormations[] = $employeeFormation;
+        $formation->setEmployee($this);
+        $this->formations[] = $formation;
 
         return $this;
     }
 
     /**
-     * Remove employeeFormation.
+     * Remove formation.
      *
-     * @param \AppBundle\Entity\EmployeeFormation $employeeFormation
+     * @param \AppBundle\Entity\Formation $fFormation
      *
      * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removeEmployeeFormation(\AppBundle\Entity\EmployeeFormation $employeeFormation)
+    public function removeFormation(\AppBundle\Entity\Formation $formation)
     {
-        return $this->employeeFormations->removeElement($employeeFormation);
+        return $this->formations->removeElement($formation);
     }
 
     /**
-     * Get employeeFormations.
+     * Get formations.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getEmployeeFormations()
+    public function getFormations()
     {
-        return $this->employeeFormations;
+        return $this->formations;
     }
 
 

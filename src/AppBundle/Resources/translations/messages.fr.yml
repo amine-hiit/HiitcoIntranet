@@ -134,3 +134,14 @@ set.new.password: saisir nouveau mot de passe
 cooptation.request: demande de cooptation
 fill.employee.form: invitation pour remplir la fiche collaborateur
 other.email.type: autre réference d'email
+
+speciality: spécialité
+diploma: diplôlme
+
+choose: choisir
+other: autre
+
+native: langue maternelle
+begginer: débutant
+intermediate: moyen
+advanced: avancé

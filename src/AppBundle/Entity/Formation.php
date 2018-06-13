@@ -8,9 +8,9 @@ use Doctrine\ORM\Mapping as ORM;
  * Formation
  *
  * @ORM\Table(name="formation")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\FormationRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\EmployeeFormationRepository")
  */
-class Formation
+    class Formation
 {
     /**
      * @var int
@@ -20,6 +20,51 @@ class Formation
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @var Employee
+     *
+     * @ORM\ManyToOne(targetEntity="Employee", inversedBy="employeeFormation")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $employee;
+/*
+    /**
+     * @var Formation
+     *
+     * @ORM\ManyToOne(targetEntity="Formation~", inversedBy="employeeFormation")
+     * @ORM\JoinColumn(nullable=false)
+
+    private $formation;*/
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="startDate", type="date", nullable=true)
+     */
+    private $startDate;
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="endDate", type="date", nullable=true)
+     */
+    private $endDate;
+
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="organization", type="string", length=255)
+     */
+    private $organization;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="country", type="string", length=255)
+     */
+    private $country;
 
     /**
      * @var string
@@ -44,17 +89,6 @@ class Formation
     private $speciality;
 
 
-
-    /** var EmployeeFormation
-     *
-     * @ORM\OneToMany(targetEntity="EmployeeFormation", mappedBy="formation")
-     */
-    private $employeeFormation;
-
-
-
-
-
     /**
      * Get id.
      *
@@ -63,6 +97,166 @@ class Formation
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set employee.
+     *
+     * @param string $employee
+     *
+     * @return Formation
+     */
+    public function setEmployee($employee)
+    {
+        $this->employee = $employee;
+
+        return $this;
+    }
+
+    /**
+     * Get employee.
+     *
+     * @return string
+     */
+    public function getEmployee()
+    {
+        return $this->employee;
+    }
+
+    /**
+     * Set startDate.
+     *
+     * @param \DateTime|null $startDate
+     *
+     * @return Formation
+     */
+    public function setStartDate($startDate = null)
+    {
+        $this->startDate = $startDate;
+
+        return $this;
+    }
+
+    /**
+     * @return Formation
+     */
+    public function getFormation()
+    {
+        return $this->formation;
+    }
+
+    /**
+     * @param Formation $formation
+     */
+    public function setFormation($formation)
+    {
+        $this->formation = $formation;
+    }
+
+    /**
+     * Get startDate.
+     *
+     * @return \DateTime|null
+     */
+    public function getStartDate()
+    {
+        return $this->startDate;
+    }
+
+    /**
+     * Set endDate.
+     *
+     * @param \DateTime|null $endDate
+     *
+     * @return Formation
+     */
+    public function setEndDate($endDate = null)
+    {
+        $this->endDate = $endDate;
+
+        return $this;
+    }
+
+    /**
+     * Get endDate.
+     *
+     * @return \DateTime|null
+     */
+    public function getEndDate()
+    {
+        return $this->endDate;
+    }
+
+    /**
+     * Set organization.
+     *
+     * @param string $organization
+     *
+     * @return Formation
+     */
+    public function setOrganization($organization)
+    {
+        $this->organization = $organization;
+
+        return $this;
+    }
+
+    /**
+     * Get organization.
+     *
+     * @return string
+     */
+    public function getOrganization()
+    {
+        return $this->organization;
+    }
+
+    /**
+     * Set counrty.
+     *
+     * @param string $counrty
+     *
+     * @return Formation
+     */
+    public function setCounrty($counrty)
+    {
+        $this->counrty = $counrty;
+
+        return $this;
+    }
+
+    /**
+     * Get counrty.
+     *
+     * @return string
+     */
+    public function getCounrty()
+    {
+        return $this->counrty;
+    }
+
+    /**
+     * Set country.
+     *
+     * @param string $country
+     *
+     * @return Formation
+     */
+    public function setCountry($country)
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    /**
+     * Get country.
+     *
+     * @return string
+     */
+    public function getCountry()
+    {
+        return $this->country;
     }
 
     /**
@@ -90,51 +284,27 @@ class Formation
     }
 
     /**
-     * Set startDate.
+     * Set level.
      *
-     * @param \DateTime $startDate
+     * @param string $level
      *
      * @return Formation
      */
-    public function setStartDate($startDate)
+    public function setLevel($level)
     {
-        $this->startDate = $startDate;
+        $this->level = $level;
 
         return $this;
     }
 
     /**
-     * Get startDate.
+     * Get level.
      *
-     * @return \DateTime
+     * @return string
      */
-    public function getStartDate()
+    public function getLevel()
     {
-        return $this->startDate;
-    }
-
-    /**
-     * Set endDate.
-     *
-     * @param \DateTime $endDate
-     *
-     * @return Formation
-     */
-    public function setEndDate($endDate)
-    {
-        $this->endDate = $endDate;
-
-        return $this;
-    }
-
-    /**
-     * Get endDate.
-     *
-     * @return \DateTime
-     */
-    public function getEndDate()
-    {
-        return $this->endDate;
+        return $this->level;
     }
 
     /**
@@ -159,78 +329,5 @@ class Formation
     public function getSpeciality()
     {
         return $this->speciality;
-    }
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->employeeFormation = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->employee_formation = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Add employeeFormation.
-     *
-     * @param \AppBundle\Entity\EmployeeFormation $employeeFormation
-     *
-     * @return Formation
-     */
-    public function addEmployeeFormation(\AppBundle\Entity\EmployeeFormation $employeeFormation)
-    {
-        $this->employeeFormation[] = $employeeFormation;
-
-        return $this;
-    }
-
-    /**
-     * Remove employeeFormation.
-     *
-     * @param \AppBundle\Entity\EmployeeFormation $employeeFormation
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
-     */
-    public function removeEmployeeFormation(\AppBundle\Entity\EmployeeFormation $employeeFormation)
-    {
-        return $this->employeeFormation->removeElement($employeeFormation);
-    }
-
-    /**
-     * Get employeeFormation.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getEmployeeFormation()
-    {
-        return $this->employeeFormation;
-    }
-
-    /**
-     * Set level.
-     *
-     * @param string $level
-     *
-     * @return Formation
-     */
-    public function setLevel($level)
-    {
-        $this->level = $level;
-
-        return $this;
-    }
-
-    /**
-     * Get level.
-     *
-     * @return string
-     */
-    public function getLevel()
-    {
-        return $this->level;
-    }
-
-    public function getFullName(){
-        return $this->level.', '.$this->diploma.', '.$this->speciality;
     }
 }

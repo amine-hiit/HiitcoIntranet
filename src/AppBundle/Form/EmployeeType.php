@@ -41,8 +41,8 @@ class EmployeeType extends AbstractType
 
 
             ->add('avatar',     AvatarType::class)
-            ->add('employee_formations', CollectionType::class, array(
-                'entry_type' => EmployeeFormationType::class,
+            ->add('formations', CollectionType::class, array(
+                'entry_type' => FormationType::class,
                 'allow_add' => true,
                 'delete_empty' => true,
                 'allow_delete' => true,
@@ -88,7 +88,7 @@ class EmployeeType extends AbstractType
 
 
 
-        //->add('employeeformation', EmployeeFormationType::class);
+        //->add('employeeformation', FormationType::class);
 
     }/**
  * {@inheritdoc}

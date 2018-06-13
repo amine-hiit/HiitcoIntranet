@@ -9,6 +9,9 @@
 namespace AppBundle\Controller;
 
 
+use AppBundle\Entity\EmployeeLanguage;
+use AppBundle\Entity\Language;
+use AppBundle\Form\EmployeeLanguageType;
 use AppBundle\Form\EmployeeRegistrationType;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -23,13 +26,10 @@ use FOS\UserBundle\Form\Type\ResettingFormType;
 use AppBundle\Entity\Employee;
 use AppBundle\Entity\Formation;
 use AppBundle\Entity\Experience;
-use AppBundle\Entity\EmployeeFormation;
 
 use AppBundle\Form\EmployeeType;
 use AppBundle\Form\FormationType;
 use AppBundle\Form\ExperienceType;
-use AppBundle\Form\EmployeeFormationType;
-
 class EmployeeController extends Controller
 {
 
@@ -76,7 +76,7 @@ class EmployeeController extends Controller
 
     /**
      * @Route("/intranet/new-password", name="new-password")
-         * @Route("/new-password/{token}", name="new-emplyee-password")
+     * @Route("/new-password/{token}", name="new-emplyee-password")
      */
     public function newPasswordAction(Request $request, $token)
     {
@@ -144,7 +144,7 @@ class EmployeeController extends Controller
             ));
 
         $user = $this->get('security.token_storage')->getToken()->getUser();
-
+        $languages = $this->getDoctrine()->getRepository(EmployeeLanguage::class)->findAll();
         $lastFormations = $employeemanager->findEmployeeLastFormation($employee);
         $formations = $employeemanager->findEmployeeAllFormations($employee);
         $experiences = $employeemanager->findEmployeeAllExperiences($employee);
@@ -153,9 +153,11 @@ class EmployeeController extends Controller
 
         $employeeFormation =  $employeemanager->createEmployeeFormation();
         $experience = new Experience();
+        $language = new EmployeeLanguage();
 
-        $employeeFormationForm = $this->get('form.factory')->create(EmployeeFormationType::class, $employeeFormation);
+        $employeeFormationForm = $this->get('form.factory')->create(FormationType::class, $employeeFormation);
         $experienceForm = $this->get('form.factory')->create(ExperienceType::class, $experience);
+        $languageForm = $this->get('form.factory')->create(EmployeeLanguageType::class, $language);
 
         /* to be deleted from controller and used in manager */
         if ($request->isMethod('POST'))
@@ -168,6 +170,16 @@ class EmployeeController extends Controller
 
                 return $this->redirect('/intranet/employee/'.$employee->getId());
             }
+
+            else if ($languageForm->handleRequest($request)->isValid())
+            {
+                $employeemanager->setUserToAttribute($language, $employee );
+                $employeemanager->persistAttribute($language);
+                $employeemanager->updateEmployee($employee);
+
+                return $this->redirect('/intranet/employee/'.$employee->getId());
+            }
+
             else if ($experienceForm->handleRequest($request)->isValid())
             {
                 $employeemanager->setUserToAttribute($experience, $employee );
@@ -180,11 +192,13 @@ class EmployeeController extends Controller
 
         return  $this->render('@App/profil/employee.html.twig', array(
             'formationForm' =>$employeeFormationForm->createView(),
+            'languageForm' =>$languageForm->createView(),
             'experienceForm' => $experienceForm->createView(),
             'employee' => $employee,
             'profileOwner' => ($employee->getId()===$user->getId()),
             'lastFormations' => $lastFormations,
             'formations' => $formations,
+            'languages' => $languages,
             'experiences' => $experiences
         ));
     }
@@ -215,6 +229,5 @@ class EmployeeController extends Controller
             'form' => $form->createView(),
         ));
     }
-
 }
 
