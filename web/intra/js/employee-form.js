@@ -1,6 +1,7 @@
 
-
 jQuery(document).ready(function () {
+
+
 
     addFormation('.add-formation-collection-widget',  e = null);
     addExperience('.add-experience-collection-widget',  e = null);
@@ -9,8 +10,9 @@ jQuery(document).ready(function () {
 
     jQuery('.add-formation-collection-widget').click(function (e) {
         addFormation(this,e);
+        requestForm();
 
-    });
+        });
 
 
     jQuery('.add-language-collection-widget').click(function (e) {
@@ -142,12 +144,63 @@ jQuery(document).ready(function () {
 
         $collectionHolder = $('#formation-fields-list');
 
-        $collectionHolder.find('.formation').each(function() {
-            if (!$(this).hasClass("dirty")) {
+        $collectionHolder.find('.formation').each(function(i) {
+            if (!$(this).hasClass("dirty") && i != 0) {
                 addTagFormDeleteLink($(this));
             }
         });
     }
+
+    function requestForm() {
+
+
+        $("#formation-submit").click(function(){
+            var $formationForm = $('#formation-form');
+
+            $.ajax({
+                type: "POST",
+                url: Routing.generate('new-formation'),
+                data: $formationForm.serialize(),
+                success: function(dataF){
+
+                    console.log(dataF);
+                    $("#modal-content").modal('hide');
+                    var myObject = JSON.parse(dataF);
+                    var objectArray = new Array();
+                    $(".formation-select").each(function(){
+                        var current = $(this).attr('current');
+                        if (typeof current !== typeof undefined){
+                            var option = new Option(myObject.value, myObject.id, true, true);
+                        }else{
+                            var option = new Option(myObject.value, myObject.id, false, false);
+                        }
+                        objectArray.push(option);
+                        $(this).append(option);
+                    });
+                    $('#formationModal').modal('hide');
+                },
+                error: function(){
+                    alert("failure2");
+                }
+            });
+        });
+        $(".other-formation").click(function(){
+            $.ajax({
+                type: "GET",
+                url: Routing.generate('new-formation'),
+                success: function(msg){
+                    console.log(msg);
+                    $("#new-formation-label").empty();
+                    $("#new-formation-label").append(msg);
+                },
+                error: function(){
+                    alert("failure");
+                }
+            });
+        });
+    }
+
+
 
     function addProject(className,e){
         if (e!=null)
@@ -176,12 +229,17 @@ jQuery(document).ready(function () {
         });
     }
 
+
     $('.select2').select2();
 
     $('.datepicker').datepicker({
         autoclose: true
     });
 
+    $('body').on('click','.other-formation',function () {
+        $('.formation-select').removeAttr('current');
+        $(this).closest('div .form-group').find('.formation-select').attr('current','');
+    });
 
 });
 

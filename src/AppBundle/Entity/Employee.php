@@ -6,6 +6,7 @@ namespace AppBundle\Entity;
 use FOS\UserBundle\Model\User as BaseUser;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\Groups;
 
 
 /**
@@ -16,6 +17,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Employee extends BaseUser
 {
+
+    const ROLE_ADMIN = 'ROLE_ADMIN';
+    const ROLE_HR = 'ROLE_HR';
+    const ROLE_EMPLOYEE = 'ROLE_EMPLOYEE';
 
     /**
      * @ORM\Id
@@ -42,6 +47,28 @@ class Employee extends BaseUser
      * @ORM\Column(name="last_name" , type="string", nullable=true)
      */
     private $lastName;
+
+    /**
+     * @var string
+     * @ORM\Column(name="civility" , type="string", nullable=true)
+     */
+    private $civility;
+
+    /**
+     * @return string
+     */
+    public function getCivility()
+    {
+        return $this->civility;
+    }
+
+    /**
+     * @param string $civility
+     */
+    public function setCivility($civility)
+    {
+        $this->civility = $civility;
+    }
 
     /**
      * @var \DateTime
@@ -114,18 +141,57 @@ class Employee extends BaseUser
     private $status;
 
 
+
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
-     * @ORM\OneToMany(targetEntity="EmployeeFormation", mappedBy="employee", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="EmployeeNotification", mappedBy="employee",cascade={"remove"})
+     *
      */
-    private $employeeFormations;
+    private $notifications;
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getNotifications()
+    {
+        return $this->notifications;
+    }
+
+    /**
+     * @param \Doctrine\Common\Collections\ArrayCollection $notifications
+     */
+    public function setNotifications($notifications)
+    {
+        $this->notifications = $notifications;
+    }
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @ORM\OneToMany(targetEntity="Formation", mappedBy="employee", cascade={"persist","remove"})
+     */
+    private $formations;
 
     /**
      * @var EmployeeLanguage
      * @ORM\OneToMany(targetEntity="EmployeeLanguage", mappedBy="employee", cascade={"persist","remove"})
      */
     private $employeeLanguages;
-
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
@@ -139,6 +205,14 @@ class Employee extends BaseUser
      * @ORM\OneToMany(targetEntity="Project", mappedBy="employee",cascade={"persist","remove"})
      */
     private $projects;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @ORM\OneToMany(targetEntity="Cooptation", mappedBy="employee",cascade={"persist","remove"})
+     *
+     */
+    private $cooptations;
+
 
     /**
      * @var Avatar
@@ -532,40 +606,40 @@ class Employee extends BaseUser
 
 
     /**
-     * Add employeeFormation.
+     * Add formation.
      *
-     * @param \AppBundle\Entity\EmployeeFormation $employeeFormation
+     * @param \AppBundle\Entity\Formation $formation
      *
      * @return Employee
      */
-    public function addEmployeeFormation(\AppBundle\Entity\EmployeeFormation $employeeFormation)
+    public function addFormation(\AppBundle\Entity\Formation $formation)
     {
-        $employeeFormation->setEmployee($this);
-        $this->employeeFormations[] = $employeeFormation;
+        $formation->setEmployee($this);
+        $this->formations[] = $formation;
 
         return $this;
     }
 
     /**
-     * Remove employeeFormation.
+     * Remove formation.
      *
-     * @param \AppBundle\Entity\EmployeeFormation $employeeFormation
+     * @param \AppBundle\Entity\Formation $fFormation
      *
      * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removeEmployeeFormation(\AppBundle\Entity\EmployeeFormation $employeeFormation)
+    public function removeFormation(\AppBundle\Entity\Formation $formation)
     {
-        return $this->employeeFormations->removeElement($employeeFormation);
+        return $this->formations->removeElement($formation);
     }
 
     /**
-     * Get employeeFormations.
+     * Get formations.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getEmployeeFormations()
+    public function getFormations()
     {
-        return $this->employeeFormations;
+        return $this->formations;
     }
 
 
@@ -652,5 +726,68 @@ class Employee extends BaseUser
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * Add notification.
+     *
+     * @param \AppBundle\Entity\EmployeeNotification $notification
+     *
+     * @return Employee
+     */
+    public function addNotification(\AppBundle\Entity\EmployeeNotification $notification)
+    {
+        $this->notifications[] = $notification;
+
+        return $this;
+    }
+
+    /**
+     * Remove notification.
+     *
+     * @param \AppBundle\Entity\EmployeeNotification $notification
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeNotification(\AppBundle\Entity\EmployeeNotification $notification)
+    {
+        return $this->notifications->removeElement($notification);
+    }
+
+    /**
+     * Add cooptation.
+     *
+     * @param \AppBundle\Entity\Cooptation $cooptation
+     *
+     * @return Employee
+     */
+    public function addCooptation(\AppBundle\Entity\Cooptation $cooptation)
+    {
+        $cooptation->setEmployee($this);
+        $this->cooptations[] = $cooptation;
+
+        return $this;
+    }
+
+    /**
+     * Remove cooptation.
+     *
+     * @param \AppBundle\Entity\Cooptation $cooptation
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeCooptation(\AppBundle\Entity\Cooptation $cooptation)
+    {
+        return $this->cooptations->removeElement($cooptation);
+    }
+
+    /**
+     * Get cooptations.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCooptations()
+    {
+        return $this->cooptations;
     }
 }

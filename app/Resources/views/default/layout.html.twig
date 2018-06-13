@@ -28,6 +28,8 @@
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="{{ asset('dist/css/skins/_all-skins.min.css') }}">
+    <!-- intranet notification style-->
+    <link rel="stylesheet" href="{{ asset('intra/css/notification.css') }}">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -39,7 +41,8 @@
     <!-- Google Font -->
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-    {% block stylesheet %}{% endblock %}
+    {% block stylesheet %}
+    {% endblock %}
 
 
 </head>
@@ -76,23 +79,19 @@
                     <!-- MESSAGES: style can be found in dropdown.less -->
                     <!-- Notifications: style can be found in dropdown.less -->
                     <li class="dropdown notifications-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <a href="#" class="dropdown-toggle" id="notification-link" data-toggle="dropdown">
                             <i class="fa fa-bell-o"></i>
-                            <span class="label label-warning">10</span>
+                            <span class="label label-warning count"></span>
                         </a>
-                        <ul class="dropdown-menu">
-                            <li class="header">You have 10 notifications</li>
+                        <ul class="dropdown-menu flat " style="width: 450px;">
+                            <li class="header">
+                                Vous avez <span class="count"></span> notifications</li>
                             <li>
                                 <!-- inner menu: contains the actual data -->
-                                <ul class="menu">
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-users text-aqua"></i> 5 new members joined today
-                                        </a>
-                                    </li>
-                                </ul>
+                                <div class="menu notifications" id = "notifications-menu">
+                                </div>
                             </li>
-                            <li class="footer"><a href="#">View all</a></li>
+                            <li class="footer"><a href="/intranet/notification-list">Voir toutes</a></li>
                         </ul>
                     </li>
                     <!-- TASKS: style can be found in dropdown.less -->
@@ -177,8 +176,8 @@
                     </a>
                     <ul class="treeview-menu">
                         <li><a href="/intranet/my-vacation-requests"><i class="fa fa-circle-o"></i>Congés</a></li>
-                        <li><a href="/intranet/request-a-doc"><i class="fa fa-circle-o"></i> Demander document</a></li>
-                        <li><a href="/intranet/cooptation"><i class="fa fa-circle-o"></i> Cooptations</a></li>
+                        <li><a href="/intranet/request-doc"><i class="fa fa-circle-o"></i> Demander document</a></li>
+                        <li><a href="/intranet/cooptation-request"><i class="fa fa-circle-o"></i> Cooptations</a></li>
                         {% if is_granted('ROLE_HR') %}
                             <li><a href="/intranet/hrm/employees"><i class="fa fa-circle-o"></i> Employés</a></li>
                         {% endif %}
@@ -211,10 +210,10 @@
 
 
                 {% if is_granted('ROLE_DIRECTOR') %}
-                    <li class="treeview">
-                        <a href="#">
+                    <li>
+                        <a href="/intranet/admin/parameters">
                             <i class="fa fa-wrench"></i>
-                            <span>Parametrage</span>
+                            <span>Configuration</span>
                         </a>
                     </li>
                 {% endif %}
@@ -227,20 +226,29 @@
 
 
     <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
+
+    <!-- /.content-wrapper -->
+
+    <div class="content-wrapper" style="min-height: 960px;">
 
         {% if  not app.user.valid %}
             <div class="callout callout-danger flat">
                 <a href="/intranet/form"> Veuillez Remplir votre fiche Collaborateur</a>
             </div>
         {% endif %}
+        {% for type, flashes in app.session.flashbag.all %}
+            {% for flash in flashes %}
+                <div class="flat alert alert-{{ type }} fade in">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {{ flash }}
+                </div>
+            {% endfor %}
+        {% endfor %}
 
         {% block content %}
+
         {% endblock %}
     </div>
-
-    <!-- /.content-wrapper -->
-
     <footer class="main-footer">
         <div class="container">
             <p align="center">HiitConsulting | 6, Rue Ahmed El Brihi, ben Jdia, Casablanca | contact@hiitconsulting.com
@@ -268,15 +276,20 @@
 <script src="{{ asset('dist/js/demo.js') }}"></script>
 <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
 <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
-
+<script src="{{ asset('intra/js/notification.js') }}"></script>
+<!-- Intranet scripts-->
 {% block script %}
 
 {% endblock %}
 
 <script>
     $(document).ready(function () {
-        $('.sidebar-menu').tree()
+        $('.sidebar-menu').tree();
+
     })
+    setTimeout(function(){
+        $('.alert').fadeOut()
+    }, 5000);
 
     {% block javascript %}
 

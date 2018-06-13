@@ -17,10 +17,11 @@ class EmployeeLanguageType extends AbstractType
     {
         $builder->add('level',ChoiceType::class, array(
             'choices'  => array(
-                'Niveau' => '' ,
-                'Maternel' => 'Maternel',
-                'Avancé' => 'Avancé',
-                'Débutant' => 'Débutant',
+                'level' => '' ,
+                    'beginner' => 'beginner',
+                    'intermediate' => 'intermediate',
+                    'advanced' => 'advanced',
+                    'native' => 'native',
             )))
             ->add('language', EntityType::class, array(
 

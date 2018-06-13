@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class AvatarType extends AbstractType
 {
+
     /**
      * {@inheritdoc}
      */

@@ -92,7 +92,7 @@ abstract class File
      */
     public function setUrl($url = null)
     {
-        $this->url = url;
+        $this->url = $url;
 
         return $this;
     }
@@ -124,8 +124,6 @@ abstract class File
         $this->file = $file;
     }
 
-
-
     public function upload()
     {
         if (null === $this->file) {
@@ -133,7 +131,6 @@ abstract class File
         }
         $this->name = time().rand().'.'. ExtensionGuesser::getInstance()
                 ->guess($this->file->getClientMimeType());
-
         $this->url = $this->getUploadDir().'/'.$this->name;
         $this->file->move($this->getUploadRootDir(), $this->name);
 

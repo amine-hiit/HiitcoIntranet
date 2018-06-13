@@ -11,9 +11,14 @@
 {% block stylesheet %}
     <link rel="stylesheet" href="../../bower_components/select2/dist/css/select2.min.css">
     <link rel="stylesheet" href="../../bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
-    <style>.spc{margin-right: 50px;}</style>{% endblock %}
-
-
+    <style>
+        .spc{margin-right: 50px;}
+        .required:after {
+            content: " *";
+            color: red;
+        }
+    </style>
+{% endblock %}
 {% block content %}
 
 
@@ -69,29 +74,22 @@
                     <div class="col-sm-12 col-xs-12">
                         <div id="periode" class="hidden">
                             <div class="row">
-
-                                <div class="col-sm-6 col-xs-12">
-
-                                    <div class="form-group" >
-                                        <label class="spc"> Période : </label>
-                                        <label  class="spc" >
+                                <div class="form-group col-sm-6 col-xs-12">
+                                        <label class=" col-xs-12 col-sm-3">Durée:</label>
+                                        <label  class=" col-xs-12 col-sm-5" >
                                             <input type="radio" class = "periode" name="periode" value="one-day" />  Une journée
                                         </label>
-
-                                        <label   class="spc">
+                                        <label   class=" col-xs-12 col-sm-4">
                                             <input type="radio" class = "periode" name="periode" value="more-than-one-day" checked/>  Ou plus
                                         </label>
-
-                                    </div>
                                 </div>
                             </div>
-
                         </div>
                         <div class="row">
                             <div class="col-sm-6 col-xs-12">
                                 <div class="form-group">
 
-                                    {{ form_label(form.startDate) }}
+                                    {{ form_label(form.startDate, 'start.date'|trans|capitalize) }}
                                     <div class="input-group date">
                                         <div class="input-group-addon">
                                             <i class="fa fa-calendar"></i>
@@ -105,7 +103,7 @@
 
                             <div class=" col-sm-6 col-xs-12 ">
                                 <div class="form-group more-than-one-day">
-                                    {{ form_label(form.endDate) }}
+                                    {{ form_label(form.endDate, 'end.date'|trans|capitalize ) }}
                                     <div class="input-group date">
                                         <div class="input-group-addon">
                                             <i class="fa fa-calendar"></i>
@@ -117,18 +115,19 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-6 col-xs-12 "><br/><br/>
-                                <div class="form-group one-day hidden" >
-                                        <div class="form-group">
-                                            {{ form_widget(form.dayPeriod) }}
-                                        </div>
+                            <div class="form-group one-day hidden col-sm-6 col-xs-12 ">
+                                <label>
+                                    Période
+                                </label>
+                                <div class="form-group">
+                                    {{ form_widget(form.dayPeriod) }}
                                 </div>
                             </div>
                         </div>
                         <div class="row absence">
                             <div class="col-sm-12 col-xs-12">
                                 <div class="form-group">
-                                    {{ form_label(form.reason) }}
+                                    {{ form_label(form.reason, 'reason'|trans|capitalize) }}
                                     {{ form_widget(form.reason ,{'attr':{
                                         'class':'form-control'
                                     }}) }}
@@ -139,11 +138,11 @@
                     <div class="col-sm-12 col-xs-12">
                         <div class="row">
                             <div class="col-sm-6  col-xs-12">
-                                <button type="submit" class="btn bg-danger btn-flat " style="width:100%;">Annuler</button>
+                                <button  class="btn bg-danger btn-flat " style="width:100%;">{{ 'cancel'|trans|capitalize }}</button>
                             </div>
                             <div class="col-sm-6 col-xs-12">
                                 <div class="form-group">
-                                    <button type="submit" class="btn bg-navy btn-flat  " style="width:100%;">Demander</button>
+                                    <button type="submit" class="btn bg-navy btn-flat  " style="width:100%;">{{ 'submit'|trans|capitalize }}</button>
                                     {% do form.refuseReason.setRendered %}
                                     {% do form.reason.setRendered %}
                                 </div>

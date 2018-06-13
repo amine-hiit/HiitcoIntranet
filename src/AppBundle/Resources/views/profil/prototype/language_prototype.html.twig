@@ -12,7 +12,7 @@
 
         <div class='col-sm-4 col-xs-12'>
             <div class='form-group' style="width: 90%;">
-                {{ form_label(item.level) }}
+                {{ form_label(item.level, 'level'|trans|capitalize) }}
                 {{ form_widget(item.level, {'attr':{
                     'class':'form-control select2'
                 }}) }}
@@ -20,7 +20,7 @@
         </div>
         <div class='col-sm-4 col-xs-12'>
             <div class='form-group' style="width: 90%;" >
-                {{ form_label(item.language) }}
+                {{ form_label(item.language, 'language'|trans|capitalize) }}
                 {{ form_widget(item.language, {'attr':{
                     'class':'form-control select2 ',
                 }}) }}

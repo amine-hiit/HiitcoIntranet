@@ -7,7 +7,10 @@
 {% set dir1 = "congé" %}
 {% set dir2 = " liste des congés" %}
 
-
+{% block stylesheet %}
+    <style>
+    </style>
+{% endblock %}
 
 
 {% block content %}
@@ -129,20 +132,16 @@
 
   {% block javascript %}
       $(document).ready(function () {
-      $('.sidebar-menu').tree()
-      $(function () {
-
-      $('#example2').DataTable({
-      'paging': true,
-      'lengthChange': true,
-      'searching': false,
-      'ordering': true,
-      'info': true,
-      'autoWidth': false
-      })
-      })
-      })
-
+          $('.sidebar-menu').tree();
+          $(function () {
+              $('#example2').DataTable({
+                  'paging': true,
+                  'lengthChange': true,
+                  'searching': false,
+                  'ordering': true,
+                  'info': true,
+                  'autoWidth': false
+              });
+          });
+      });
   {% endblock %}
-
-

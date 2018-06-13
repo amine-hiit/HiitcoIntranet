@@ -1,0 +1,147 @@
+# messages.fr.yml
+
+employee: employé
+employees: employés
+
+
+name: nom
+profil: profile
+phone.number: Numéro de téléphone
+email: email
+resume: cv
+first.name: prenom
+user.name: Non d'utilisateur
+last.name: nom
+birthday: date de naissance
+marital.status: état matrimonial
+civility: civilité
+dependent.child: enfants dépendants
+cnss.number: cnss
+start.date: date du début
+avatar: avatar
+current.position: position courante
+status: status
+employee.formations: Formations
+experiences: expériences
+employee.languages: langues parlées
+projects: projets
+address: address
+project: projet
+add.formation: ajouter formation
+add.language: ajouter langue
+add.project: ajouter projet
+add.experience: ajouter expérience
+language: langue
+position: position
+employer: employeur
+city: ville
+end.date: date de fin
+country: pays
+description: description
+formation: formation
+organization: organisation
+level: niveau
+date: date
+current.password: mot de passe actuel
+new.password: nouveau mot de passe
+new.password.verification: vérification du nouveau mot de passe
+change.password: changer mot de passe
+update: modifier
+delete: supprimer
+cancel: annuler
+submit: envoyer
+validate: valider
+set.ready: mettre disponible
+
+new.experience: nouvelle expérience
+new.project: nouvelle projets
+new.formarion: nouvelle formation
+new.language: nouvelle langue
+password.verification: vérification mot de passe
+password: mot de passe
+insert.password: inssérer mot de passe
+type: type
+reason: raison
+vacation: congé
+absence: abscence
+
+select: selectionner
+attestation.of.employment: certificat de travail
+certification.of.salary: attestation de salaire
+other: autre
+
+mr: M.
+ms: Melle
+mme: Mme
+
+single: célibataire
+widower.male: veuf
+widower.female: veuve
+married.male: marrié
+married.female: marriée
+divorced.male: divorcé
+divorced.female: divorcée
+
+widower: veuf(ve)
+married: marrié(e)
+divorced: divorcé(e)
+
+beginner: débutant
+intermediate: intérmediaire
+advanced: avancé
+native: langue maternelle
+flash.employee.registred: employé bien inscrit
+
+Jan: janvier
+Feb: février
+Mar: mars
+Apr: avril
+May: mai
+Jun: juin
+Jul: juillet
+Aug: aout
+Sep: septembre
+Oct: octobre
+Nov: novembre
+Dec: decembre
+
+month: mois
+balance.at.first: solde au début
+vacation.requests.duration: durée de congés demandés
+balance.left: solde restant
+
+doc.not.ready: non disponible
+doc.validated: validé
+doc.ready: disponible
+
+request.success: la demande est bien effectuée
+doc.validated.success: la demande est bien validée
+doc.ready.success: le document est bien disponible
+
+configuration: configuration
+parameters: parametres
+emails: emails
+
+role: rôle
+roles: rôles
+
+role.user: rôle d'utilisateur
+role.employee: rôle d'employé
+role.hr: rôle de responsable rh
+role.admin: rôle d'admin
+
+set.new.password: saisir nouveau mot de passe
+cooptation.request: demande de cooptation
+fill.employee.form: invitation pour remplir la fiche collaborateur
+other.email.type: autre réference d'email
+
+speciality: spécialité
+diploma: diplôlme
+
+choose: choisir
+other: autre
+
+native: langue maternelle
+begginer: débutant
+intermediate: moyen
+advanced: avancé

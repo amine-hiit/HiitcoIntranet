@@ -4,36 +4,104 @@
 namespace AppBundle\Manager;
 
 
+use AppBundle\Entity\EmailType;
+use AppBundle\Entity\Notification;
 use Doctrine\ORM\EntityManagerInterface;
-use AppBundle\Entity\EmployeeFormation;
+use AppBundle\Entity\Formation;
 use AppBundle\Entity\Experience;
 use AppBundle\Entity\Employee;
+use AppBundle\Resources\Email;
+use FOS\UserBundle\model\UserManagerInterface;
+use FOS\UserBundle\Util\TokenGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 class EmployeeManager
 {
+
+
+    /**
+     *
+     */
+    private $translator;
+
+    /**
+     * @var TokenGeneratorInterface
+     */
+    private $tg;
 
     /**
      * @var EntityManagerInterface
      */
     private $em;
 
+    /**
+     * @var NotificationManager
+     */
+    private $nm;
+
+    /**
+     * @var UserManagerInterface
+     */
+    private $um;
+
+    /**
+     * @var RouterInterface
+     */
+    private $router;
+
+    /**
+     * @var EmailManager
+     */
+    private $emailManager;
+
 
     /**
      * EmployeeManager constructor.
      * @param EntityManagerInterface $em
+     * @param NotificationManager $nm
+     * @param UserManagerInterface $um
+     * @param EmailManager $emailManager
+     * @param RouterInterface $router
+     * @param TokenGeneratorInterface $tg
      */
+    public function __construct(EntityManagerInterface $em,
+    NotificationManager $nm,
+    UserManagerInterface $um,
+    EmailManager $emailManager,
+    RouterInterface $router,
+    TokenGeneratorInterface $tg
 
-
-
-    public function __construct(EntityManagerInterface $em)
+    )
     {
+        $this->emailManager = $emailManager;
+        $this->router = $router;
         $this->em = $em;
+        $this->nm = $nm;
+        $this->um = $um;
+        $this->tg = $tg;
     }
 
+    public function findByRole($role)
+    {
+        return $this->em->getRepository(Employee::class)->findByRole($role);
+    }
 
     public function findEmployeeLastFormation(Employee $employee)
     {
-        return $this->em->getRepository(EmployeeFormation::class)->findEmployeeLastFormation($employee);
+        return $this->em->getRepository(Formation::class)->findEmployeeLastFormation($employee);
+    }
+
+    public function findEmployeesByRoles(array $roles = null){
+        if (null === $roles)
+            return [];
+        $employees = [];
+        foreach ($roles as $role){
+            $results = $this->em->getRepository(Employee::class)->findByRole($role);
+            foreach ($results as $result) {
+                $employees[]=$result;
+            }
+        }
+        return $employees;
     }
 
     public function findEmployeeLastExperience(Employee $employee)
@@ -46,30 +114,48 @@ class EmployeeManager
         return $this->em->getRepository(Employee::class)->findAll();
     }
 
+    public function findEmployeeByToken($token)
+    {
+        return $this->em->getRepository(Employee::class)->findEmployeeByToken($token);
+    }
+
     public function findEmployeeAllExperiences(Employee $employee)
     {
         return $this->em->getRepository(Experience::class)->findEmployeeAllExperiences($employee);
     }
 
+    public function createEmployee()
+    {
+         return $this->um->createUser();
+    }
+
+    public function registerNewEmployee(Employee $employee)
+    {
+        $employee->setEnabled(true);
+        $employee->setConfirmationToken($this->tg->generateToken());
+        $this->updateEmployee($employee);
+        $this->sendNewEmployeeEmails($employee);
+    }
+
 
     public function findEmployeeAllFormations(Employee $employee)
     {
-        return $this->em->getRepository(EmployeeFormation::class)->findEmployeeAllFormations($employee);
+        return $this->em->getRepository(Formation::class)->findEmployeeAllFormations($employee);
     }
 
-    public function create()
+    public function createEmployeeFormation()
     {
-        return new EmployeeFormation();
+        return new Formation();
     }
 
-    public function setUserToAtribut($atribut,Employee $user)
+    public function setUserToAttribute($attribute,Employee $user)
     {
-        $atribut->setEmployee($user);
+        $attribute->setEmployee($user);
     }
 
-    public function persistAtribut($atribut)
+    public function persistAttribute($attribute)
     {
-        $this->em->persist($atribut);
+        $this->em->persist($attribute);
     }
 
     public function flush()
@@ -77,15 +163,64 @@ class EmployeeManager
         $this->em->flush();
     }
 
-    public function completeEmployeeForm(Employee $user)
+    public function getEmails(array $employees)
     {
-        $user->getAvatar()->upload();
-        $user->getAvatar()->setAlt($user->getUserName().'_Avatar');
-
-        $user->setValid(true);
-        $this->em->persist($user);
-        $this->flush();
+        $emails = [];
+        foreach ($employees as $employee)
+        {
+            array_push($emails,$employee->getEmail());
+        }
+        return $emails;
     }
 
+    public function findByRoles(array $roles)
+    {
+        return $this->em->getRepository(Employee::class)->findByRoles($roles);
+    }
 
+    public function completeEmployeeForm(Employee $employee)
+    {
+        $employee->getAvatar()->upload();
+        $employee->getAvatar()->setAlt($employee->getUserName().'_Avatar');
+
+        $employee->setValid(true);
+        $this->updateEmployee($employee);
+    }
+
+    public function updateEmployee($employee)
+    {
+        $this->um->updateUser($employee);
+    }
+
+    /******* Emails Section *************/
+
+    public function sendNewEmployeeEmails(Employee $employee)
+    {
+        $token = $employee->getConfirmationToken();
+        $employeeFormEmail = $this->em->getRepository(EmailType::class)
+            ->findBy(['label' => Email\Subject::FILL_EMPLOYEE_FORM])[0];
+        $setPWEmail = $this->em->getRepository(EmailType::class)
+            ->findBy(['label' => Email\Subject::SET_NEW_PASSWORD])[0];
+        $setNewPasswordUrl = 'http://localhost:8002/new-password/'.$token;
+        $employeeFormUrl = 'http://localhost:8002'
+            .$this->router->generate('employee-form');
+
+        $this->emailManager->send(
+            $setPWEmail,
+            $employee->getEmail(),
+            [
+                'url' => $setNewPasswordUrl,
+                'userName' => $employee->getUsername(),
+                'action' => 'Clique ici'
+            ]
+        );
+
+        $this->emailManager->send(
+            $employeeFormEmail,
+            $employee->getEmail(),            [
+                'url' => $employeeFormUrl,
+                'action' => 'Clique ici'
+            ]
+        );
+    }
 }

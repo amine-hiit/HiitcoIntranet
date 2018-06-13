@@ -5,12 +5,38 @@
 
 {% block stylesheet %}
 
-    <link rel="stylesheet" href="{{ asset('bower_components/select2/dist/css/select2.min.css')}}">
-    <link rel="stylesheet" href="{{ asset('bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css')}}">
-    <link rel="stylesheet" href="{{ asset('intra/css/file-upload.css')}}">
+    <link rel="stylesheet" href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}">
+    <link rel="stylesheet"
+          href="{{ asset('bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('intra/css/file-upload.css') }}">
 
     <style>
+        .required:after {
+            content: " *";
+            color: red;
+        }
 
+        .form-group .select2-container {
+            position: relative;
+            z-index: 2;
+            float: left;
+            width: 100%;
+            max-width: 100%;
+            min-width: 100%;
+            margin-bottom: 0;
+            display: table;
+            table-layout: fixed;
+        }
+
+        .select2-container {
+            width: 100% !important;
+        }
+
+        textarea {
+            width: 100%;
+            max-width: 100%;
+            min-width: 100%;
+        }
 
         @media screen and (min-width: 768px) {
 
@@ -28,7 +54,7 @@
             color: gray;
             background-color: white;
             padding: 8px 20px;
-            border-radius: 0 px;
+            border-radius: 0px;
             font-size: 12px;
         }
 
@@ -45,6 +71,7 @@
         .tab {
             display: none;
         }
+
         button:hover {
             opacity: 0.8;
         }
@@ -60,6 +87,7 @@
             display: inline-block;
             opacity: 0.2;
         }
+
         .step.active {
             opacity: 1;
         }
@@ -73,9 +101,11 @@
         input.invalid {
             background-color: #ffdddd;
         }
+
         select.invalid {
             background-color: #ffdddd;
         }
+
         textarea.invalid {
             background-color: #ffdddd;
         }
@@ -88,286 +118,255 @@
 
 
 
-        <!-- Content Header (Page header) -->
-        <section class="content-header">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
 
-            <h1>
-                Fiche Collaborateur:
-                <small></small>
-            </h1>
-            <ol class="breadcrumb">
-                <li><a href="#"><i class="fa  fa-home"></i> Accueil</a></li>
-            </ol>
-        </section>
+        <h1>
+            Fiche Collaborateur:
+            <small></small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa  fa-home"></i> Accueil</a></li>
+        </ol>
+    </section>
 
-        <!-- Main content -->
+    <!-- Main content -->
 
-        <section class="content">
+    <section class="content">
 
-            <!-- Default box -->
-            <div class="box">
-                <div class="box-body">
-                    <!--form id="regForm" action="/action_page.php"-->
-                    {{ form_start(form, {'attr': {'id': 'regForm'}}) }}
+        <!-- Default box -->
+        <div class="box">
+            <div class="box-body">
+                <!--form id="regForm" action="/action_page.php"-->
+                {{ form_start(form, {'attr': {'id': 'regForm'}}) }}
 
-                    <div class="box-header">
-                        <div class=" col-sm-6 ">
-                            <h3 class="box-title">Personnal info</h3>
-                        </div>
+                <div class="box-header">
+                    <div class=" col-sm-6 ">
+                        <h3 class="box-title">Personnal info</h3>
                     </div>
-                    <!-- One "tab" for each step in the form: -->
+                </div>
+                <!-- One "tab" for each step in the form: -->
 
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="tab">
-                                <div class="row">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="tab">
+                            <div class="row">
 
-                                    <div class=" col-sm-4">
+                                <div class=" col-sm-8">
+                                    <div class="row">
+                                        <div class=" col-sm-12">
 
-                                        <div class="form-group" >
-                                            {{ form_label(form.firstName) }}
-                                            {{ form_widget(form.firstName, {'attr':{
-
-                                                'class':'form-control'
-                                            }}) }}
-                                        </div>
-
-                                        <div class="form-group" >
-                                            {{ form_label(form.lastName) }}
-                                            {{ form_widget(form.lastName, {'attr':{
-
-                                                'class':'form-control'
-                                            }}) }}
-                                        </div>
-
-
-                                        <div class="form-group " >
-                                            {{ form_label(form.birthday) }}
-                                            <div class="input-group date">
-                                                <div class="input-group-addon">
-                                                    <i class="fa fa-calendar"></i>
-                                                </div>
-                                                {{ form_widget(form.birthday, {'attr':{
-
-                                                    'class':'form-control pull-right datepicker'
-
+                                            <div class="form-group">
+                                                {{ form_label(form.username, 'user.name'|trans|capitalize) }}
+                                                {{ form_widget(form.username, {'attr':{
+                                                    'class':'form-control',
+                                                    'disabled':''
                                                 }}) }}
                                             </div>
                                         </div>
-
-                                        <div class="form-group ">
-                                            {{ form_label(form.phoneNumber) }}
-                                            {{ form_widget(form.phoneNumber, {'attr':{
-
-                                                'class':'form-control'
-                                            }}) }}
-                                        </div>
-
                                     </div>
 
-                                    <div class=" col-sm-4">
+                                    <div class="row">
 
-                                        <div class="form-group ">
-                                            {{ form_label(form.maritalStatus) }}
-                                            {{ form_widget(form.maritalStatus, {'attr':{
+                                        <div class=" col-sm-6">
 
-                                                'class':'form-control'
-                                            }}) }}
-                                        </div>
+                                            <div class="form-group">
+                                                {{ form_label(form.firstName, 'first.name'|trans|capitalize) }}
+                                                {{ form_widget(form.firstName, {'attr':{
 
-                                        <div class="form-group">
-                                            {{ form_label(form.dependentChild) }}
-                                            {{ form_widget(form.dependentChild, {'attr':{
+                                                    'class':'form-control'
+                                                }}) }}
+                                            </div>
 
-                                                'class':'form-control'
-                                            }}) }}
-                                        </div>
+                                            <div class="form-group">
+                                                {{ form_label(form.lastName, 'last.name'|trans|capitalize) }}
+                                                {{ form_widget(form.lastName, {'attr':{
 
-                                        <div class="form-group" >
-                                            {{ form_label(form.cnssNumber) }}
-                                            {{ form_widget(form.cnssNumber, {'attr':{
+                                                    'class':'form-control'
+                                                }}) }}
+                                            </div>
 
-                                                'class':'form-control'
-                                            }}) }}
-                                        </div>
 
-                                        <div class="form-group" >
-                                            {{ form_label(form.address) }}
-                                            {{ form_widget(form.address, {'attr':{
-
-                                                'class':'form-control'
-                                            }}) }}
-                                        </div>
-                                    </div>
-
-                                    <div class=" col-sm-4 ">
-                                        <div class=" row">
-                                            <div class=" col-sm-10 col-xs-offset-1">
-                                                <div class="form-group" >
-                                                    <div class="file-upload-box js" id="avatar-upload-box">
-                                                        <img width="100%" src={{  asset('/uploads/img/avatar/default_avatar.png') }} id="avatar" class="avatar"/>
-                                                        {% form_theme form 'form/file.html.twig' %}
-                                                        {{ form_widget(form.avatar.file) }}
-                                                        {{ form_label(form.avatar.file) }}
-
+                                            <div class="form-group ">
+                                                {{ form_label(form.birthday, 'birthday'|trans|capitalize) }}
+                                                <div class="input-group date">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-calendar"></i>
                                                     </div>
+                                                    {{ form_widget(form.birthday, {'attr':{
+
+                                                        'class':'form-control pull-right datepicker'
+
+                                                    }}) }}
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class=" col-sm-6">
+                                            <div class="form-group">
+                                                {{ form_label(form.address, 'address'|trans|capitalize) }}
+                                                {{ form_widget(form.address, {'attr':{
+
+                                                    'class':'form-control'
+                                                }}) }}
+                                            </div>
+                                            <div class="form-group ">
+                                                {{ form_label(form.phoneNumber, 'phone.number'|trans|capitalize) }}
+                                                {{ form_widget(form.phoneNumber, {'attr':{
+
+                                                    'class':'form-control'
+                                                }}) }}
+                                            </div>
+
+                                            <div class="form-group">
+                                                {{ form_label(form.dependentChild, 'dependent.child'|trans|capitalize) }}
+                                                {{ form_widget(form.dependentChild, {'attr':{
+
+                                                    'class':'form-control'
+                                                }}) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class=" col-sm-4 ">
+                                    <div class=" row">
+                                        <div class=" col-sm-10 col-xs-offset-1">
+                                            <div class="form-group">
+                                                <div class="file-upload-box js" id="avatar-upload-box">
+                                                    <img width="100%"
+                                                         src={{ asset('/uploads/img/avatar/default_avatar.png') }} id="avatar"
+                                                         class="avatar"/>
+                                                    {% form_theme form 'form/file.html.twig' %}
+                                                    {{ form_widget(form.avatar.file) }}
+                                                    {{ form_label(form.avatar.file) }}
+
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="tab">
-                                <div class="row">
-                                    <div class="col-sm-4 col-xs-12">
-                                        <div class="form-group ">
-                                            {{ form_label(form.startDate) }}
-                                            <div class="input-group date">
-                                                <div class="input-group-addon">
-                                                    <i class="fa fa-calendar"></i>
-                                                </div>
-                                                {{ form_widget(form.startDate, {'attr':{
-
-                                                    'class':'form-control pull-right datepicker'
-                                                }}) }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-4 col-xs-12">
-
-                                        <div class="form-group">
-                                            {{ form_label(form.currentPosition) }}
-                                            {{ form_widget(form.currentPosition, {'attr':{
-
-                                                'class':'form-control'
-                                            }}) }}
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-4 col-xs-12">
-                                        <div class="form-group">
-                                            {{ form_label(form.status) }}
-                                            {{ form_widget(form.status, {'attr':{
-
-                                                'class':'form-control'
-                                            }}) }}
-                                        </div>
-                                    </div>
-                                </div>
-                                {{ form_label(form.experiences) }}
-                                <div class="row" >
-                                    <div class="col-sm-12 col-xs-12">
-                                        <div id="experience-fields-list"
-                                             data-prototype=
+                        </div>
+                        <div class="tab">
+                            {{ form_label(form.formations, 'employee.formations'|trans|capitalize) }}
+                            <div class="row">
+                                <div class="col-sm-12 col-xs-12">
+                                    <div id="formation-fields-list"
+                                         data-prototype=
+                                         "
+                                                    {% filter escape %}
+                                                    {% include '@App/profil/prototype/formation_prototype.html.twig' with { 'item': form.formations.vars.prototype } %}
+                                                    {% endfilter %}
                                              "
+                                         data-widget-tags="{{ '<div class="formation"></div>'|e }}">
+                                    </div>
+
+                                    <a href="#"
+                                       class="add-formation-collection-widget"
+                                       data-list="#formation-fields-list"
+                                    >
+
+                                        {{ 'add.formation'|trans|capitalize }}
+                                    </a>
+                                </div>
+                            </div>
+
+
+                            {{ form_label(form.employee_languages, 'employee.languages'|trans|capitalize) }}
+                            <div class="row">
+                                <div class="col-sm-12 col-xs-12">
+                                    <div id="language-fields-list"
+                                         data-prototype=
+                                         "
+                                                    {% filter escape %}
+                                                    {% include '@App/profil/prototype/language_prototype.html.twig' with { 'item': form.employee_languages.vars.prototype } %}
+                                                    {% endfilter %}
+                                             "
+                                         data-widget-tags="{{ '<div class="language"></div>'|e }}">
+                                    </div>
+
+                                    <a href="#"
+                                       class="add-language-collection-widget"
+                                       data-list="#language-fields-list"
+                                    >
+                                        {{ 'add.formation'|trans|capitalize }}
+
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab">
+                            {{ form_label(form.experiences, 'experiences'|trans|capitalize) }}
+                            <div class="row">
+                                <div class="col-sm-12 col-xs-12">
+                                    <div id="experience-fields-list"
+                                         data-prototype=
+                                         "
                                                     {% filter escape %}
                                                     {% include '@App/profil/prototype/experience_prototype.html.twig' with { 'item': form.experiences.vars.prototype } %}
                                                     {% endfilter %}
-                                             "
-                                             data-widget-tags="{{ '<div class="experience"></div>'|e }}">
-                                        </div>
-
-                                        <a href="#"
-                                           class="add-experience-collection-widget"
-                                           data-list="#experience-fields-list"
-                                        >
-                                            Ajouter experience
-                                        </a>
+                                         "
+                                         data-widget-tags="{{ '<div class="experience"></div>'|e }}">
                                     </div>
-                                </div>
-                                {{ form_label(form.projects) }}
-                                <div class="row" >
-                                    <div class="col-sm-12 col-xs-12">
-                                        <div id="project-fields-list"
-                                             data-prototype=
-                                             "
-                                                    {% filter escape %}
-                                                    {% include '@App/profil/prototype/project_prototype.html.twig' with { 'item': form.projects.vars.prototype }%}
-                                                    {% endfilter %}
-                                             "
-                                             data-widget-tags="{{ '<div class="project"></div>'|e }}">
-                                        </div>
 
-                                        <a href="#"
-                                           class="add-project-collection-widget"
-                                           data-list="#project-fields-list"
-                                        >
-                                            Ajouter projet
-                                        </a>
-                                    </div>
+                                    <a href="#"
+                                       class="add-experience-collection-widget"
+                                       data-list="#experience-fields-list">
+                                        Ajouter experience
+                                    </a>
                                 </div>
                             </div>
-                            <div class="tab">
-                                {{ form_label(form.employee_formations) }}
-                                <div class="row" >
-                                    <div class="col-sm-12 col-xs-12">
-                                        <div id="formation-fields-list"
-                                             data-prototype=
-                                             "
+                            {{ form_label(form.projects, 'projects'|trans|capitalize) }}
+                            <div class="row">
+                                <div class="col-sm-12 col-xs-12">
+                                    <div id="project-fields-list"
+                                         data-prototype=
+                                         "
                                                     {% filter escape %}
-                                                    {% include '@App/profil/prototype/formation_prototype.html.twig' with { 'item': form.employee_formations.vars.prototype }%}
+                                                    {% include '@App/profil/prototype/project_prototype.html.twig' with { 'item': form.projects.vars.prototype } %}
                                                     {% endfilter %}
                                              "
-                                             data-widget-tags="{{ '<div class="formation"></div>'|e }}">
-                                        </div>
-
-                                        <a href="#"
-                                           class="add-formation-collection-widget"
-                                           data-list="#formation-fields-list"
-                                        >
-                                            Ajouter formation
-                                        </a>
+                                         data-widget-tags="{{ '<div class="project"></div>'|e }}">
                                     </div>
-                                </div>
 
-
-                                {{ form_label(form.employee_languages) }}
-                                <div class="row" >
-                                    <div class="col-sm-12 col-xs-12">
-                                        <div id="language-fields-list"
-                                             data-prototype=
-                                             "
-                                                    {% filter escape %}
-                                                    {% include '@App/profil/prototype/language_prototype.html.twig' with { 'item': form.employee_languages.vars.prototype }%}
-                                                    {% endfilter %}
-                                             "
-                                             data-widget-tags="{{ '<div class="language"></div>'|e }}">
-                                        </div>
-
-                                        <a href="#"
-                                           class="add-language-collection-widget"
-                                           data-list="#language-fields-list"
-                                        >
-                                            Ajouter langue
-                                        </a>
-                                    </div>
+                                    <a href="#"
+                                       class="add-project-collection-widget"
+                                       data-list="#project-fields-list"
+                                    >
+                                        Ajouter projet
+                                    </a>
                                 </div>
                             </div>
-                            <!-- end tab-->
                         </div>
                     </div>
-                    <!-- end row -->
-                    <div style="float:right;">
-                        <button type="button" id="prevBtn" class ="btn bg-navy btn-flat " style= "width: 200px;" onclick="nextPrev(-1)">Previous</button>
-                        <button type="button" id="nextBtn" class ="btn bg-navy btn-flat " style= "width: 200px;" onclick="nextPrev(1)">Next</button>
-                    </div>
-                    <!-- Circles which indicates the steps of the form: -->
-                    <div style="text-align:center;margin-top:40px;">
-                        <span class="step"></span>
-                        <span class="step"></span>
-                        <span class="step"></span>
-                    </div>
-                    {% do form.employee_formations.setRendered %}
-                    {% do form.projects.setRendered %}
-                    {% do form.experiences.setRendered %}
-                    {% do form.employee_languages.setRendered %}
-                    {{ form_end(form) }}
-                    <!--/form-->
                 </div>
+                <!-- end row -->
+                <div style="float:right;">
+                    <button type="button" id="prevBtn" class="btn bg-navy btn-flat " style="width: 200px;"
+                            onclick="nextPrev(-1)">Previous
+                    </button>
+                    <button type="button" id="nextBtn" class="btn bg-navy btn-flat " style="width: 200px;"
+                            onclick="nextPrev(1)">Next
+                    </button>
+                </div>
+                <!-- Circles which indicates the steps of the form: -->
+                <div style="text-align:center;margin-top:40px;">
+                    <span class="step"></span>
+                    <span class="step"></span>
+                    <span class="step"></span>
+                </div>
+                {% do form.formations.setRendered %}
+                {% do form.projects.setRendered %}
+                {% do form.experiences.setRendered %}
+                {% do form.employee_languages.setRendered %}
+                {{ form_end(form) }}
+                <!--/form-->
             </div>
-            <!-- /.box -->
-
-        </section>
+        </div>
+        <!-- /.box -->
+    </section>
     </div>
 
     <!-- /.content -->
@@ -380,53 +379,8 @@
 
 {% block script %}
     {# <script src="{{ asset('https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')}}"></script>#}
-    <script src="{{ asset('bower_components/select2/dist/js/select2.full.min.js')}}"></script>
-    <script src="{{ asset('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js')}}"></script>
-    <script src="{{ asset('intra/js/file-upload.js')}}"></script>
-    <script src="{{ asset('intra/js/employee-form.js')}}"></script>
+    <script src="{{ asset('bower_components/select2/dist/js/select2.full.min.js') }}"></script>
+    <script src="{{ asset('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
+    <script src="{{ asset('intra/js/file-upload.js') }}"></script>
+    <script src="{{ asset('intra/js/employee-form.js') }}"></script>
 {% endblock %}
-
-  {% block javascript %}
-
-
-      $(function() {
-          $("#formation-submit").click(function(){
-              var $formationForm = $('#formation-form');
-
-              $.ajax({
-                  type: "POST",
-                  url: Routing.generate('new-formation'),
-                  data: $formationForm.serialize(),
-                  success: function(dataF){
-
-                  console.log(dataF);
-                      $("#modal-content").modal('hide');
-                      var myObject = JSON.parse(dataF);
-                      $(".formation-select > option").each(function(){
-                           $(this).removeAttr( "selected" );
-                      })
-                      $(".formation-select").append('<option selected="selected" value="'+myObject.id+'">'+myObject.value+'</option>');
-                      $('#formationModal').modal('hide');
-                  },
-                  error: function(){
-                      alert("failure2");
-                  }
-              });
-          });
-          $(".other-formation").click(function(){
-              $.ajax({
-                  type: "GET",
-                  url: Routing.generate('new-formation'),
-                  success: function(msg){
-                  console.log(msg);
-                  $("#new-formation-label").empty();
-                  $("#new-formation-label").append(msg);
-                  },
-                  error: function(){
-                      alert("failure");
-                  }
-              });
-          });
-      });
-
-  {% endblock %}

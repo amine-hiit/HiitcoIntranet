@@ -23,6 +23,8 @@ class EmployeeType extends AbstractType
         $builder
             ->add('firstName',TextType::class, array(
                 'required' => true))
+            ->add('username',TextType::class, array(
+                'disabled' => true))
             ->add('lastName',TextType::class, array(
                 'required' => true))
 
@@ -30,41 +32,17 @@ class EmployeeType extends AbstractType
                 'format' => 'MM/dd/yyyy',
                 'widget' => 'single_text',
                 'required' => true))
-            ->add('maritalStatus',ChoiceType::class, array(
-                'choices'  => array(
-                    'Choisir' => '' ,
-                    'Célibataire' => 'Célibataire',
-                    'veuf' => 'veuf',
-                    'marié' => 'marié',
-                    'Divorcé' => 'Divorcé',
-                ),
-            ))
             ->add('dependentChild', IntegerType::class ,array(
                 'attr' => array('min' => 0)))
-            ->add('cnssNumber')
-            ->add('phoneNumber')
+            ->add('phoneNumber',TextType::class,array(
+                'required' => true,
+            ))
             ->add('address',TextType::class,array('by_reference' => false))
 
 
-            ->add('startDate',DateType::class, array(
-                'format' => 'MM/dd/yyyy',
-                'widget' => 'single_text',
-                'required' => true))
             ->add('avatar',     AvatarType::class)
-
-            ->add('currentPosition',TextType::class, array(
-                'required' => true))
-            ->add('status',ChoiceType::class, array(
-                'choices'  => array(
-                    'Choisir' => '' ,
-                    'CDI' => 'CDI',
-                    'CTT' => 'CTT',
-                    'CDD' => 'CDD',
-                ),
-            ))
-
-            ->add('employee_formations', CollectionType::class, array(
-                'entry_type' => EmployeeFormationType::class,
+            ->add('formations', CollectionType::class, array(
+                'entry_type' => FormationType::class,
                 'allow_add' => true,
                 'delete_empty' => true,
                 'allow_delete' => true,
@@ -73,6 +51,7 @@ class EmployeeType extends AbstractType
                 'by_reference' => false,
             ))
             ->add('experiences', CollectionType::class, array(
+                'required' => false,
                 'entry_type' => ExperienceType::class,
                 'allow_add' => true,
                 'delete_empty' => true,
@@ -83,6 +62,7 @@ class EmployeeType extends AbstractType
 
             ))
             ->add('employee_languages', CollectionType::class, array(
+
                 'entry_type' => EmployeeLanguageType::class,
                 'allow_add' => true,
                 'delete_empty' => true,
@@ -93,6 +73,7 @@ class EmployeeType extends AbstractType
 
             ))
             ->add('projects', CollectionType::class, array(
+                'required' => false,
                 'entry_type' => ProjectType::class,
                 'allow_add' => true,
                 'delete_empty' => true,
@@ -107,7 +88,7 @@ class EmployeeType extends AbstractType
 
 
 
-        //->add('employeeformation', EmployeeFormationType::class);
+        //->add('employeeformation', FormationType::class);
 
     }/**
  * {@inheritdoc}

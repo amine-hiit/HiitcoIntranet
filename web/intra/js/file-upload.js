@@ -5,8 +5,8 @@
 {
     var input = document.querySelector( '.inputfile' );
 
-    var label	 = input.nextElementSibling,
-        labelVal = label.innerHTML;
+    var label	 = input.nextElementSibling;
+    var labelVal = label.innerHTML;
 
     input.addEventListener( 'change', function( e )
     {

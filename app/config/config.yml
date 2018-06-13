@@ -6,7 +6,7 @@ imports:
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    locale: en
+    locale: fr
 
 framework:
     #esi: ~
@@ -32,13 +32,16 @@ framework:
     php_errors:
         log: true
     templating:
-        engines: ['twig']    
+        engines: ['twig']
+    translator: { fallbacks: %locale% }
+
 
 # Twig Configuration
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
-
+    globals:
+        pathToWeb: "%kernel.root_dir%/../web"
 
 
 
@@ -69,6 +72,8 @@ swiftmailer:
     transport: '%mailer_transport%'
     host: '%mailer_host%'
     username: '%mailer_user%'
+    encryption: '%mailer_enc%'
+    port: '%mailer_port%'
     password: '%mailer_password%'
     spool: { type: memory }
 
@@ -149,3 +154,12 @@ assetic:
                 - "%kernel.root_dir%/../vendor/twbs/bootstrap/fonts/glyphicons-halflings-regular.woff"
 
             output: "fonts/glyphicons-halflings-regular.woff"
+knp_snappy:
+    pdf:
+        enabled:    true
+        binary:     /usr/bin/wkhtmltopdf
+        options:    []
+    image:
+        enabled:    true
+        binary:     /usr/bin/wkhtmltoimage
+        options:    []
