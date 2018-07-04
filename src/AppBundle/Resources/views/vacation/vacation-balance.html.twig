@@ -31,8 +31,6 @@
                         <center>
                             <a type="button" class="btn btn-default btn-flat" href="/intranet/my-vacation-requests"> Mes congés </a>
                             <a type="button" class="btn btn-default btn-flat disabled "> Mon solde </a>
-                            <a type="button" class="btn btn-default btn-flat" href="/intranet/request-a-vacation"> Demander
-                                congé </a>
 
                             {% if is_granted('ROLE_HR') %}
                                 <a type="button" class="btn btn-default btn-flat " href="/intranet/hrm/vacation-requests">
@@ -40,11 +38,12 @@
                             {% endif %}
 
                         </center>
+                        <div class="text-right">
+                            <a type="button" href="/intranet/request-a-vacation" class="btn btn-success btn-flat">   Demander congé   </a>
+                        </div>
+
                     </div>
                     <div class="box-header">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            Type <span class="caret myspace"></span>
-                        </a>
                         <a href="#" class="btn btn-default btn-flat">Exporter en xls</a>
 
                         <ul class="dropdown-menu">
@@ -107,23 +106,25 @@
 {% block script %}
     <script src="{{ asset('bower_components/datatables.net/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $('.sidebar-menu').tree();
+            $('.paginate_button').click(function() {
+                alert('test');
+            });
+            $(function () {
+                $('#example2').DataTable({
+                    'paging': true,
+                    'lengthChange': false,
+                    'pageLength':12,
+                    'searching': false,
+                    'ordering': false,
+                    'info': false,
+                    'autoWidth': false
+                });
+            });
+        });
+
+    </script>
 {% endblock %}
-
-{% block javascript %}
-          $(document).ready(function () {
-              $('.sidebar-menu').tree();
-              $(function () {
-                  $('#example2').DataTable({
-                      'paging': true,
-                      'lengthChange': false,
-                      'pageLength':12,
-                      'searching': false,
-                      'ordering': false,
-                      'info': false,
-                      'autoWidth': false
-                  });
-              });
-          });
-  {% endblock %}
-
 

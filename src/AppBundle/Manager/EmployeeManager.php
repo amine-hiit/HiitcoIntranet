@@ -13,6 +13,7 @@ use AppBundle\Entity\Employee;
 use AppBundle\Resources\Email;
 use FOS\UserBundle\model\UserManagerInterface;
 use FOS\UserBundle\Util\TokenGeneratorInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 class EmployeeManager
@@ -201,7 +202,9 @@ class EmployeeManager
             ->findBy(['label' => Email\Subject::FILL_EMPLOYEE_FORM])[0];
         $setPWEmail = $this->em->getRepository(EmailType::class)
             ->findBy(['label' => Email\Subject::SET_NEW_PASSWORD])[0];
-        $setNewPasswordUrl = 'http://localhost:8002/new-password/'.$token;
+
+//        dump($this->router->generate('new-emplyee-password',['token' => $token],UrlGeneratorInterface::ABSOLUTE_URL));die;
+        $setNewPasswordUrl = $this->router->generate('new-emplyee-password',['token' => $token],UrlGeneratorInterface::ABSOLUTE_URL);// http://localhost:8002/new-password/'.$token;
         $employeeFormUrl = 'http://localhost:8002'
             .$this->router->generate('employee-form');
 

@@ -57,26 +57,10 @@
     "jquery-sparkline": "^2.1.3",
     "font-awesome": "^4.7.0",
     "Ionicons": "ionicons#^2.0.1",
+    "govicons": "^1.4.0",
     "jquery-ui": "1.11.4"
   },
   "resolutions": {
     "jquery": "^3.2.1"
-  }
-}
-
-{
-  "name": "bootstrap-flash-alert",
-  "main": "bootstrap-flash-alert.js",
-  "authors": [
-    "Leandro Vital <leandro.santos@ima.sp.gov.br>"
-  ],
-  "description": "Provides a simplified way to handle (add/display) flash messages",
-  "license": "MIT",
-  "homepage": "",
-  "keywords": ["util", "functional", "server", "client", "browser"],
-  "ignore": ["**/.*", "node_modules", "bower_components", "test", "tests"],
-  "dependencies": {
-    "bootstrap": ">=3.3.6",
-    "animate.css": ">=3.5.2"
   }
 }

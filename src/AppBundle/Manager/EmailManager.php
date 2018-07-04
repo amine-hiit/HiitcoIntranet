@@ -59,6 +59,9 @@ class EmailManager
         array $filesPaths = null
     )
     {
+        if (!is_array($to))
+            $to = [$to];
+
         $subject = $this->container->get('translator')->trans($emailType->getLabel());
         $template = $emailType->getTemplate();
 
@@ -84,7 +87,7 @@ class EmailManager
         $message = \Swift_Message::newInstance()
             ->setSubject($subject)
             ->setFrom($from)
-            ->setTo($to)
+            ->setTo(array_filter($to))
             ->setBody($rendredTemplate,'text/html')
         ;
 

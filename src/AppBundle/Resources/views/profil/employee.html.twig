@@ -15,10 +15,9 @@
 
         <div class="box box-widget widget-user">
             <div class="widget-user-header bg-black flat">
-                <h5 class="widget-user-desc">{{ employee.userName }}</h5>
-                <h5 class="widget-user-desc">{{ employee.email }}</h5>
-                <h5 class="widget-user-desc">{{ employee.status }}</h5>
-                <h5 class="widget-user-desc">{{ employee.phoneNumber }}</h5>
+                    <h5 class="widget-user-desc"><i class="fa fa-at"></i> Email: {{ employee.email }}</h5>
+                <h5 class="widget-user-desc"><i class="fa fa-file-text"></i> status: {{ employee.status }}</h5>
+                <h5 class="widget-user-desc"><i class="fa fa-phone"></i>  Tel: {{ employee.phoneNumber }}</h5>
             </div>
             <div class="widget-user-image">
                 <img class="img-circle" alt="User Avatar" src={{ asset(employee.avatar.url) }}>

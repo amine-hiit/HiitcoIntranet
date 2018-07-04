@@ -19,7 +19,7 @@ dependent.child: enfants dépendants
 cnss.number: cnss
 start.date: date du début
 avatar: avatar
-current.position: position courante
+current.position: position actuelle
 status: status
 employee.formations: Formations
 experiences: expériences
@@ -46,12 +46,17 @@ current.password: mot de passe actuel
 new.password: nouveau mot de passe
 new.password.verification: vérification du nouveau mot de passe
 change.password: changer mot de passe
+
 update: modifier
 delete: supprimer
 cancel: annuler
 submit: envoyer
 validate: valider
-set.ready: mettre disponible
+set.ready: délivrer
+choose: choisir
+other: autre
+next: suivant
+previous: précédent
 
 new.experience: nouvelle expérience
 new.project: nouvelle projets
@@ -138,10 +143,15 @@ other.email.type: autre réference d'email
 speciality: spécialité
 diploma: diplôlme
 
-choose: choisir
-other: autre
 
 native: langue maternelle
 begginer: débutant
 intermediate: moyen
 advanced: avancé
+
+my.vacations: mes congés
+my.vacation.balance: mon solde de congé
+vacation.list: Liste des congé
+
+employees.list: Liste des employés
+

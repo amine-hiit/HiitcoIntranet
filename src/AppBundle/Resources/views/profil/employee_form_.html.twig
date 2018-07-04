@@ -126,7 +126,7 @@
             <small></small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa  fa-home"></i> Accueil</a></li>
+            <li><a href="#"><i class="fa  fa-user"></i> Fiche collaborateur</a></li>
         </ol>
     </section>
 
@@ -345,10 +345,10 @@
                 <!-- end row -->
                 <div style="float:right;">
                     <button type="button" id="prevBtn" class="btn bg-navy btn-flat " style="width: 200px;"
-                            onclick="nextPrev(-1)">Previous
+                            onclick="nextPrev(-1)">{{ 'previous'|trans|capitalize }}
                     </button>
                     <button type="button" id="nextBtn" class="btn bg-navy btn-flat " style="width: 200px;"
-                            onclick="nextPrev(1)">Next
+                            onclick="nextPrev(1)">{{ 'next'|trans|capitalize }}
                     </button>
                 </div>
                 <!-- Circles which indicates the steps of the form: -->
@@ -367,7 +367,6 @@
         </div>
         <!-- /.box -->
     </section>
-    </div>
 
     <!-- /.content -->
     <!-- /.content-wrapper -->

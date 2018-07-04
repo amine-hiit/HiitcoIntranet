@@ -1,6 +1,6 @@
 {% extends "default/layout.html.twig" %}
 
-{% set title = "Inscrire un nouveau employé" %}
+{% set title = "Inscrire un nouvel employé" %}
 {% set profile = "profile" %}
 
 {% block stylesheet %}
@@ -21,13 +21,13 @@
     <section class="content-header">
 
         <h1>
-            Inscrire un nouveau employé:
+            Inscrire un nouvel employé:
             <small></small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa  fa-home"></i> Espace RH</a></li>
             <li><a href="#">  Employés</a></li>
-            <li><a href="#"> Nouveau employé</a></li>
+            <li><a href="#"> Nouvel employé</a></li>
         </ol>
     </section>
 
@@ -38,7 +38,7 @@
 
                 <div class="box-header with-border">
                     <center>
-                        <a type="button" class="btn btn-default btn-flat disabled" href="/intranet/admin/register-new-employee">   Nouveau employé       </a>
+                        <a type="button" class="btn btn-default btn-flat disabled" href="/intranet/admin/register-new-employee">   Nouvel employé       </a>
                         <a type="button" class="btn btn-default btn-flat " href="/intranet/hrm/employees">  Liste des employés   </a>
                     </center>
                 </div>
@@ -96,7 +96,7 @@
                             }}) }}
                         </div>
                         <div class="form-group">
-                            {{ form_label(form.cnssNumber, 'cnss.number'|trans|capitalize) }}
+                            {{ form_label(form.cnssNumber, 'cnss.number'|trans|upper) }}
                             {{ form_widget(form.cnssNumber, {'attr':{
 
                                 'class':'form-control'

@@ -45,12 +45,9 @@ class EmployeeController extends Controller
         $form->handleRequest($request);
 
         if( $form->isSubmitted() ){
-
-            if($form->isValid()){
                 $employee->addRole("ROLE_EMPLOYEE");
                 $employeeManager->registerNewEmployee($employee);
                 $this->addFlash('success',$this->trans('flash.employee.registred'));
-            }
 
             return $this->redirect($this->generateUrl('employees-list'));
         }
