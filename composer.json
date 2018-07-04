@@ -22,6 +22,7 @@
     "require": {
         "php": ">=5.5.9",
         "components/jquery": "^3.1",
+        "craue/config-bundle": "^2.1",
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/orm": "^2.5",
         "friendsofsymfony/jsrouting-bundle": "^2.2",

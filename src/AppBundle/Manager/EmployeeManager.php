@@ -6,6 +6,7 @@ namespace AppBundle\Manager;
 
 use AppBundle\Entity\EmailType;
 use AppBundle\Entity\Notification;
+use AppBundle\Entity\Project;
 use Doctrine\ORM\EntityManagerInterface;
 use AppBundle\Entity\Formation;
 use AppBundle\Entity\Experience;
@@ -123,6 +124,11 @@ class EmployeeManager
     public function findEmployeeAllExperiences(Employee $employee)
     {
         return $this->em->getRepository(Experience::class)->findEmployeeAllExperiences($employee);
+    }
+
+    public function findEmployeeAllProjects(Employee $employee)
+    {
+        return $this->em->getRepository(Project::class)->findEmployeeAllProjects($employee);
     }
 
     public function createEmployee()
