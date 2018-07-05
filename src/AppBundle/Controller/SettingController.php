@@ -73,7 +73,21 @@ class SettingController extends Controller
      */
     public function testAction(Request $request)
     {
-        $roles = ['ROLE_EMPLOYEE','ROLE_HR'];
-        dump($this->get('app.employee.manager')->findEmployeesByRoles($roles));die;
+    }
+
+    /**
+     * @Route("/intranet/admin/parameters", name="parameters")
+     */
+    public function parameterAction(Request $request)
+    {
+        if ($request->isMethod("POST")) {
+            $cc = $this->get('craue_config');
+            $parameter = $request->get('parameter');
+            $value = $request->get('value');
+            $cc->set($request->get('parameter'), $request->get('value'));
+            return $this->json(['parameter' => $parameter,'value' => $cc->get($parameter)]);
+        }
+        return $this->render('@App/setting/parameters.html.twig');
+
     }
 }

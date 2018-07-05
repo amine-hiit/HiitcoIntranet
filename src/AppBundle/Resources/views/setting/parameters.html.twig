@@ -2,6 +2,7 @@
 
 {% set title = "Mes documents demandés" %}
 {% set profile = "profile" %}
+{% set parameters = craue.all %}
 
 {% block content %}
 
@@ -9,7 +10,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Liste des congés
+            {{ 'parameters'|trans|capitalize }}
             <small></small>
         </h1>
         <ol class="breadcrumb">
@@ -17,10 +18,7 @@
             <li><a href="#">{{ 'parameters'|trans|capitalize }}</a></li>
         </ol>
     </section>
-
-    <!-- Main content -->
     <section class="content">
-
         <div class="row">
             <div class="col-xs-12">
                 <div class="box">
@@ -29,32 +27,79 @@
                             <a href="/intranet/admin/parameters" type="button" class="btn btn-default btn-flat disabled" >   {{ 'parameters'|trans|capitalize }}   </a>
                             <a href="/intranet/admin/emails" type="button disabled" class="btn btn-default btn-flat">   {{ 'emails'|trans|capitalize }} </a>
                         </center>
-
                     </div>
-
-
                     <div class="box-body">
-
+                        <ul class="list-unstyled">
+                        {% for parameter,value in parameters %}
+                            <li>
+                                <p>
+                                    <span id="{{ parameter }}_value">{{ value|trans|capitalize }}</span>
+                                    <a class="edit-parameter" id="edit-{{ parameter }}" href="#"><i class="fa fa-edit"></i></a>
+                                </p>
+                            </li>
+                            <div class="form-holder hidden" id="form-{{ parameter }}">
+                                <div class="col-sm-12 col-xs-12">
+                                    <input class="hidden" name="id" value="">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-xs-12">
+                                            <div class="form-group">
+                                                <input id="{{ parameter }}" class="form-control" type="text"  placeholder= "{{ parameter|trans|capitalize }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6 col-xs-6">
+                                            <div class="form-group">
+                                                    <a  id ="cancel-edit-{{ parameter }}" class="btn bg-danger btn-flat cancel-edit"
+                                                        style="width: 100%";>{{'cancel'|trans|capitalize}}</a>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 col-xs-6">
+                                            <div class="form-group">
+                                                <a  id ="submit-{{ parameter }}" class="btn bg-success btn-flat submit"
+                                                    style="width: 100%";>{{'submit'|trans|capitalize}}</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        </ul>
                     </div>
-
                 </div>
-                <!-- /.box -->
             </div>
         </div>
     </section>
-
-    <!-- /.content -->
-    <!-- /.content-wrapper -->
-
-
-
 {% endblock %}
-
 
 {% block script %}
+    <script src="{{ asset('intra/js/collection.js')}}"></script>
+    <script src="{{ asset('bower_components/select2/dist/js/select2.full.min.js') }}"></script>
+    <script src="{{ asset('bower_components/bower_components/bootstrap-select/dist/js/bootstrap-select.min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+
+            $('.edit-parameter').click(function() {
+                var id = $(this).attr('id').split('-')[1];
+                $('#form-'+id).removeClass('hidden');
+            });
+            $('.cancel-edit').click(function() {
+                var id = $(this).attr('id').split('-')[2];
+                $('#form-'+id).addClass('hidden');
+            });
+            $('.submit').click(function () {
+                var parameter = $(this).attr('id').split('-')[1];
+                var value = $('#'+parameter).val();
+                $.ajax({
+                    url: "/intranet/admin/parameters",
+                    method:'POST',
+                    data: { parameter: parameter, value: value  },
+                    success(data){
+                        $('#'+data.parameter+'_value').html(data.value)
+                        $('#form-'+parameter).removeClass('hidden');
+                    }
+                })
+            })
+        });
+    </script>
 {% endblock %}
-
-  {% block javascript %}
-  {% endblock %}
-
-

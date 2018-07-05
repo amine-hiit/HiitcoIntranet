@@ -42,6 +42,7 @@ twig:
     strict_variables: '%kernel.debug%'
     globals:
         pathToWeb: "%kernel.root_dir%/../web"
+        craue: "@craue_config"
 
 
 

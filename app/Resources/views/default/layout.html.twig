@@ -250,9 +250,8 @@
         {% endblock %}
     </div>
     <footer class="main-footer">
-                <p align="center">HiitConsulting | 6, Rue Ahmed El Brihi, ben Jdia, Casablanca | contact@hiitconsulting.com
-                |
-                (+212)6 00 06-97-74</p>
+                <p align="center"> {{ craue.get('company_name') }} | {{ craue.get('company_address') }}
+                    | {{ craue.get('company_email') }} | {{ craue.get('company_number') }} </p>
     </footer>
 
 
