@@ -242,5 +242,39 @@ class EmployeeController extends Controller
             'form' => $form->createView(),
         ));
     }
+
+    /**
+     * @Route("/intranet/update/{item}/{id}", name="update-profile-item", requirements={
+     *     "item"="project|formation|experience|language"
+     * })
+     */
+    public function updateItem($item, $id, Request $request)
+    {
+        $em = $this->get('app.employee.manager');
+        switch ($item) {
+            case 'experience':
+                $class = Experience::class;
+                $type = ExperienceType::class;
+                break;
+            case 'project':
+                $class = Project::class;
+                $type = ProjectType::class;
+                break;
+            case 'formation':
+                $class = Formation::class;
+                $type = FormationType::class;
+                break;
+            case 'language':
+                $class = Language::class;
+                $type = EmployeeLanguageType::class;
+                break;
+            default:
+                $class = null;
+        }
+        $data = $this->getDoctrine()->getRepository($class)->find($id);
+        $form = $this->createForm($type, $data);
+        return $this->render('@App/profil/form/'.$item.'.html.twig',['form' => $form->createView()]);
+    }
+
 }
 

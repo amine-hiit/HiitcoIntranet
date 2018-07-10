@@ -34,7 +34,7 @@ class NotificationController extends Controller
      * @Route("/intranet/last-teen-notifications", name="last-teen-notifications")
      * @return Response
      */
-    public function jsonNotificationsAction()
+    public function jsonNotificationsAction(Request $request)
     {
         $nm = $this->getNotificationManager();
         $user = $this->getUser();
@@ -61,7 +61,7 @@ class NotificationController extends Controller
      */
     public function jsonTeenNotificationsAction(Request $request)
     {
-        $offset = $request->query->get('index');
+        $offset = $request->query->get('index')*10;
         $user = $this->getUser();
 
         $lastTeenNotifications = $this->getNotificationManager()->findLastByEmployeeWithOffset($user, $offset);
@@ -107,10 +107,10 @@ class NotificationController extends Controller
         $serializer = SerializerBuilder::create()->build();
         $user = $this->getUser();
 
-        $offset = $request->get('offset');
+        $offset = $request->get('offset')*10;
         $lastTeenNotifications = $this
             ->getNotificationManager()
-            ->findLastByEmployeeWithOffset($user, 0);
+            ->findLastByEmployeeWithOffset($user, $offset);
         $lastNotificationsWithOffset = $this
             ->getNotificationManager()
             ->findLastByEmployeeWithOffset($user, 3);
