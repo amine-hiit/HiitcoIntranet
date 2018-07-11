@@ -248,31 +248,23 @@ class EmployeeController extends Controller
      *     "item"="project|formation|experience|language"
      * })
      */
-    public function updateItem($item, $id, Request $request)
+    public function updateItem($item, $id = 0, Request $request)
     {
+        $class = '\\AppBundle\\Entity\\'.ucfirst($item);
+        $type = '\\AppBundle\\Form\\'.ucfirst($item).'Type';
+
         $em = $this->get('app.employee.manager');
-        switch ($item) {
-            case 'experience':
-                $class = Experience::class;
-                $type = ExperienceType::class;
-                break;
-            case 'project':
-                $class = Project::class;
-                $type = ProjectType::class;
-                break;
-            case 'formation':
-                $class = Formation::class;
-                $type = FormationType::class;
-                break;
-            case 'language':
-                $class = Language::class;
-                $type = EmployeeLanguageType::class;
-                break;
-            default:
-                $class = null;
-        }
         $data = $this->getDoctrine()->getRepository($class)->find($id);
         $form = $this->createForm($type, $data);
+
+        if($request->isMethod('POST')) {
+            $form->handleRequest($request);
+            if ($form->isValid()){
+                $this->getDoctrine()->getManager()->persist($data);
+                $this->getDoctrine()->getManager()->flush();
+            }
+            return $this->redirectToRoute('employee-profil',['employee' => $this->getUser()->getId()]);
+        }
         return $this->render('@App/profil/form/'.$item.'.html.twig',['form' => $form->createView()]);
     }
 
