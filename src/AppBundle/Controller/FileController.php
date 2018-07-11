@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Avatar;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,10 +16,34 @@ class FileController extends Controller
 
 
     /**
+     * @Route("/intranet/file/{type}/{id}", name = "tst", requirements={
+     *     "id" = "\d+",
+     *     "type" = "avatar"
+     * })
+     *
+     */
+
+    public function downloadAction(Request $request,$type,$id)
+    {
+        $response = new Response();
+
+        $response->headers->set('Content-Type', 'image/png');
+        $type = ucfirst($type);
+        $file = $this->getDoctrine()->getRepository('AppBundle\\Entity\\'.$type)->find($id);
+
+        $fileContent = file_get_contents($this->get('kernel')->getRootDir() .'/../web/'.$file->getUrl());
+        $response->setContent($fileContent);
+        return $response;
+    }
+
+    /**
      * @Route("/intranet/hrm/export/vacation-requests", name = "premier_test")
      */
     public function xlsExportAxtion()
     {
+
+
+
         $lm = $this->get('app.vacation.manager');
         $listVacation = $lm->findAll();
         $newSpreadsheet = $this->get('phpoffice.spreadsheet')->createSpreadsheet();

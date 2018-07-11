@@ -2,6 +2,7 @@
 
 {% set title = "Fiche collaborateur" %}
 {% set profile = "profile" %}
+{% if employee.avatar is not null %}{% set avatarUrl ="/intranet/file/avatar/" ~ employee.avatar.id  %}{% else %}{% set avatarUrl ='/uploads/img/avatar/default_avatar.png'  %}{% endif %}
 
 {% block stylesheet %}
 
@@ -20,7 +21,7 @@
                 <h5 class="widget-user-desc"><i class="fa fa-phone"></i>  Tel: {{ employee.phoneNumber }}</h5>
             </div>
             <div class="widget-user-image">
-                <img class="img-circle" alt="User Avatar" src={{ asset(employee.avatar.url) }}>
+                <img class="img-circle" alt="User Avatar" src={{ avatarUrl }}>
             </div>
             <div class="box-footer">
                 <div class="row">
