@@ -48,6 +48,7 @@ new.password.verification: vérification du nouveau mot de passe
 change.password: changer mot de passe
 
 update: modifier
+edit: modifier
 delete: supprimer
 cancel: annuler
 submit: envoyer

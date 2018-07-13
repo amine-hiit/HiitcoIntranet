@@ -245,23 +245,22 @@ class EmployeeController extends Controller
 
     /**
      * @Route("/intranet/update/{item}/{id}", name="update-profile-item", requirements={
-     *     "item"="project|formation|experience|language"
+     *     "item"="project|formation|experience|language|employeeLanguage"
      * })
      */
     public function updateItem($item, $id = 0, Request $request)
     {
+
         $class = '\\AppBundle\\Entity\\'.ucfirst($item);
         $type = '\\AppBundle\\Form\\'.ucfirst($item).'Type';
 
-        $em = $this->get('app.employee.manager');
         $data = $this->getDoctrine()->getRepository($class)->find($id);
         $form = $this->createForm($type, $data);
 
         if($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()){
-                $this->getDoctrine()->getManager()->persist($data);
-                $this->getDoctrine()->getManager()->flush();
+                $this->get('app.employee.manager')->update($data);
             }
             return $this->redirectToRoute('employee-profil',['employee' => $this->getUser()->getId()]);
         }

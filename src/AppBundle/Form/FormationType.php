@@ -43,8 +43,9 @@ class FormationType extends AbstractType
             ->add('employee')
 
             ->add('level', ChoiceType::class,[
+                'required'   => true,
                 'choices'  => array(
-                    'choose' => null,
+                    'choose' => '',
                     'bac+1' => 1,
                     'bac+2' => 2,
                     'bac+3' => 3,

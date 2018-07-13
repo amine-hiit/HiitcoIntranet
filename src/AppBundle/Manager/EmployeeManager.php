@@ -15,6 +15,7 @@ use AppBundle\Resources\Email;
 use FOS\UserBundle\model\UserManagerInterface;
 use FOS\UserBundle\Util\TokenGeneratorInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 class EmployeeManager
@@ -56,6 +57,11 @@ class EmployeeManager
      */
     private $emailManager;
 
+    /**
+     * @var TokenStorageInterface
+     */
+    private $tokenStorage;
+
 
     /**
      * EmployeeManager constructor.
@@ -63,15 +69,17 @@ class EmployeeManager
      * @param NotificationManager $nm
      * @param UserManagerInterface $um
      * @param EmailManager $emailManager
+     * @param TokenStorageInterface $tokenStorage
      * @param RouterInterface $router
      * @param TokenGeneratorInterface $tg
      */
     public function __construct(EntityManagerInterface $em,
-    NotificationManager $nm,
-    UserManagerInterface $um,
-    EmailManager $emailManager,
-    RouterInterface $router,
-    TokenGeneratorInterface $tg
+                                NotificationManager $nm,
+                                UserManagerInterface $um,
+                                EmailManager $emailManager,
+                                RouterInterface $router,
+                                TokenGeneratorInterface $tg,
+                                TokenStorageInterface $tokenStorage
 
     )
     {
@@ -81,6 +89,7 @@ class EmployeeManager
         $this->nm = $nm;
         $this->um = $um;
         $this->tg = $tg;
+        $this->tokenStorage = $tokenStorage;
     }
 
     public function findByRole($role)
@@ -159,6 +168,15 @@ class EmployeeManager
     {
         $attribute->setEmployee($user);
     }
+
+    public function update($attribute)
+    {
+
+        $attribute->setEmployee( $this->tokenStorage->getToken()->getUser());
+        $this->persistAttribute($attribute);
+        $this->flush();
+    }
+
 
     public function persistAttribute($attribute)
     {

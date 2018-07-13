@@ -2,10 +2,30 @@
 
 {% set title = "Fiche collaborateur" %}
 {% set profile = "profile" %}
+{% set empId = employee.id %}
 {% if employee.avatar is not null %}{% set avatarUrl ="/intranet/file/avatar/" ~ employee.avatar.id  %}{% else %}{% set avatarUrl ='/uploads/img/avatar/default_avatar.png'  %}{% endif %}
 
 {% block stylesheet %}
+    <style>
+        a.deco-none, a.white {
+            color:#fff !important;
+            text-decoration:none;
+        }
 
+
+
+        input.invalid {
+            background-color: #ffdddd;
+        }
+
+        select.invalid {
+            background-color: #ffdddd;
+        }
+
+        textarea.invalid {
+            background-color: #ffdddd;
+        }
+    </style>
 {% endblock %}
 
 
@@ -16,13 +36,32 @@
 
         <div class="box box-widget widget-user">
             <div class="widget-user-header bg-black flat">
-                <h5 class="widget-user-desc"><i class="fa fa-at"></i> Email: {{ employee.email }}</h5>
-                <h5 class="widget-user-desc"><i class="fa fa-file-text"></i> status: {{ employee.status }}</h5>
-                <h5 class="widget-user-desc"><i class="fa fa-phone"></i>  Tel: {{ employee.phoneNumber }}</h5>
+                <div class="row">
+                    <div class="col-sm-8   col-xs-12">
+                        <h5 class="widget-user-desc"><i class="fa fa-at"></i> Email: {{ employee.email }}</h5>
+                        <h5 class="widget-user-desc"><i class="fa fa-file-text"></i> status: {{ employee.status }}</h5>
+                        <h5 class="widget-user-desc"><i class="fa fa-phone"></i>  Tel: {{ employee.phoneNumber }}</h5>
+                    </div>
+
+                    <div class="col-sm-4  col-sm-offset-8 col-xs-12" align="right">
+                        <h5 class="widget-user-desc">
+                            <a class="deco-none white edit-item" id="edit-profil-{{ empId }}"
+                                 data-toggle="modal" data-target="#modal-view-profil">
+                                {{ 'voir tous'|trans|capitalize }}   &nbsp;&nbsp;&nbsp;&nbsp;
+                            </a>
+                            <a class="deco-none white edit-item" id="edit-profil-{{ empId }}"
+                                 data-toggle="modal" data-target="#modal-edit-profil">
+                                <i class="fa fa-edit bg-black "></i> {{ 'edit'|trans|capitalize }}
+                            </a>
+                        </h5>
+                    </div>
+                </div>
             </div>
+
             <div class="widget-user-image">
                 <img class="img-circle" alt="User Avatar" src={{ avatarUrl }}>
             </div>
+
             <div class="box-footer">
                 <div class="row">
                     <div class="col-sm-12 col-sm-offset- ">
@@ -42,8 +81,211 @@
 
     <section class="content">
 
-
         <ul class="timeline">
+
+            <li>
+                {%  if profileOwner or experiences|length >0  %}
+                    <i class="fa fa-black-tie bg-black"></i>
+                {% endif %}
+                <div class="timeline-item flat">
+                    {% for experience in experiences %}
+                        <h3 class="timeline-header">
+                            <div class="row">
+                                <div class="col-sm-8 col-xs-8" id="experience-title-id">
+                                    {{ experience.employer }}
+                                </div>
+                                {% if profileOwner %}
+                                    <div class="col-sm-4 col-xs-4" align="right">
+                                        <a class="edit-item" id ="edit-experience-{{ experience.id }}"><i class="fa fa-edit" style="color:dodgerblue"></i></a>
+                                        <a class="delete-item">  <i class="fa fa-trash" style="color:darkred"></i></a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </h3>
+                        <div class="timeline-body">
+                            <div class="row edit-form-holder"  id="experience-{{ experience.id }}-edit-form-holder">
+
+                            </div>
+                            <div class="experience-body-holder"  id="experience-{{ experience.id }}-body-holder">
+                                <p><span>{{ experience.country }}</span> - <span>{{ experience.city }}</span></p>
+                                <p><span>{{ experience.startDate|date("d-m-Y") }}</span> -
+                                    <span>{{ experience.endDate|date("d-m-Y") }}</span></p>
+                                <h4>Description : </h4>
+                                <p> {{ experience.description }} </p>
+                            </div>
+                        </div>
+
+                    {% endfor %}
+
+                    {% if profileOwner %}
+                        <div id="experience-form-holder" class="hidden">
+                            {{ form_start(experienceForm, {'attr': {'id': 'experienceForm'}}) }}
+                            <div class="box-header with-border">
+                                <h3 class="timeline-header"> {{ 'new.experience'|trans|capitalize }}</h3>
+
+                            </div>
+                            <div class="box-body">
+                                <div class='col-sm-4 col-xs-12'>
+                                    <div class='form-group'>
+                                        {{ form_label(experienceForm.position, 'position'|trans|capitalize) }}
+                                        {{ form_widget(experienceForm.position, {'attr':{
+                                            'class':'form-control'
+                                        }}) }}
+                                    </div>
+                                </div>
+                                <div class='col-sm-4 col-xs-12'>
+                                    <div class='form-group' >
+                                        {{ form_label(experienceForm.employer, 'employer'|trans|capitalize) }}
+                                        {{ form_widget(experienceForm.employer, {'attr':{
+                                            'class':'form-control'
+                                        }}) }}
+                                    </div>
+                                </div>
+                                <div class='col-sm-4 col-xs-12'>
+                                    <div class='form-group'>
+                                        {{ form_label(experienceForm.city, 'city'|trans|capitalize) }}
+                                        {{ form_widget(experienceForm.city, {'attr':{
+                                            'class':'form-control'
+                                        }}) }}
+                                    </div>
+                                </div>
+                                <div class='col-sm-4 col-xs-12'>
+                                    <div class='form-group'>
+                                        {{ form_label(experienceForm.startDate, 'start.date'|trans|capitalize) }}
+                                        <div class='input-group date'>
+                                            <div class='input-group-addon'>
+                                                <i class='fa fa-calendar'></i>
+                                            </div>
+                                            {{ form_widget(experienceForm.startDate, {'attr':{
+
+                                                'class':'form-control pull-right datepicker'
+                                            }}) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class='col-sm-4 col-xs-12'>
+                                    <div class='form-group'>
+                                        {{ form_label(experienceForm.endDate, 'end.date'|trans|capitalize) }}
+                                        <div class='input-group date'>
+                                            <div class='input-group-addon'>
+                                                <i class='fa fa-calendar'></i>
+                                            </div>
+                                            {{ form_widget(experienceForm.endDate, {'attr':{
+
+                                                'class':'form-control pull-right datepicker'
+                                            }}) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class='col-sm-4 col-xs-12'>
+                                    <div class='form-group' >
+                                        {{ form_label(experienceForm.country, 'country'|trans|capitalize) }}
+                                        {{ form_widget(experienceForm.country, {'attr':{
+                                            'class':'form-control'
+                                        }}) }}
+                                    </div>
+                                </div>
+                                <div class='col-sm-12 col-xs-12'>
+                                    <div class='form-group' >
+                                        {{ form_label(experienceForm.description, 'description'|trans|capitalize) }}
+                                        {{ form_widget(experienceForm.description, {'attr':{
+                                            'class':'form-control'
+                                        }}) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <a id="cancel-adding-new-experience" class="btn btn-default flat col-sm-6 col-xs-6">
+                                {{ 'cancel'|trans|capitalize }}
+                            </a>
+                            <button type="submit" class="btn btn-default flat col-sm-6 col-xs-6">
+                                {{ 'submit'|trans|capitalize }}
+                            </button>
+                            {{ form_end(experienceForm) }}
+                        </div>
+
+                        <a class="btn btn-default flat col-sm-12 col-xs-12 "
+                           id="add-experience"
+                        >{{ 'add.experience'|trans|capitalize }}</a>
+                    {% endif %}
+                </div>
+            </li>
+
+            <li>
+                {%  if profileOwner or languages|length >0  %}
+                    <i class="fa fa-language bg-blue"></i>
+                {% endif %}
+
+                <div class="timeline-item flat">
+
+                    {% for employeeLanguage in languages %}
+                        <h3 class="timeline-header">
+                            <div class="row">
+                                <div class="col-sm-8 col-xs-8" id="language-title-id">
+                                    {{ employeeLanguage.language.label }}
+                                </div>
+                                {% if profileOwner %}
+                                    <div class="col-sm-4 col-xs-4" align="right">
+                                        <a class="edit-item" id ="edit-employeeLanguage-{{ employeeLanguage.id }}"><i class="fa fa-edit" style="color:dodgerblue"></i></a>
+                                        <a class="delete-item">  <i class="fa fa-trash" style="color:darkred"></i></a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </h3>
+                        <div class="timeline-body">
+                            <div class="row edit-form-holder"  id="employeeLanguage-{{ employeeLanguage.id }}-edit-form-holder">
+
+                            </div>
+                            <div class="employeeLanguage-body-holder"  id="employeeLanguage-{{ employeeLanguage.id }}-body-holder">
+                                <p><span>{{ employeeLanguage.language.label }}</span> - <span>{{ employeeLanguage.level|trans|capitalize }}</span></p>
+                            </div>
+                        </div>
+
+                    {% endfor %}
+
+                    {% if profileOwner %}
+                        <div id="language-form-holder" class="hidden">
+                            {{ form_start(languageForm, {'attr': {'id': 'languageForm'}}) }}
+                            <div class="box-header with-border">
+                                <h3 class="timeline-header"> {{ 'new.language'|trans|capitalize }} </h3>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 col-xs-12">
+                                    <div class='col-sm-4 col-xs-12'>
+                                        <div class='form-group' style="width: 90%;" >
+                                            {{ form_label(languageForm.language, 'language'|trans|capitalize) }}
+                                            {{ form_widget(languageForm.language, {'attr':{
+                                                'class':'form-control select2 ',
+                                            }}) }}
+                                        </div>
+                                    </div>
+                                    <div class='col-sm-6 col-xs-12'>
+                                        <div class='form-group' style="width: 90%;">
+                                            {{ form_label(languageForm.level, 'level'|trans|capitalize) }}
+                                            {{ form_widget(languageForm.level, {'attr':{
+                                                'class':'form-control select2'
+                                            }}) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a id="cancel-adding-new-language" class="btn btn-default flat col-sm-6 col-xs-6">
+                                {{ 'cancel'|trans|capitalize }}
+                            </a>
+                            <button type="submit" class="btn btn-default flat col-sm-6 col-xs-6"
+                            >{{ 'submit'|trans|capitalize }}
+                            </button>
+
+                            {{ form_end(languageForm) }}
+                        </div>
+
+                        <a class="btn btn-default flat col-sm-12 col-xs-12 "
+                           id="add-language"
+                        >{{ 'add.language'|trans|capitalize }}</a>
+                    {% endif %}
+                </div>
+            </li>
+
             <li>
                 {% if profileOwner or projects|length >0  %}
                     <i class="fa fa-calendar-check-o bg-red"></i>
@@ -128,7 +370,215 @@
                     {% endif %}
                 </div>
             </li>
+
+            <li>
+                {% if profileOwner or formations|length >0  %}
+                    <i class="fa fa-graduation-cap bg-green"></i>
+                {% endif %}
+
+                <div class="timeline-item flat">
+
+                    {% for formation in formations %}
+                        <h3 class="timeline-header">
+                            <div class="row">
+                                <div class="col-sm-8 col-xs-8" id="project-title-id">
+                                    {{ formation.organization }}
+                                </div>
+                                {% if profileOwner %}
+                                    <div class="col-sm-4 col-xs-4" align="right">
+                                        <a class="edit-item" id ="edit-formation-{{ formation.id }}"><i class="fa fa-edit" style="color:dodgerblue"></i></a>
+                                        <a class="delete-item">  <i class="fa fa-trash" style="color:darkred"></i></a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </h3>
+
+                        <div class="timeline-body">
+                            <div class="row edit-form-holder"  id="formation-{{ formation.id }}-edit-form-holder">
+
+                            </div>
+                            <div class="formation-body-holder"  id="formation-{{ formation.id }}-body-holder">
+                               <p><span>{{ formation.diploma }}</span> .
+                                    <span>{{ formation.speciality }}</span></p>
+                               <p><span>{{ formation.startDate|date("Y") }}</span> -
+                                    <span>{{ formation.endDate|date("Y") }}</span></p>
+                            </div>
+                        </div>
+
+                    {% endfor %}
+                    {% if profileOwner %}
+
+                        <div id="formation-form-holder" class="hidden">
+                            {{ form_start(formationForm, {'attr': {'id': 'formationForm'}}) }}
+                            <div class="box-header with-border">
+                                <h3 class="timeline-header"> {{ 'new.formarion'|trans|capitalize }} </h3>
+                            </div>
+                            <input class="hidden"
+                                   id={{ formationForm.vars.id }}
+                                   name={{ formationForm.vars.form.children.employee.vars.full_name }}
+                                   value={{ app.user.id }}
+                            />
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class='col-sm-4 col-xs-12'>
+                                        <div class='form-group'>
+                                            {{ form_label(formationForm.level, 'level'|trans|capitalize) }}
+                                            {{ form_widget(formationForm.level, {'attr':{
+
+                                                'class':'form-control'
+                                            }}) }}
+                                        </div>
+                                    </div>
+                                    <div class='col-sm-4 col-xs-12'>
+                                        <div class='form-group'>
+                                            {{ form_label(formationForm.speciality, 'speciality'|trans|capitalize) }}
+                                            {{ form_widget(formationForm.speciality, {'attr':{
+
+                                                'class':'form-control'
+                                            }}) }}
+                                        </div>
+                                    </div>
+                                    <div class='col-sm-4 col-xs-12'>
+                                        <div class='form-group'>
+                                            {{ form_label(formationForm.diploma, 'diploma'|trans|capitalize) }}
+                                            {{ form_widget(formationForm.diploma, {'attr':{
+
+                                                'class':'form-control'
+                                            }}) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class='col-sm-4 col-xs-12'>
+                                        <div class='form-group' >
+                                            {{ form_label(formationForm.organization, 'organization'|trans|capitalize) }}
+                                            {{ form_widget(formationForm.organization, {'attr':{
+                                                'class':'form-control'
+                                            }}) }}
+                                        </div>
+                                    </div>
+                                    <div class='col-sm-4 col-xs-12'>
+                                        <div class='form-group'>
+                                            {{ form_label(formationForm.startDate, 'start.date'|trans|capitalize) }}
+                                            <div class='input-group date'>
+                                                <div class='input-group-addon'>
+                                                    <i class='fa fa-calendar'></i>
+                                                </div>
+                                                {{ form_widget(formationForm.startDate, {'attr':{
+
+                                                    'class':'form-control pull-right datepicker'
+                                                }}) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='col-sm-4 col-xs-12'>
+                                        <div class='form-group'>
+                                            {{ form_label(formationForm.endDate, 'end.date'|trans|capitalize) }}
+                                            <div class='input-group date'>
+                                                <div class='input-group-addon'>
+                                                    <i class='fa fa-calendar'></i>
+                                                </div>
+                                                {{ form_widget(formationForm.endDate, {'attr':{
+
+                                                    'class':'form-control pull-right datepicker'
+                                                }}) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class='col-sm-4 col-xs-12'>
+                                        <div class='form-group' >
+                                            {{ form_label(formationForm.country, 'country'|trans|capitalize) }}
+                                            {{ form_widget(formationForm.country, {'attr':{
+                                                'class':'form-control'
+                                            }}) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a id="cancel-adding-new-formation" class="btn btn-default flat col-sm-6 col-xs-6">
+                                {{ 'cancel'|trans|capitalize }}
+                            </a>
+                            <button type="submit" class="btn btn-default flat col-sm-6 col-xs-6"
+                            >{{ 'submit'|trans|capitalize }}
+                            </button>
+                            {% do formationForm.employee.setRendered %}
+                            {{ form_end(formationForm) }}
+                        </div>
+                        <a class="btn btn-default flat col-sm-12 col-xs-12 "
+                           id="add-formation"
+                        >{{ 'add.formation'|trans|capitalize }}</a>
+                    {% endif %}
+
+                </div>
+            </li>
+
         </ul>
+        <div class="modal fade" id="modal-view-profil">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title">Default Modal</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>View profil&hellip;</p>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row">
+                            <div class="col-sm-6 col-xs-6">
+                                <a type="button" class="btn btn-default flat"
+                                   style="width: 100%" data-dismiss="modal">
+                                    {{ 'cancel'|trans|capitalize }}
+                                </a>
+                            </div>
+                            <div class="col-sm-6 col-xs-6">
+                                <a type="button" class="btn btn-default flat"
+                                   style="width: 100%">
+                                    {{ 'submit'|trans|capitalize }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modal-edit-profil">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title">Default Modal</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>edit profil&hellip;</p>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row">
+                            <div class="col-sm-6 col-xs-6">
+                                <a type="button" class="btn btn-default flat"
+                                   style="width: 100%" data-dismiss="modal">
+                                    {{ 'cancel'|trans|capitalize }}
+                                </a>
+                            </div>
+                            <div class="col-sm-6 col-xs-6">
+                                <a type="button" class="btn btn-default flat"
+                                   style="width: 100%">
+                                    {{ 'submit'|trans|capitalize }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </section>
 {% endblock %}
 
@@ -143,6 +593,7 @@
             $('.datepicker').datepicker({
                 autoclose: true
             });
+
 
             $('.edit-item').click(function () {
                 var item = $(this).attr('id').split('-')[1];
@@ -170,16 +621,27 @@
                     $('#'+item +'-'+id+'-body-holder').removeClass('hidden');
                 });
             }
-            function submitUpdate()
+            function submitUpdates()
             {
-                $('.update-project-action').click(function () {
-                   $(this).closest("form").submit();
+                $('.update-submit-action').click(function () {
+                    var invalid = false;
+                    $(this).closest("form").find(':input').each(function () {
+                        if( $(this).val() == '' ){
+                            $(this).addClass('invalid');
+                            invalid = true;
+                        }
+
+                    });
+                    if ( invalid )
+                        return;
+
+                    $(this).closest("form").submit();
                 })
             }
             function editActions(item, id)
             {
                 cancelUpdate(item,id);
-                submitUpdate(item,id);
+                submitUpdates(item);
             }
 
             $('.delete-item').click(function () {

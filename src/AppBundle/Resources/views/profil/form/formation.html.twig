@@ -1,1 +1,91 @@
-{{ form(form) }}
+{{ form_start(form, {'attr': {'action':'/intranet/update/formation/' ~ form.vars.value.id, 'method':'POST'}}) }}
+<div class='col-sm-12 col-xs-12'>
+    <div class="row">
+        <div class='col-sm-6 col-xs-12'>
+            <div class='form-group'>
+                {{ form_label(form.organization, 'organization'|trans|capitalize) }}
+                {{ form_widget(form.organization, {'attr':{
+                    'class':'form-control'
+                }}) }}
+            </div>
+        </div>
+        <div class='col-sm-3 col-xs-12'>
+            <div class='form-group'>
+                {{ form_label(form.startDate, 'start.date'|trans|capitalize) }}
+                <div class='input-group date'>
+                    <div class='input-group-addon'>
+                        <i class='fa fa-calendar'></i>
+                    </div>
+                    {{ form_widget(form.startDate, {'attr':{
+                        'class':'form-control pull-right datepicker'
+                    }}) }}
+                </div>
+            </div>
+        </div>
+        <div class='col-sm-3 col-xs-12'>
+            <div class='form-group'>
+                {{ form_label(form.endDate, 'start.date'|trans|capitalize) }}
+                <div class='input-group date'>
+                    <div class='input-group-addon'>
+                        <i class='fa fa-calendar'></i>
+                    </div>
+                    {{ form_widget(form.endDate, {'attr':{
+                        'class':'form-control pull-right datepicker'
+                    }}) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class='col-sm-6 col-xs-12'>
+            <div class='form-group'>
+                {{ form_label(form.level, 'level'|trans|capitalize) }}
+                {{ form_widget(form.level, {'attr':{
+                    'class':'form-control '
+                }}) }}
+            </div>
+        </div>
+        <div class='col-sm-6 col-xs-12'>
+            <div class='form-group'>
+                {{ form_label(form.speciality, 'speciality'|trans|capitalize) }}
+                {{ form_widget(form.speciality, {'attr':{
+                    'class':'form-control'
+                }}) }}
+            </div>
+        </div>
+        <div class='col-sm-6 col-xs-12'>
+            <div class='form-group'>
+                {{ form_label(form.diploma, 'diploma'|trans|capitalize) }}
+                {{ form_widget(form.diploma, {'attr':{
+                    'class':'form-control'
+                }}) }}
+            </div>
+        </div>
+        <div class='col-sm-6 col-xs-12'>
+            <div class='form-group'>
+                {{ form_label(form.country, 'country'|trans|capitalize) }}
+                {{ form_widget(form.country, {'attr':{
+                    'class':'form-control'
+                }}) }}
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6 col-xs-6">
+            <a id="update-formation-cancel-{{ form.vars.value.id }}" class="btn btn-default flat" style="width: 100%">
+                {{ 'cancel'|trans|capitalize }}
+            </a>
+        </div>
+        <div class="col-sm-6 col-xs-6">
+            <a class="btn btn-formation flat btn-default update-submit-action" style="width: 100%"
+               id="update-formation-action-{{ form.vars.value.id }}">
+                {{ 'submit'|trans|capitalize }}
+            </a>
+        </div>
+    </div>
+</div>
+{% do form.employee.setRendered %}
+
+{{ form_end(form) }}
+
+
