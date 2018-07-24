@@ -73,6 +73,11 @@ services:
         class: 'AppBundle\Manager\docsManager'
         public: true
 
+
+    AppBundle\EventListener\SelectFilter:
+        tags:
+            - { name: doctrine.event_listener, event: postLoad }
+
     employee.subscriber:
         class: 'AppBundle\EventListener\EmployeeSubscriber'
         public: true

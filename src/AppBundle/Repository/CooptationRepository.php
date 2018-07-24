@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Repository;
+use AppBundle\Entity\Employee;
 
 /**
  * CooptationRepository
@@ -10,4 +11,11 @@ namespace AppBundle\Repository;
  */
 class CooptationRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findAllByUser(Employee $employee)
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.employee = :employee')
+            ->setParameter('employee', $employee)
+            ->getQuery()->getResult();
+    }
 }

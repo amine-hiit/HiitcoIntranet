@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Formation
  *
  * @ORM\Table(name="formation")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\EmployeeFormationRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\FormationRepository")
  */
     class Formation
 {
@@ -27,6 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
      * @ORM\ManyToOne(targetEntity="Employee", inversedBy="employeeFormation")
      * @ORM\JoinColumn(nullable=false)
      */
+
     private $employee;
 /*
     /**

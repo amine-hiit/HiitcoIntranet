@@ -1,0 +1,94 @@
+AppBundle\Entity\Employee:
+    exclusion_policy: ALL
+    xml_root_name: employee
+    properties:
+        id:
+            expose: true
+            groups: [basic_info, detail, list, default]
+        valid :
+            expose: true
+            groups: [basic_info, detail, list]
+
+        firstName:
+            expose: true
+            groups: [basic_info, detail, list]
+
+        username:
+            expose: true
+            groups: [basic_info, detail, list]
+
+        lastName:
+            expose: true
+            groups: [basic_info, detail, list]
+
+        civility:
+            expose: true
+            groups: [basic_info, detail]
+
+        birthday:
+            expose: true
+            groups: [basic_info, detail]
+
+        maritalStatus:
+            expose: true
+            groups: [basic_info, detail]
+
+        dependentChild:
+            expose: true
+            groups: [basic_info, detail]
+
+        photoId:
+            expose: true
+            groups: [basic_info, detail]
+
+        cnssNumber:
+            expose: true
+            groups: [basic_info, detail]
+
+        phoneNumber:
+            expose: true
+            groups: [basic_info, detail]
+
+        address:
+            expose: true
+            groups: [basic_info, detail]
+
+        startDate:
+            expose: true
+            groups: [basic_info, detail]
+
+        currentPosition:
+            expose: true
+            groups: [basic_info, detail]
+
+        status:
+            expose: true
+            groups: [basic_info, detail]
+
+        notifications:
+            expose: false
+
+        formations:
+            expose: true
+            groups: [detail]
+
+        employeeLanguages:
+            expose: true
+            groups: [detail]
+
+        experiences:
+            expose: true
+            groups: [detail]
+
+        projects:
+            expose: true
+            groups: [detail]
+
+        cooptations:
+            expose: false
+
+        avatar:
+            type: AppBundle\Entity\Avatar
+            expose: true
+            groups: [detail, list, default]
+

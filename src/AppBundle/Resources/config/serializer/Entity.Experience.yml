@@ -1,0 +1,31 @@
+AppBundle\Entity\Experience:
+    exclusion_policy: all
+    xml_root_name: experience
+    properties:
+        id:
+            expose: true
+            groups: [default]
+        position:
+            expose: true
+            groups: [detail, default]
+        description:
+            expose: true
+            groups: [detail, default]
+        startDate:
+            expose: true
+            groups: [detail, default]
+        endDate:
+            expose: true
+            groups: [detail, default]
+        city:
+            expose: true
+            groups: [detail, default]
+        country:
+            expose: true
+            groups: [detail, default]
+        employer:
+            expose: true
+            groups: [detail, default]
+        employee:
+            expose: true
+            groups: [list]

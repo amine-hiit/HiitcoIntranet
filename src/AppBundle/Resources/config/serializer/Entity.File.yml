@@ -1,0 +1,13 @@
+AppBundle\Entity\File:
+    exclusion_policy: all
+    xml_root_name: file
+    properties:
+        id:
+            expose: true
+            groups: [default]
+        url:
+            expose: true
+            groups: [default]
+        name:
+            expose: true
+            groups: [default]

@@ -1,0 +1,35 @@
+AppBundle\Entity\Formation:
+    exclusion_policy: all
+    xml_root_name: formation
+    properties:
+        id:
+            expose: true
+            groups: [detail, default]
+
+        startDate:
+            expose: true
+            groups: [detail, default]
+
+        endDate:
+            expose: true
+            groups: [detail, default]
+
+        organization:
+            expose: true
+            groups: [detail, default]
+
+        country:
+            expose: true
+            groups: [detail, default]
+
+        diploma:
+            expose: true
+            groups: [detail, default]
+
+        level:
+            expose: true
+            groups: [detail, default]
+
+        speciality:
+            expose: true
+            groups: [detail, default]

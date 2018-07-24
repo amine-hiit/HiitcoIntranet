@@ -1,0 +1,32 @@
+AppBundle\Entity\Cooptation:
+    exclusion_policy: ALL
+    xml_root_name: cooptation
+    properties:
+        id:
+            expose: true
+            groups: [default]
+
+        name:
+            expose: true
+            groups: [default]
+
+        profil:
+            expose: true
+            groups: [default]
+
+        phoneNumber:
+            expose: true
+            groups: [default]
+
+        email:
+            expose: true
+            groups: [default]
+
+        resumee:
+            expose: true
+            groups: [default]
+
+        employee:
+            expose: true
+            groups: [default]
+

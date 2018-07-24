@@ -1,0 +1,13 @@
+AppBundle\Entity\EmployeeLanguage:
+    exclusion_policy: all
+    xml_root_name: employee_language
+    properties:
+        id:
+            expose: true
+            groups: [detail, default]
+        language:
+            expose: true
+            groups: [detail, default]
+        level:
+            expose: true
+            groups: [detail, default]

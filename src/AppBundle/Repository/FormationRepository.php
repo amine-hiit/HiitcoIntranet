@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Repository;
+use AppBundle\Entity\Employee;
 
 /**
  * FormationRepository
@@ -10,4 +11,44 @@ namespace AppBundle\Repository;
  */
 class FormationRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findAllByEmployee(Employee $employee)
+    {
+        return $this->createQueryBuilder('f')
+            ->where('f.employee = :employee')
+            ->setParameter('employee', $employee)
+            ->getQuery()->getResult();
+    }
+    public function findEmployeeLastFormation(Employee $employee)
+    {
+        $qb =$this->createQueryBuilder('e');
+
+        $qb
+            ->where('e.employee = :employeeId')
+            ->orderBy('e.startDate','DESC')
+            ->setMaxResults(1)
+            ->setParameter('employeeId', $employee->getId());
+
+        ;
+
+        return $qb
+            ->getQuery()
+            ->getOneOrNullResult();
+        ;
+    }
+    public function findEmployeeAllFormations(Employee $employee)
+    {
+        $qb = $this->createQueryBuilder('e');
+        $qb
+            ->where('e.employee = :employeeId')
+            ->setParameter('employeeId',  $employee->getId())
+            ->orderBy('e.startDate','DESC')
+
+        ;
+
+        return $qb
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 }

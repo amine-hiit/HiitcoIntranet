@@ -357,6 +357,9 @@
                     <span class="step"></span>
                     <span class="step"></span>
                 </div>
+                {% do form.maritalStatus.setRendered %}
+                {% do form.cnssNumber.setRendered %}
+                {% do form.civility.setRendered %}
                 {% do form.formations.setRendered %}
                 {% do form.projects.setRendered %}
                 {% do form.experiences.setRendered %}

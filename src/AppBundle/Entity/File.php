@@ -24,32 +24,32 @@ abstract class File
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
      */
-    private $name;
+    protected $name;
 
     /**
      * @var string|null
      *
      * @ORM\Column(name="url", type="string", length=255, nullable=true)
      */
-    private $url;
+    protected $url;
 
     /**
      * @var string|null
      *
      * @ORM\Column(name="mime_type", type="string", length=255, nullable=true)
      */
-    private $mimeType;
+    protected $mimeType;
 
 
 
-    private $file;
+    protected $file;
 
 
 

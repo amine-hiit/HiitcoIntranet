@@ -1,0 +1,11 @@
+AppBundle\Entity\Avatar:
+    exclusion_policy: all
+    xml_root_name: avatar
+    properties:
+        id:
+            expose: true
+            groups: [default]
+        alt:
+            expose: true
+            groups: [default]
+

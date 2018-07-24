@@ -1,0 +1,10 @@
+AppBundle\Entity\Language:
+    exclusion_policy: all
+    xml_root_name: language
+    properties:
+        id:
+            expose: true
+            groups: [detail, default]
+        label:
+            expose: true
+            groups: [detail, default]

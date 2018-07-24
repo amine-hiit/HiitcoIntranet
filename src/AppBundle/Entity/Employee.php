@@ -3,10 +3,11 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use FOS\UserBundle\Model\User as BaseUser;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation\Groups;
+use JMS\Serializer\Annotation as Serializer;
 
 
 /**
@@ -29,11 +30,14 @@ class Employee extends BaseUser
      */
     protected $id;
 
+    protected $username;
+
     /**
      * @var bool
-     * @ORM\Column(name="valid", type="boolean", nullable=false, )
+     * @ORM\Column(name="valid", type="boolean", nullable=false )
      */
     private $valid = false;
+
 
     /**
      * @var string
@@ -53,22 +57,6 @@ class Employee extends BaseUser
      * @ORM\Column(name="civility" , type="string", nullable=true)
      */
     private $civility;
-
-    /**
-     * @return string
-     */
-    public function getCivility()
-    {
-        return $this->civility;
-    }
-
-    /**
-     * @param string $civility
-     */
-    public function setCivility($civility)
-    {
-        $this->civility = $civility;
-    }
 
     /**
      * @var \DateTime
@@ -140,46 +128,12 @@ class Employee extends BaseUser
      */
     private $status;
 
-
-
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      * @ORM\OneToMany(targetEntity="EmployeeNotification", mappedBy="employee",cascade={"remove"})
      *
      */
     private $notifications;
-
-    /**
-     * @return mixed
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return \Doctrine\Common\Collections\ArrayCollection
-     */
-    public function getNotifications()
-    {
-        return $this->notifications;
-    }
-
-    /**
-     * @param \Doctrine\Common\Collections\ArrayCollection $notifications
-     */
-    public function setNotifications($notifications)
-    {
-        $this->notifications = $notifications;
-    }
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
@@ -227,7 +181,8 @@ class Employee extends BaseUser
     public function __construct()
     {
         parent::__construct();
-        // your own logic
+        $this->notifications = new ArrayCollection();
+        $this->employeeLanguages = new ArrayCollection();
     }
 
 
@@ -790,4 +745,55 @@ class Employee extends BaseUser
     {
         return $this->cooptations;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getNotifications()
+    {
+        return $this->notifications;
+    }
+
+    /**
+     * @param \Doctrine\Common\Collections\ArrayCollection $notifications
+     */
+    public function setNotifications($notifications)
+    {
+        $this->notifications = $notifications;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCivility()
+    {
+        return $this->civility;
+    }
+
+    /**
+     * @param string $civility
+     */
+    public function setCivility($civility)
+    {
+        $this->civility = $civility;
+    }
+
+
+
 }

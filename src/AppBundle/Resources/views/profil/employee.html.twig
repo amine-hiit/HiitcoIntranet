@@ -12,8 +12,6 @@
             text-decoration:none;
         }
 
-
-
         input.invalid {
             background-color: #ffdddd;
         }
@@ -28,9 +26,7 @@
     </style>
 {% endblock %}
 
-
 {% block content %}
-
     <!-- Content Wrapper. Contains page content -->
     <section class="content">
 
@@ -44,16 +40,18 @@
                     </div>
 
                     <div class="col-sm-4  col-sm-offset-8 col-xs-12" align="right">
+                        {% if is_granted('ROLE_HR') or profileOwner %}
                         <h5 class="widget-user-desc">
-                            <a class="deco-none white edit-item" id="edit-profil-{{ empId }}"
-                                 data-toggle="modal" data-target="#modal-view-profil">
+                            <a class="deco-none white " id="edit-employee-{{ empId }}"
+                                 data-toggle="modal" data-target="#modal-view-employee">
                                 {{ 'voir tous'|trans|capitalize }}   &nbsp;&nbsp;&nbsp;&nbsp;
                             </a>
-                            <a class="deco-none white edit-item" id="edit-profil-{{ empId }}"
-                                 data-toggle="modal" data-target="#modal-edit-profil">
+                            <a class="deco-none white edit-employee" id="employee-{{ empId }}"
+                                 data-toggle="modal" data-target="#modal-edit-employee">
                                 <i class="fa fa-edit bg-black "></i> {{ 'edit'|trans|capitalize }}
                             </a>
                         </h5>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -157,7 +155,6 @@
                                                 <i class='fa fa-calendar'></i>
                                             </div>
                                             {{ form_widget(experienceForm.startDate, {'attr':{
-
                                                 'class':'form-control pull-right datepicker'
                                             }}) }}
                                         </div>
@@ -171,7 +168,6 @@
                                                 <i class='fa fa-calendar'></i>
                                             </div>
                                             {{ form_widget(experienceForm.endDate, {'attr':{
-
                                                 'class':'form-control pull-right datepicker'
                                             }}) }}
                                         </div>
@@ -424,7 +420,6 @@
                                         <div class='form-group'>
                                             {{ form_label(formationForm.level, 'level'|trans|capitalize) }}
                                             {{ form_widget(formationForm.level, {'attr':{
-
                                                 'class':'form-control'
                                             }}) }}
                                         </div>
@@ -433,7 +428,6 @@
                                         <div class='form-group'>
                                             {{ form_label(formationForm.speciality, 'speciality'|trans|capitalize) }}
                                             {{ form_widget(formationForm.speciality, {'attr':{
-
                                                 'class':'form-control'
                                             }}) }}
                                         </div>
@@ -442,7 +436,6 @@
                                         <div class='form-group'>
                                             {{ form_label(formationForm.diploma, 'diploma'|trans|capitalize) }}
                                             {{ form_widget(formationForm.diploma, {'attr':{
-
                                                 'class':'form-control'
                                             }}) }}
                                         </div>
@@ -465,7 +458,6 @@
                                                     <i class='fa fa-calendar'></i>
                                                 </div>
                                                 {{ form_widget(formationForm.startDate, {'attr':{
-
                                                     'class':'form-control pull-right datepicker'
                                                 }}) }}
                                             </div>
@@ -479,7 +471,6 @@
                                                     <i class='fa fa-calendar'></i>
                                                 </div>
                                                 {{ form_widget(formationForm.endDate, {'attr':{
-
                                                     'class':'form-control pull-right datepicker'
                                                 }}) }}
                                             </div>
@@ -515,31 +506,46 @@
             </li>
 
         </ul>
-        <div class="modal fade" id="modal-view-profil">
+        <div class="modal fade" id="modal-view-employee">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <h4 class="modal-title">Default Modal</h4>
+                        <h4 class="modal-title">{{ employee.firstName|capitalize }}
+                            {{ employee.lastName|upper}}
+                        </h4>
                     </div>
                     <div class="modal-body">
-                        <p>View profil&hellip;</p>
-                    </div>
-                    <div class="modal-footer">
                         <div class="row">
-                            <div class="col-sm-6 col-xs-6">
-                                <a type="button" class="btn btn-default flat"
-                                   style="width: 100%" data-dismiss="modal">
-                                    {{ 'cancel'|trans|capitalize }}
-                                </a>
+                            <div class='col-sm-6 col-xs-12'>
+                                {{ 'civility'|trans|capitalize }} :    {{ employee.civility|trans|capitalize }}
                             </div>
-                            <div class="col-sm-6 col-xs-6">
-                                <a type="button" class="btn btn-default flat"
-                                   style="width: 100%">
-                                    {{ 'submit'|trans|capitalize }}
-                                </a>
+                            <div class='col-sm-6 col-xs-12'>
+                                {{ 'status'|trans|capitalize }} :    {{ employee.status|trans|capitalize }}
+                            </div>
+                         </div>
+                        <div class="row">
+                            <div class='col-sm-6 col-xs-12'>
+                                {{ 'marital.status'|trans|capitalize }} :    {{ employee.maritalStatus|capitalize }}
+                            </div>
+                            <div class='col-sm-6 col-xs-12'>
+                                {{ 'start.date'|trans|capitalize }} : {{ employee.startDate|date("d - m - Y") }}
+                            </div>
+                         </div>
+                        <div class="row">
+                            <div class='col-sm-6 col-xs-12'>
+                                {{ 'birthday'|trans|capitalize }} : {{ employee.birthday|date("d - m - Y") }}
+                            </div>
+                            <div class='col-sm-6 col-xs-12'>
+                                {{ 'cnss.number'|trans|capitalize }} : {{ employee.cnssNumber|capitalize }}
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class='col-sm-6 col-xs-12'>
+                                {{ 'dependent.child'|trans|capitalize }} : {{ employee.dependentChild|capitalize }}
                             </div>
                         </div>
                     </div>
@@ -547,17 +553,16 @@
             </div>
         </div>
 
-        <div class="modal fade" id="modal-edit-profil">
+        <div class="modal fade" id="modal-edit-employee">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <h4 class="modal-title">Default Modal</h4>
+                        <h4 class="modal-title">{{ employee.username }}</h4>
                     </div>
-                    <div class="modal-body">
-                        <p>edit profil&hellip;</p>
+                     <div class="modal-body" id="employee-edit-form-holder">
                     </div>
                     <div class="modal-footer">
                         <div class="row">
@@ -588,13 +593,7 @@
     <script src="{{ asset('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
     <script>
         jQuery(document).ready(function () {
-            $('.select2').select2();
-
-            $('.datepicker').datepicker({
-                autoclose: true
-            });
-
-
+            activateListeners();
             $('.edit-item').click(function () {
                 var item = $(this).attr('id').split('-')[1];
                 var itemId = $(this).attr('id').split('-')[2];
@@ -613,6 +612,26 @@
                     },
                 });
             });
+
+            $('.edit-employee').click(function () {
+                var id = $(this).attr('id').split('-')[1];
+                $.ajax({
+                    url: '/intranet/update/employee/'+id,
+                    method: 'GET',
+                    success(data){
+                        $('#employee-edit-form-holder').html(data);
+                        activateListeners();
+                    },
+                });
+            });
+
+            function activateListeners(){
+
+                $('.select2').select2();
+                $('.datepicker').datepicker({
+                    autoclose: true
+                });
+            }
 
             function cancelUpdate(item, id)
             {

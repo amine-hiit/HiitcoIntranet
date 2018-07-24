@@ -1,0 +1,5 @@
+AppBundle\Entity\EmployeeNotification:
+    exclusion_policy: all
+    xml_root_name: employee_notification
+    properties:
+

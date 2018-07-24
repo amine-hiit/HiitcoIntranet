@@ -25,6 +25,8 @@ class EmployeeRepository extends \Doctrine\ORM\EntityRepository
     }
 
 
+
+
     public function findByRoles($roles)
     {
 
@@ -54,8 +56,6 @@ class EmployeeRepository extends \Doctrine\ORM\EntityRepository
         return
             $qb->getQuery()->getResult();
     }
-
-
 
     public function findEmployeeByToken($token)
     {

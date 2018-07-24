@@ -23,7 +23,6 @@ class Avatar extends File
     private $alt;
 
 
-
     /**
      * Set alt.
      *
@@ -47,6 +46,7 @@ class Avatar extends File
     {
         return $this->alt;
     }
+
 
 
 

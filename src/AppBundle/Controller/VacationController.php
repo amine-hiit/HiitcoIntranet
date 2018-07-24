@@ -82,9 +82,6 @@ class VacationController extends Controller
     public function myListAction(Request $request)
     {
 
-
-
-
         $user = $this->get('security.token_storage')->getToken()->getUser();
         $vm = $this->get('app.vacation.manager');
         $listVacation = $vm->findAllByUserId($user->getId());

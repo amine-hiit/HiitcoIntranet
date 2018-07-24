@@ -27,6 +27,12 @@ class EmployeeType extends AbstractType
                 'disabled' => true))
             ->add('lastName',TextType::class, array(
                 'required' => true))
+            ->add('maritalStatus',TextType::class, array(
+                'required' => true))
+            ->add('cnssNumber',TextType::class, array(
+                'required' => true))
+            ->add('civility',TextType::class, array(
+                'required' => true))
 
             ->add('birthday',DateType::class, array(
                 'format' => 'MM/dd/yyyy',

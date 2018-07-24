@@ -154,6 +154,7 @@ class EmployeeManager
     }
 
 
+
     public function findEmployeeAllFormations(Employee $employee)
     {
         return $this->em->getRepository(Formation::class)->findEmployeeAllFormations($employee);

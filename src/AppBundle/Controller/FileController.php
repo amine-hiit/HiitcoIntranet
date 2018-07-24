@@ -2,6 +2,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Avatar;
+use AppBundle\Entity\Employee;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +17,7 @@ class FileController extends Controller
 
 
     /**
-     * @Route("/intranet/file/{type}/{id}", name = "tst", requirements={
+     * @Route("/intranet/file/{type}/{id}", name = "download_file", requirements={
      *     "id" = "\d+",
      *     "type" = "avatar"
      * })
@@ -25,21 +26,34 @@ class FileController extends Controller
 
     public function downloadAction(Request $request,$type,$id)
     {
+
         $response = new Response();
 
         $response->headers->set('Content-Type', 'image/png');
         $type = ucfirst($type);
         $file = $this->getDoctrine()->getRepository('AppBundle\\Entity\\'.$type)->find($id);
-
-        $fileContent = file_get_contents($this->get('kernel')->getRootDir() .'/../web/'.$file->getUrl());
-        $response->setContent($fileContent);
-        return $response;
+        if (null !== $file) {
+            $fileContent = file_get_contents($this->get('kernel')->getRootDir() .'/../web/'.$file->getUrl());
+            $response->setContent($fileContent);
+            return $response;
+        }
+        else{
+            if ($type === 'Avatar'){
+                $fileContent = file_get_contents(
+                    $this->get('kernel')->getRootDir() .'/../web/img/avatar/default-avatar.png'
+                );
+                $response->setContent($fileContent);
+                return $response;
+            }
+            return new Response("file does not exist",404);
+        }
     }
+
 
     /**
      * @Route("/intranet/hrm/export/vacation-requests", name = "premier_test")
      */
-    public function xlsExportAxtion()
+    public function xlsExportAction()
     {
 
 

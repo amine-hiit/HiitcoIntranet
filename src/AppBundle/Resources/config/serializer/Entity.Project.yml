@@ -1,0 +1,16 @@
+AppBundle\Entity\Project:
+    exclusion_policy: all
+    xml_root_name: project
+    properties:
+        id:
+            expose: true
+            groups: [detail, default]
+        name:
+            expose: true
+            groups: [detail, default]
+        date:
+            expose: true
+            groups: [detail, default]
+        description:
+            expose: true
+            groups: [detail, default]
