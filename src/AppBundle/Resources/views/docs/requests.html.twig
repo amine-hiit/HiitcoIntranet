@@ -81,7 +81,7 @@
                                     </td>
                                     {% endif %}
                                     <td>{% if request.pdf is defined  and request.pdf is not null%}
-                                        <a href="{{ asset(request.pdf.url) }}">{{ request.pdf.name }}</a>{% endif %}</td>
+                                        <a href={{  url('download_file',{type:'pdf',id:request.pdf.id}) }}>{{ request.pdf.name }}</a>{% endif %}</td>
                                 </tr>
                             {% endfor %}
 
@@ -93,11 +93,6 @@
             </div>
         </div>
     </section>
-
-    <!-- /.content -->
-    <!-- /.content-wrapper -->
-
-
 
 {% endblock %}
 

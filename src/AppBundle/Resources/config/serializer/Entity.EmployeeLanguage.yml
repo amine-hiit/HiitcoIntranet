@@ -11,3 +11,6 @@ AppBundle\Entity\EmployeeLanguage:
         level:
             expose: true
             groups: [detail, default]
+        employee:
+            expose: true
+            groups: [list]

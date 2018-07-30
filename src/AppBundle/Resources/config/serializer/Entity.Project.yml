@@ -14,3 +14,6 @@ AppBundle\Entity\Project:
         description:
             expose: true
             groups: [detail, default]
+        employee:
+            expose: true
+            groups: [list]

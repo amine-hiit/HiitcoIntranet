@@ -29,3 +29,4 @@ AppBundle\Entity\Experience:
         employee:
             expose: true
             groups: [list]
+

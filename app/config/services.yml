@@ -44,6 +44,10 @@ services:
     #     arguments:
     #         $someArgument: 'some_value'
     
+    app.pagination.manager:
+        class: 'AppBundle\Manager\PaginationManager'
+        public: true
+
     app.xls.manager:
         class: 'AppBundle\File\Manager\ExcelManager'
         public: true
@@ -92,3 +96,11 @@ services:
             -
                 name: 'validator.constraint_validator'
                 alias: 'vacation_date_validator'
+
+    start_date_validator:
+        class: 'AppBundle\Validator\Constraints\StartDateValidator'
+        arguments: ['@doctrine.orm.entity_manager','@security.token_storage']
+        tags:
+            -
+                name: 'validator.constraint_validator'
+                alias: 'start_date_validator'

@@ -101,6 +101,11 @@ class Employee extends BaseUser
     /**
      * @var string
      * @ORM\Column(name="phone_number" , type="string", nullable=true)
+     * @Assert\Regex(
+     *     pattern="/0[756][0-9]{8,8}$/",
+     *     match=true,
+     *     message="Your name cannot contain a number"
+     * )
      */
     private $phoneNumber;
 

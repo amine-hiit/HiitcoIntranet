@@ -3,6 +3,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Avatar;
 use AppBundle\Entity\Employee;
+use AppBundle\Entity\File;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +20,7 @@ class FileController extends Controller
     /**
      * @Route("/intranet/file/{type}/{id}", name = "download_file", requirements={
      *     "id" = "\d+",
-     *     "type" = "avatar"
+     *     "type" = "avatar|resume|pdf|document"
      * })
      *
      */
@@ -29,9 +30,13 @@ class FileController extends Controller
 
         $response = new Response();
 
-        $response->headers->set('Content-Type', 'image/png');
         $type = ucfirst($type);
+        /**
+         * @var  File $file
+         */
         $file = $this->getDoctrine()->getRepository('AppBundle\\Entity\\'.$type)->find($id);
+        $response->headers->set('Content-Type', $file->getMimeType());
+
         if (null !== $file) {
             $fileContent = file_get_contents($this->get('kernel')->getRootDir() .'/../web/'.$file->getUrl());
             $response->setContent($fileContent);

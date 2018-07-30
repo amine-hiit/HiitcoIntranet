@@ -8,7 +8,8 @@ use AppBundle\Entity\Vacation;
 use AppBundle\Entity\Employee;
 use PhpOffice\PhpSpreadsheet\Calculation\DateTime;
 use Psr\Log\LoggerInterface;
-
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class VacationManager
 {
@@ -61,8 +62,14 @@ class VacationManager
     private $logger;
 
     /**
+     * @var RouterInterface
+     */
+    private $router;
+
+    /**
      * VacationManager constructor.
      * @param EntityManagerInterface $em
+     * @param RouterInterface $router
      * @param NotificationManager $nm
      * @param EmailManager $emailManager
      * @param LoggerInterface $logger
@@ -71,9 +78,11 @@ class VacationManager
         EntityManagerInterface $em,
         NotificationManager $nm,
         EmailManager $emailManager,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        RouterInterface $router
     ) {
         $this->em = $em;
+        $this->router = $router;
         $this->nm = $nm;
         $this->emailManager = $emailManager;
         $this->logger = $logger;}
@@ -137,14 +146,14 @@ class VacationManager
                 $this->generateNotification(
                     self::EMPLOYEE_NOTIF_ADMIN_ACCEPTATION,
                     [],
-                    'url',
+                    $this->router->generate('my_vacations_requests',[],UrlGeneratorInterface::ABSOLUTE_URL),
                     $employee
                 );
 
                 $this->generateNotification(
                     self::ADMIN_NOTIF_HRM_ACCEPTATION,
                     array('le service rh'),
-                    'url',
+                    $this->router->generate('approve',[],UrlGeneratorInterface::ABSOLUTE_URL),
                     $admins
                 );
             }catch (\Exception $exception){
@@ -152,19 +161,22 @@ class VacationManager
             }
         }
         elseif ('refuser' === $isValid) {
+
             $vacation->setValidationStatus('-1');
             $vacation->setRefuseReason($refuseReason);
             try {
                 $this->generateNotification(
                     self::EMPLOYEE_NOTIF_REFUSE,
                     [],
-                    'url',
+                    $this->router->generate('my_vacations_requests',[],UrlGeneratorInterface::ABSOLUTE_URL),
                     $employee);
+
             }catch (\Exception $exception){
                 $this->logger->error($exception->getMessage());
             }
-
         }
+        else
+          throw new \ErrorException("la validation soit par \"accperter\" ou par \"refuser\" ");
 
         $this->flush();
     }
@@ -186,13 +198,13 @@ class VacationManager
                 $this->generateNotification(
                     self::EMPLOYEE_NOTIF_HRM_ACCEPTATION,
                     ['Le responsable rh'],
-                    'url',
+                    $this->router->generate('my_vacations_requests',[],UrlGeneratorInterface::ABSOLUTE_URL),
                     $employee
                 );
                 $this->generateNotification(
                     self::ADMIN_NOTIF_HRM_ACCEPTATION,
                     ['Le responsable rh'],
-                    'url',
+                    $this->router->generate('approve',[],UrlGeneratorInterface::ABSOLUTE_URL),
                     $admins
                 );
             }catch (\Exception $exception){
@@ -207,14 +219,18 @@ class VacationManager
             $vacation->setValidationStatus('-1');
             $vacation->setRefuseReason($refuseReason);
 
-            $this->generateNotification(self::ADMIN_NOTIF_REFUSE,[], 'url', $admins);
+            $this->generateNotification(
+                self::ADMIN_NOTIF_REFUSE,
+                [],
+                $this->router->generate('approve',[],UrlGeneratorInterface::ABSOLUTE_URL),
+                $admins);
 
             try {
 
                 $this->generateNotification(
                     self::EMPLOYEE_NOTIF_REFUSE,
-                    [''],
-                    'url',
+                    [],
+                    $this->router->generate('my_vacations_requests',[],UrlGeneratorInterface::ABSOLUTE_URL),
                     $employee
                 );
             }catch (\Exception $exception){
@@ -640,7 +656,7 @@ class VacationManager
 
     public function generateNotification($notifType,array $args = null, $url, $employees)
     {
-        $this->nm->generateNotification($notifType, $args, '/intranet/my-docs', $employees);
+        $this->nm->generateNotification($notifType, $args, $url, $employees);
     }
 
     public function request(Vacation &$vacation)
@@ -660,17 +676,15 @@ class VacationManager
 
 
         try {
-
             $this->generateNotification(
                 self::VACATION_REQUEST_NOTIF,
                 array($vacation->getEmployee()->getUsername()),
-                'url',
+                $this->router->generate('approve',[],UrlGeneratorInterface::ABSOLUTE_URL),
                 $notifConcerned
             );
         }catch (\Exception $exception){
             $this->logger->error($exception->getMessage());
         }
-
 
         $this->persist($vacation);
         $this->flush();

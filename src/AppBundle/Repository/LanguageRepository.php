@@ -10,4 +10,5 @@ namespace AppBundle\Repository;
  */
 class LanguageRepository extends \Doctrine\ORM\EntityRepository
 {
+
 }

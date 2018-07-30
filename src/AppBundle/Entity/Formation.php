@@ -3,10 +3,11 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use AppBundle\Validator\Constraints as Assert;
 
 /**
  * Formation
- *
+ * @Assert\StartDate(comparedToCurrentDay = "before")
  * @ORM\Table(name="formation")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\FormationRepository")
  */

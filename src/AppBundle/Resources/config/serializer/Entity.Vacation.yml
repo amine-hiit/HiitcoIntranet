@@ -1,35 +1,34 @@
-AppBundle\Entity\Formation:
+AppBundle\Entity\Vacation:
     exclusion_policy: all
-    xml_root_name: formation
+    xml_root_name: vacation
     properties:
         id:
             expose: true
             groups: [detail, default]
-
+        type:
+            expose: true
+            groups: [detail, default]
+        reason:
+            expose: true
+            groups: [detail, default]
+        refuseReason:
+            expose: true
+            groups: [detail, default]
         startDate:
             expose: true
             groups: [detail, default]
-
         endDate:
             expose: true
             groups: [detail, default]
-
-        organization:
+        dayPeriod:
             expose: true
             groups: [detail, default]
-
-        country:
+        duration:
             expose: true
             groups: [detail, default]
-
-        diploma:
+        validationStatus:
             expose: true
             groups: [detail, default]
-
-        level:
+        employee:
             expose: true
-            groups: [detail, default]
-
-        speciality:
-            expose: true
-            groups: [detail, default]
+            groups: [list]

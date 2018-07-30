@@ -4,7 +4,7 @@ AppBundle\Entity\Employee:
     properties:
         id:
             expose: true
-            groups: [basic_info, detail, list, default]
+            groups: [test, basic_info, detail, list, default]
         valid :
             expose: true
             groups: [basic_info, detail, list]
@@ -91,4 +91,9 @@ AppBundle\Entity\Employee:
             type: AppBundle\Entity\Avatar
             expose: true
             groups: [detail, list, default]
+
+        Employee:
+            type: AppBundle\Entity\Employee
+            expose: true
+            groups: [list, default]
 

@@ -248,6 +248,8 @@ jQuery(document).ready(function () {
 
 /*************** step and input validation ****************/
 
+var regex = {};
+regex.phoneNumber={exp:new RegExp(/^0[756][0-9]{8,8}$/),msg:'(exemple: 0600102050, 0500405060, 0700506070...'};
 
 
 function validateForm() {
@@ -259,13 +261,24 @@ function validateForm() {
     for (i = 0; i < y.length; i++) {
         // If a field is empty...
         if (y[i].value == "") {
-            // add an "invalid" class to the field:
-            y[i].className += " invalid";
+            if(!y[i].classList.contains('invalid'))
+                y[i].className += " invalid";
             // and set the current valid status to false
             valid = false;
         }
+        $.each(regex, function(index, value) {
+            if(y[i].classList.contains(index)){
+                if(!value.exp.test(y[i].value)){
+                    y[i].value='';
+                    y[i].setAttribute("placeholder",  value.msg);
+                    if(!y[i].classList.contains('invalid'))
+                        y[i].className += " invalid";
+                    valid = false;
+                }
+            }
+        });
     }
-    // If the valid status is true, mark the step as finished and valid:
+
     if (valid) {
         document.getElementsByClassName("step")[currentTab].className += " finish";
     }

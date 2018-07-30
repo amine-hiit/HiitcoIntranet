@@ -32,9 +32,10 @@ class FormationType extends AbstractType
 
     public function modifyForm()
     {
-        $this->builder->add('startDate',DateType::class, array(
-            'format' => 'MM/dd/yyyy',
-            'widget' => 'single_text'))
+        $this->builder
+            ->add('startDate',DateType::class, array(
+                'format' => 'MM/dd/yyyy',
+                'widget' => 'single_text'))
             ->add('endDate',DateType::class, array(
                 'format' => 'MM/dd/yyyy',
                 'widget' => 'single_text'))
