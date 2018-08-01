@@ -39,20 +39,12 @@
                     </div>
                 </div>
                 <div class="box-header">
-                    <a href="#" class="btn btn-default btn-flat">Exporter en xls</a>
-                    <ul class="dropdown-menu">
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Congé</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Absence</a></li>
-                    </ul>
-                    <div class="box-tools">
-                        <div class="input-group input-group-sm" style="width: 150px;">
-                            <input type="text" name="table_search" class="form-control pull-right"
-                                   placeholder="Search">
 
-                            <div class="input-group-btn">
-                                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-                            </div>
-                        </div>
+
+                    <div class="col-sm-4">
+                    </div>
+                    <div class="col-sm-4">
+                        <h1 >{{ 'year'|trans|capitalize }} : <span id="year-balance"></span> </h1>
                     </div>
                 </div>
 
@@ -102,8 +94,9 @@
         $('.paginate_button').click(function() {
             alert('test');
         });
+        $('#year-balance').html(new Date().getFullYear());
         $(function () {
-            $('#example2').DataTable({
+            var table = $('#example2').DataTable({
                 'paging': true,
                 'lengthChange': false,
                 'pageLength':12,
@@ -112,6 +105,10 @@
                 'info': false,
                 'autoWidth': false
             });
+            $('#example2').on( 'page.dt', function () {
+                var info = table.page.info();
+                $('#year-balance').html(new Date().getFullYear()-info.page);
+            } );
         });
     });
 

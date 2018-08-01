@@ -8,22 +8,20 @@
 
 namespace AppBundle\Controller\Api;
 
+use Symfony\Component\HttpFoundation\Request;
+
 use AppBundle\Entity\Employee;
 use AppBundle\Entity\EmployeeLanguage;
+use AppBundle\Form\EmployeeLanguageType;
 
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Request\ParamFetcherInterface;
+use FOS\RestBundle\View\View;
 
-use JMS\Serializer\SerializationContext;
-use Knp\Component\Pager\Paginator;
-use Knp\Component\Pager\PaginatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Swagger\Annotations as SWG;
+use Nelmio\ApiDocBundle\Annotation\Model;
 
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Serializer;
 
 
 class RestLanguageController extends FOSRestController
@@ -42,6 +40,57 @@ class RestLanguageController extends FOSRestController
     {
         return $language;
     }
+
+
+    /**
+     * @param Request  $request
+     *
+     * @Rest\Post(
+     *    path = "/intranet/api/languages",
+     *    name = "app_language_create"
+     * )
+     *
+     * @SWG\Parameter(
+     *     name="language",
+     *     in="body",
+     *     @SWG\Schema(
+     *         @SWG\Items(ref=@Model(type=EmployeeLanguage::class, groups={"default"}))
+     *      )
+     *  )
+     * @SWG\Response(
+     *     response=400,
+     *     description="Request failed",
+     * )
+     * @SWG\Response(
+     *     response=201,
+     *     description="Request a new language",
+     *      )
+     * )
+     *
+     * @return  View
+     */
+
+    public function createAction(Request $request)
+    {
+
+        $language = new EmployeeLanguage();
+        $form = $this->createForm(EmployeeLanguageType::class, $language, array('csrf_protection' => false));
+        $language->setEmployee($this->getUser());
+
+        $form->submit($request->request->all(), false);
+
+        if (count($form->getErrors()) > 0) {
+            return $this->view($form->getErrors(), 400);
+        }
+
+        $this->getDoctrine()->getManager()->persist($language);
+        $this->getDoctrine()->getManager()->flush();
+
+        return $this->view();
+
+    }
+
+
 
     /**
      * @Rest\Get(

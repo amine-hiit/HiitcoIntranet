@@ -15,5 +15,9 @@ trait ControllerTrait
     {
         return $this->get('translator')->trans($id,  $parameters , $domain , $locale );
     }
+    protected function log($level, $message, $context = [])
+    {
+        return $this->get('logger')->log($level, $message, $context );
+    }
 
 }

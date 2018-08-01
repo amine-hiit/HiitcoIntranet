@@ -13,10 +13,12 @@ use AppBundle\Entity\Avatar;
 use AppBundle\Entity\Cooptation;
 use AppBundle\Entity\Employee;
 
+use AppBundle\Form\EmployeeRegistrationType;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 
+use FOS\RestBundle\View\View;
 use JMS\Serializer\SerializationContext;
 use Knp\Component\Pager\Paginator;
 use Knp\Component\Pager\PaginatorInterface;
@@ -24,8 +26,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Serializer;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use Swagger\Annotations as SWG;
 
 
 
@@ -83,9 +86,6 @@ class RestEmployeeController extends FOSRestController
 
 
 
-
-
-
     /**
      * @Rest\Get(
      *     path = "/intranet/api/employees",
@@ -100,6 +100,49 @@ class RestEmployeeController extends FOSRestController
     {
         return $this->getDoctrine()->getRepository(Employee::class)->findAll();
     }
+
+
+    /**
+     * @param Request $request
+     *
+     * @Rest\Post(
+     *    path = "/intranet/api/employee-registration/",
+     *    name = "app_employee_register"
+     * )
+     *
+     * @SWG\Parameter(
+     *     name="register-employee",
+     *     in="body",
+     *     @SWG\Schema(
+     *         @SWG\Items(ref=@Model(type=Employee::class, groups={"register"}))
+     *      )
+     *  )
+     * @SWG\Response(
+     *     response=400,
+     *     description="Request failed",
+     * )
+     * @SWG\Response(
+     *     response=201,
+     *     description="Request a new vacation|absence",
+     *      )
+     * )
+     *
+     * @return  View
+     */
+    public function createAction(Request $request)
+    {
+        $employee  = new Employee();
+        $form = $this->createForm(EmployeeRegistrationType::class, $employee, ['csrf_protection' => false]);
+        $form->submit($request->request->all());
+        if (count($form->getErrors()) > 0) {
+            return $this->view($form->getErrors(), 400);
+        }
+
+        $this->getDoctrine()->getManager()->persist($employee);
+        $this->getDoctrine()->getManager()->flush();
+        return $this->view();
+    }
+
 
 
 

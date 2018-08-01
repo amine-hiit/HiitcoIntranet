@@ -47,9 +47,10 @@ class EmployeeController extends Controller
         $form->handleRequest($request);
 
         if( $form->isSubmitted() ){
-                $employee->addRole("ROLE_EMPLOYEE");
-                $employeeManager->registerNewEmployee($employee);
-                $this->addFlash('success',$this->trans('flash.employee.registred'));
+            dump($form);die;
+            $employee->addRole("ROLE_EMPLOYEE");
+            $employeeManager->registerNewEmployee($employee);
+            $this->addFlash('success',$this->trans('flash.employee.registred'));
 
             return $this->redirect($this->generateUrl('employees-list'));
         }
@@ -166,6 +167,7 @@ class EmployeeController extends Controller
         {
             if ($employeeFormationForm->handleRequest($request)->isValid())
             {
+                dump('ici');die;
                 $employeeManager->setUserToAttribute($employeeFormation, $employee );
                 $employeeManager->persistAttribute($employeeFormation);
                 $employeeManager->updateEmployee($employee);

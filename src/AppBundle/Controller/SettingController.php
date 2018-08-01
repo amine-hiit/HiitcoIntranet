@@ -38,10 +38,8 @@ class SettingController extends Controller
         $id = $request->get('id');
         if (null != $id){
             $email = $this->getDoctrine()->getRepository(EmailType::class)->find($id);
-            //dump($email->getEmployees());die;
             $form = $this->createForm(EmailTypeType::class,$email);
             $form->handleRequest($request);
-            //$this->getDoctrine()->getManager()->persist($email);
 
             if($form->isSubmitted()){
                 $this->getDoctrine()->getManager()->persist($email);
@@ -73,6 +71,7 @@ class SettingController extends Controller
      */
     public function testAction(Request $request)
     {
+
     }
 
     /**

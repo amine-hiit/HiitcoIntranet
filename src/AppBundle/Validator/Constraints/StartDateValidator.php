@@ -53,7 +53,7 @@ class StartDateValidator extends ConstraintValidator
             $this->context->buildViolation($this->translator->trans('startDate.after.toDay'))
                 ->addViolation();
         }
-        if ($object->getStartDate() > $object->getEndDate() ){
+        if (property_exists(get_class($object),'endDate') && $object->getStartDate() > $object->getEndDate()){
             $this->context->buildViolation($this->translator->trans('startDate.superior.than.endDate'))->addViolation();
         }
 

@@ -49,7 +49,7 @@ class ProjectRepository extends \Doctrine\ORM\EntityRepository
 
         if ($orderBy)
             $qb->orderBy('e.'.$orderBy, $direction);
-        if (null === $employee)
+        if (null !== $employee)
             $qb->where('e.employee = :employee')
                 ->setParameter('employee', $employee);
 

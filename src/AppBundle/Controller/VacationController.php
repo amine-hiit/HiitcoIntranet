@@ -57,7 +57,7 @@ class VacationController extends Controller
         $soldBeforeAppovingRequestes = $vm->calculateVacationBalance($employee, false);
         return $this->render('@App/vacation/vacation-balance.html.twig',
             [
-                'years' => $years,
+                'years' => array_reverse($years),
             ] );
     }
 

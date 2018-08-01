@@ -8,6 +8,7 @@
 
 namespace AppBundle\Controller\Api;
 
+use AppBundle\Controller\ControllerTrait;
 use AppBundle\Entity\Employee;
 use AppBundle\Entity\Vacation;
 use AppBundle\Form\VacationType;
@@ -15,41 +16,92 @@ use AppBundle\Form\VacationType;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Request\ParamFetcherInterface;
+use FOS\RestBundle\View\View;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use Swagger\Annotations as SWG;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-
 class RestVacationController extends FOSRestController
 {
+    use ControllerTrait;
 
     /**
+     * @param Request $request
+     *
      * @Rest\Post(
-     *    path = "/intranet/api/employees{employee}/vacations",
+     *    path = "/intranet/api/vacations",
      *    name = "app_vacation_create"
      * )
-     * @Rest\View(StatusCode = 201)
-     * @ParamConverter("vacation", converter="fos_rest.request_body")
+     *
+     * @SWG\Parameter(
+     *     name="validation",
+     *     in="body",
+     *     @SWG\Schema(
+     *         @SWG\Items(ref=@Model(type=Vacation::class, groups={"request"}))
+     *      )
+     *  )
+     * @SWG\Response(
+     *     response=400,
+     *     description="Request failed",
+     * )
+     * @SWG\Response(
+     *     response=201,
+     *     description="Request a new vacation|absence",
+     *      )
+     * )
+     *
+     * @return  View $view
      */
-    public function createeAction(Vacation $vacation, Employee $employee)
+    public function createAction(Request $request)
     {
+        $vacation  = new Vacation();
+        $form = $this->createForm(VacationType::class, $vacation, ['csrf_protection' => false]);
+        $vacation->setEmployee($this->getUser());
+        $form->submit($request->request->all(), false);
+        if (count($form->getErrors()) > 0) {
+            return $this->view($form->getErrors(), 400);
+        }
+
         $vm = $this->get('app.vacation.manager');
-        $vacation->setEmployee($employee);
         $vm->request($vacation);
-        $this->getDoctrine()->getManager()->persist($vacation);
-        $this->getDoctrine()->getManager()->flush();
 
         return $this->view();
-
     }
 
     /**
+     * @param Vacation $vacation
+     * @param Request  $request
+     *
      * @Rest\Put(
      *    path = "/intranet/api/vacations/{vacation}",
      *    name = "app_vacation_validate"
      * )
-     * @Rest\View(StatusCode = 201)
+     * @Rest\View()
+     *
+     * @SWG\Parameter(
+     *     name="validation",
+     *     in="body",
+     *     @SWG\Schema(
+     *         @SWG\Items(type="object",
+     *             @SWG\Property(property="validation", type="string", enum={"accepter","refuser"}),
+     *             @SWG\Property(property="refuseReason", type="string")
+     *         )
+     *     )
+     * )
+     * @SWG\Response(
+     *     response=400,
+     *     description="Bad request",
+     * )
+     * @SWG\Response(
+     *     response=204,
+     *     description="Validate vacation"
+     * )
+     *
+     * @return View $view
      */
     public function validateAction(Vacation $vacation, Request $request)
     {
@@ -59,33 +111,58 @@ class RestVacationController extends FOSRestController
         $validation = $request->request->get('validation');
         $refuseReason = $request->request->get('refuseReason');
 
-        if($validation !== "refuser" || $validation !== "accepter")
-            return $this->view("",400);
+        if (null !== $vacation) {
+            return $this->view("validation field is required", 400);
+        }
 
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_DIRECTOR'))
-                $vm->adminValidation($vacation, $validation, $refuseReason);
+        if ("refuser" !== $validation && "accepter" !== $validation) {
+            return $this->view("", 400);
+        }
 
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_DIRECTOR')) {
+               try {
+                   $vm->adminValidation($vacation, $validation, $refuseReason);
+               }catch (\Exception $e) {
+                   $this->log('Error', $e->getMessage());
+               }
+        }
 
-        else if ($this->get('security.authorization_checker')->isGranted('ROLE_HR'))
+        elseif ($this->get('security.authorization_checker')->isGranted('ROLE_HR')) {
             $vm->hrmValidation($vacation, $validation, $refuseReason);
+        }
 
         return $this->view();
-
     }
 
-
     /**
+     * @param Vacation $vacation
+     *
      * @Rest\Get(
-     *     path = "/intranet/api/vacations/{id}",
+     *     path = "/intranet/api/vacations/{vacation}",
      *     name = "app_vacations_show",
-     *     requirements = {"id"="\d+"}
+     *     requirements = {"vacation"="\d+"}
      * )
      * @Rest\View(
      *     serializerGroups = {"default","list"})
      * )
+     * @SWG\Response(
+     *     response=201,
+     *     description="list vacation by id",
+     *     @SWG\Schema(
+     *         @SWG\Items(ref=@Model(type=Vacation::class, groups={"default","list"}))
+     *      )
+     * )
+     * @SWG\Response(
+     *     response=404,
+     *     description="not found",
+     * )
      */
     public function showAction(Vacation $vacation)
     {
+        if (null === $vacation) {
+            return $this->view("", 404);
+        }
+
         return $vacation;
     }
 
@@ -98,9 +175,20 @@ class RestVacationController extends FOSRestController
      * @Rest\QueryParam(name="orderBy", default="startDate")
      * @Rest\QueryParam(name="limit", requirements="\d+", default="10", description="Max number of movies per page.")
      * @Rest\QueryParam(name="page", requirements="\d+", default="1", description="The pagination offset")
-     * @Rest\QueryParam(name="type", requirements="vacation|absence")
+     * @Rest\QueryParam(name="type", requirements="^(vacation|absence)$",description="Type (vacation or absence)")
      * @Rest\View(
      *     serializerGroups = {"default","list"})
+     * )
+     * @SWG\Response(
+     *     response=201,
+     *     description="list and paginate vacations by user id",
+     *     @SWG\Schema(
+     *         @SWG\Items(ref=@Model(type=Vacation::class, groups={"default","list"}))
+     *      )
+     * )
+     * @SWG\Response(
+     *     response=404,
+     *     description="not found",
      * )
      */
     public function listEmployeeVacationAction(ParamFetcherInterface $paramFetcher, Employee $employee)
@@ -121,16 +209,30 @@ class RestVacationController extends FOSRestController
     }
 
     /**
+     * @param ParamFetcherInterface $paramFetcher
      *
-     * @Rest\Get(path = "/intranet/api/vacations",name = "app_vacations_list", requirements = {"id"="\d+"})
+     * @Rest\Get(path = "/intranet/api/vacations",name = "app_vacations_list")
      * @Rest\QueryParam(name="direction", requirements="asc|desc", default="asc", description="Sort order (asc or desc)")
      * @Rest\QueryParam(name="orderBy", default="startDate")
      * @Rest\QueryParam(name="limit", requirements="\d+", default="10", description="Max number of movies per page.")
      * @Rest\QueryParam(name="page", requirements="\d+", default="1", description="The pagination offset")
-     * @Rest\QueryParam(name="type", requirements="vacation|absence")
+     * @Rest\QueryParam(name="type", requirements="^(vacation|absence)$",description="accept only vacation or absence")
      * @Rest\View(
      *     serializerGroups = {"default","list"})
      * )
+     * @SWG\Response(
+     *     response=201,
+     *     description="list and paginate vacations",
+     *     @SWG\Schema(
+     *         @SWG\Items(ref=@Model(type=Vacation::class, groups={"default","list"}))
+     *      )
+     * )
+     * @SWG\Response(
+     *     response=404,
+     *     description="not found",
+     * )
+     *
+     * @return View $view
      */
     public function listAction(ParamFetcherInterface $paramFetcher)
     {

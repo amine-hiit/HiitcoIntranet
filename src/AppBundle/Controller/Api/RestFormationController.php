@@ -8,6 +8,8 @@
 
 namespace AppBundle\Controller\Api;
 
+use Symfony\Component\HttpFoundation\Request;
+
 use AppBundle\Entity\Employee;
 use AppBundle\Entity\Formation;
 use AppBundle\Form\FormationType;
@@ -15,12 +17,12 @@ use AppBundle\Form\FormationType;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Request\ParamFetcherInterface;
+use FOS\RestBundle\View\View;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Serializer;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use Swagger\Annotations as SWG;
 
 
 class RestFormationController extends FOSRestController
@@ -97,32 +99,58 @@ class RestFormationController extends FOSRestController
         return $this->getDoctrine()->getRepository(Formation::class)->findAllByUser($employee);
     }
 
+
     /**
+     * @param Request  $request
+     *
      * @Rest\Post(
-     *    path = "/intranet/api/employees{employee}/formations",
+     *    path = "/intranet/api/formations",
      *    name = "app_formations_create"
      * )
-     * @Rest\View(StatusCode = 201)
+     *
+     * @SWG\Parameter(
+     *     name="formation",
+     *     in="body",
+     *     @SWG\Schema(
+     *         @SWG\Items(ref=@Model(type=Formation::class, groups={"default"}))
+     *      )
+     *  )
+     * @SWG\Response(
+     *     response=400,
+     *     description="Request failed",
+     * )
+     * @SWG\Response(
+     *     response=201,
+     *     description="Request a new formation",
+     *      )
+     * )
+     *
+     * @return  View
      */
-    public function createFormationAction( Employee $employee, Request $request)
+
+    public function createFormationAction(Request $request)
     {
 
         $formation = new Formation();
-        $serializer = new Serializer(array(new DateTimeNormalizer()));
-        $data = json_decode($request->getContent(), true);
+        //$serializer = new Serializer(array(new DateTimeNormalizer()));
+        //$data = json_decode($request->getContent(), true);
         $form = $this->createForm(FormationType::class, $formation, array('csrf_protection' => false));
-
+        $formation->setEmployee($this->getUser());
         //$formation->setStartDate($data['start_date']);
-        $form->submit($data);
 
-        if ($form->isValid()){
-        } else {
-            return $this->render('@App/errors.html.twig', [
-                'form' => $form->createView()]);
+        $form->submit($request->request->all(), false);
+
+        if (count($form->getErrors()) > 0) {
+            return $this->view($form->getErrors(), 400);
         }
-        return new Response('done');
+
+        $this->getDoctrine()->getManager()->persist($formation);
+        $this->getDoctrine()->getManager()->flush();
+
+        return $this->view();
 
     }
+
 
     /**
      *

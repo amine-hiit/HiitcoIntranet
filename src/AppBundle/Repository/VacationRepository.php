@@ -119,13 +119,13 @@ class VacationRepository extends EntityRepository
 
         if ($orderBy)
             $qb->orderBy('v.'.$orderBy, $direction);
-        if (null === $employee)
+        if (null !== $employee)
             $qb->where('v.employee = :employee')
                 ->setParameter('employee', $employee);
         if($this->count($filters) > 0) {
             foreach ($filters as $filter => $value)
-                $qb->andWhere('v.parameter = :'.$value)
-                    ->setParameter('parameter', $filter);
+                $qb->andWhere('v.'.$filter.' = \''.$value.'\'');
+
         }
 
         return $qb->getQuery();

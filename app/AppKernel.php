@@ -29,8 +29,10 @@ class AppKernel extends Kernel
             new Yectep\PhpSpreadsheetBundle\PhpSpreadsheetBundle(),
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new Craue\ConfigBundle\CraueConfigBundle(),
+            new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
 
             new WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
+
 
 
         ];

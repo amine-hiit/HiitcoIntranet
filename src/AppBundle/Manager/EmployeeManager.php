@@ -172,12 +172,15 @@ class EmployeeManager
 
     public function update($attribute)
     {
-
-        $attribute->setEmployee( $this->tokenStorage->getToken()->getUser());
-        $this->persistAttribute($attribute);
+        $this->persist($attribute);
         $this->flush();
     }
 
+
+    public function persist($attribute)
+    {
+        $this->em->persist($attribute);
+    }
 
     public function persistAttribute($attribute)
     {

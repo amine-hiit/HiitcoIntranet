@@ -12,3 +12,8 @@ fos_js_routing:
 app_api:
     resource: "@AppBundle/Controller/Api"
     type:     annotation
+app.swagger_ui:
+    path: /api/doc
+    methods: GET
+    defaults: { _controller: nelmio_api_doc.controller.swagger_ui }
+

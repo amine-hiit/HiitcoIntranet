@@ -7,22 +7,22 @@ AppBundle\Entity\Vacation:
             groups: [detail, default]
         type:
             expose: true
-            groups: [detail, default]
+            groups: [detail, default, request]
         reason:
             expose: true
-            groups: [detail, default]
+            groups: [detail, default, request]
         refuseReason:
             expose: true
             groups: [detail, default]
         startDate:
             expose: true
-            groups: [detail, default]
+            groups: [detail, default, request]
         endDate:
             expose: true
-            groups: [detail, default]
+            groups: [detail, default, request]
         dayPeriod:
             expose: true
-            groups: [detail, default]
+            groups: [detail, default, request]
         duration:
             expose: true
             groups: [detail, default]

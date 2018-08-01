@@ -111,7 +111,10 @@ Oct: octobre
 Nov: novembre
 Dec: decembre
 
+year: année
 month: mois
+day: jour
+
 balance.at.first: solde au début
 vacation.requests.duration: durée de congés demandés
 balance.left: solde restant

@@ -3,6 +3,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Validator\Constraints\StartDate;
 use Doctrine\Common\Collections\ArrayCollection;
 use FOS\UserBundle\Model\User as BaseUser;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -13,6 +14,7 @@ use JMS\Serializer\Annotation as Serializer;
 /**
  * Employee
  *
+ * @StartDate(comparedToCurrentDay="before")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\EmployeeRepository")
  * @ORM\Table(name="employee")
  */
@@ -31,6 +33,10 @@ class Employee extends BaseUser
     protected $id;
 
     protected $username;
+
+    protected $email;
+
+    protected $plainPassword;
 
     /**
      * @var bool
@@ -798,7 +804,5 @@ class Employee extends BaseUser
     {
         $this->civility = $civility;
     }
-
-
-
 }
+

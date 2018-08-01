@@ -32,6 +32,7 @@
                         <ul class="list-unstyled">
                         {% for parameter,value in parameters %}
                             <li>
+                                {{ dump(parameter) }}
                                 <p>
                                     <span id="{{ parameter }}_value">{{ value|trans|capitalize }}</span>
                                     <a class="edit-parameter" id="edit-{{ parameter }}" href="#"><i class="fa fa-edit"></i></a>

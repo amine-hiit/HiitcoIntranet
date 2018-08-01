@@ -42,7 +42,7 @@ class EmployeeLanguageRepository extends \Doctrine\ORM\EntityRepository
 
         if ($orderBy)
             $qb->orderBy('el.'.$orderBy, $direction);
-        if (null === $employee)
+        if (null !== $employee)
             $qb->where('el.employee = :employee')
                 ->setParameter('employee', $employee);
 

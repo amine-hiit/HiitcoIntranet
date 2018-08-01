@@ -9,11 +9,11 @@ AppBundle\Entity\Employee:
             expose: true
             groups: [basic_info, detail, list]
 
-        firstName:
-            expose: true
-            groups: [basic_info, detail, list]
-
         username:
+            expose: true
+            groups: [basic_info, detail, list, register]
+
+        firstName:
             expose: true
             groups: [basic_info, detail, list]
 
@@ -21,9 +21,17 @@ AppBundle\Entity\Employee:
             expose: true
             groups: [basic_info, detail, list]
 
+        email:
+            expose: true
+            groups: [basic_info, detail, list, register]
+
+        plainPassword:
+            expose: true
+            groups: [register]
+
         civility:
             expose: true
-            groups: [basic_info, detail]
+            groups: [basic_info, detail, register]
 
         birthday:
             expose: true
@@ -31,7 +39,7 @@ AppBundle\Entity\Employee:
 
         maritalStatus:
             expose: true
-            groups: [basic_info, detail]
+            groups: [basic_info, detail, register]
 
         dependentChild:
             expose: true
@@ -43,7 +51,7 @@ AppBundle\Entity\Employee:
 
         cnssNumber:
             expose: true
-            groups: [basic_info, detail]
+            groups: [basic_info, detail, register]
 
         phoneNumber:
             expose: true
@@ -55,15 +63,15 @@ AppBundle\Entity\Employee:
 
         startDate:
             expose: true
-            groups: [basic_info, detail]
+            groups: [basic_info, detail, register]
 
         currentPosition:
             expose: true
-            groups: [basic_info, detail]
+            groups: [basic_info, detail, register]
 
         status:
             expose: true
-            groups: [basic_info, detail]
+            groups: [basic_info, detail, register]
 
         notifications:
             expose: false

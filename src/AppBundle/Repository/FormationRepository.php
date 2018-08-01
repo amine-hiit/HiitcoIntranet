@@ -38,7 +38,7 @@ class FormationRepository extends AbstractRepository
 
         if ($orderBy)
             $qb->orderBy('e.'.$orderBy, $direction);
-        if (null === $employee)
+        if (null !== $employee)
             $qb->where('e.employee = :employee')
                 ->setParameter('employee', $employee);
 

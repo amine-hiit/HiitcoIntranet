@@ -24,16 +24,20 @@ class RestExperienceController extends FOSRestController
 {
     /**
      * @Rest\Post(
-     *    path = "/intranet/api/employees{employee}/experiences",
+     *    path = "/intranet/api/experiences",
      *    name = "app_experiences_create"
      * )
      * @Rest\View(StatusCode = 201)
      * @ParamConverter("experience", converter="fos_rest.request_body")
      */
-    public function createExperienceAction(Experience $experience, Employee $employee)
+    public function createAction(Experience $experience)
     {
-        /************* form validator here *************/
-        $experience->setEmployee($employee);
+        $form = $this->createForm(ExperienceType::class,$experience,['csrf_protection' => false]);
+        $form->submit($experience);
+        $experience->setEmployee($this->getUser());
+        if (count($form->getErrors() != 0))
+            return $form->getErrors();
+
         $this->getDoctrine()->getManager()->persist($experience);
         $this->getDoctrine()->getManager()->flush();
 
@@ -50,6 +54,7 @@ class RestExperienceController extends FOSRestController
      */
     public function updateExperienceAction(Experience $experience, Request $request)
     {
+        dump($experience);die;
         $form = $this->createForm(ExperienceType::class, $experience, ['csrf_protection' => false]);
         $data = json_decode($request->getContent(), true);
 

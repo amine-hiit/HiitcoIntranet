@@ -668,9 +668,9 @@ class VacationManager
             $vacation->setEndDate($startDate);
 
         $notifConcerned = [];
-        $notifConcerned = array_merge($notifConcerned,$this->em->getRepository('AppBundle:Employee')
+        $notifConcerned = array_merge($notifConcerned,$this->em->getRepository(Employee::class)
             ->findByRole(Employee::ROLE_HR));
-        $notifConcerned = array_merge($notifConcerned,$this->em->getRepository('AppBundle:Employee')
+        $notifConcerned = array_merge($notifConcerned,$this->em->getRepository(Employee::class)
             ->findByRole(Employee::ROLE_ADMIN));
 
 
