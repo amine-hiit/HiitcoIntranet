@@ -15,11 +15,11 @@ AppBundle\Entity\Employee:
 
         firstName:
             expose: true
-            groups: [basic_info, detail, list]
+            groups: [basic_info, detail, list, employeeForm]
 
         lastName:
             expose: true
-            groups: [basic_info, detail, list]
+            groups: [basic_info, detail, list, employeeForm]
 
         email:
             expose: true
@@ -35,7 +35,7 @@ AppBundle\Entity\Employee:
 
         birthday:
             expose: true
-            groups: [basic_info, detail]
+            groups: [basic_info, detail, employeeForm]
 
         maritalStatus:
             expose: true
@@ -43,7 +43,7 @@ AppBundle\Entity\Employee:
 
         dependentChild:
             expose: true
-            groups: [basic_info, detail]
+            groups: [basic_info, detail, employeeForm]
 
         photoId:
             expose: true
@@ -55,11 +55,11 @@ AppBundle\Entity\Employee:
 
         phoneNumber:
             expose: true
-            groups: [basic_info, detail]
+            groups: [basic_info, detail, employeeForm]
 
         address:
             expose: true
-            groups: [basic_info, detail]
+            groups: [basic_info, detail, employeeForm]
 
         startDate:
             expose: true
@@ -78,19 +78,19 @@ AppBundle\Entity\Employee:
 
         formations:
             expose: true
-            groups: [detail]
+            groups: [detail, employeeForm]
 
         employeeLanguages:
             expose: true
-            groups: [detail]
+            groups: [detail, employeeForm]
 
         experiences:
             expose: true
-            groups: [detail]
+            groups: [detail, employeeForm]
 
         projects:
             expose: true
-            groups: [detail]
+            groups: [detail, employeeForm]
 
         cooptations:
             expose: false
@@ -98,7 +98,7 @@ AppBundle\Entity\Employee:
         avatar:
             type: AppBundle\Entity\Avatar
             expose: true
-            groups: [detail, list, default]
+            groups: [detail, list, default, employeeForm]
 
         Employee:
             type: AppBundle\Entity\Employee

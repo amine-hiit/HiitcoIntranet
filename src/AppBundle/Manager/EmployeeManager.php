@@ -209,8 +209,10 @@ class EmployeeManager
 
     public function completeEmployeeForm(Employee $employee)
     {
-        $employee->getAvatar()->upload();
-        $employee->getAvatar()->setAlt($employee->getUserName().'_Avatar');
+        if (null !== $employee->getAvatar()) {
+            $employee->getAvatar()->upload();
+            $employee->getAvatar()->setAlt($employee->getUserName().'_Avatar');
+        }
 
         $employee->setValid(true);
         $this->updateEmployee($employee);

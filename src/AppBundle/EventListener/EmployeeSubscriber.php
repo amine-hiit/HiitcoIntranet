@@ -25,6 +25,7 @@ class EmployeeSubscriber implements EventSubscriberinterface
     const INVALID_EMPLOYEE_ALLOWED_ROUTES =  [
         'employee-form',
         'new-formation',
+        'app_employee_form',
         'fos_user_security_login',
         'homepage',
         '_wdt',

@@ -13,6 +13,7 @@ use AppBundle\Entity\Avatar;
 use AppBundle\Entity\Cooptation;
 use AppBundle\Entity\Employee;
 
+use AppBundle\Form\EmployeeApiType;
 use AppBundle\Form\EmployeeRegistrationType;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -106,7 +107,7 @@ class RestEmployeeController extends FOSRestController
      * @param Request $request
      *
      * @Rest\Post(
-     *    path = "/intranet/api/employee-registration/",
+     *    path = "/intranet/api/employee-registration",
      *    name = "app_employee_register"
      * )
      *
@@ -123,7 +124,7 @@ class RestEmployeeController extends FOSRestController
      * )
      * @SWG\Response(
      *     response=201,
-     *     description="Request a new vacation|absence",
+     *     description="employee registred",
      *      )
      * )
      *
@@ -141,6 +142,49 @@ class RestEmployeeController extends FOSRestController
         $this->getDoctrine()->getManager()->persist($employee);
         $this->getDoctrine()->getManager()->flush();
         return $this->view();
+    }
+
+
+    /**
+     * @param Request $request
+     *
+     * @Rest\Post(
+     *    path = "/intranet/api/employee-form",
+     *    name = "app_employee_form"
+     * )
+     *
+     * @SWG\Parameter(
+     *     name="employee-form",
+     *     in="body",
+     *     @SWG\Schema(
+     *         @SWG\Items(ref=@Model(type=Employee::class, groups={"employeeForm"}))
+     *      )
+     *  )
+     * @SWG\Response(
+     *     response=400,
+     *     description="Request failed",
+     * )
+     * @SWG\Response(
+     *     response=201,
+     *     description="employee validated",
+     *      )
+     * )
+     *
+     * @return  View
+     */
+    public function formAction(Request $request)
+    {
+        $employeeManager = $this->get('app.employee.manager');
+        $employee = $this->getUser();
+        $form = $this->createForm(EmployeeApiType::class, $employee, ['csrf_protection' => false]);
+        $form->submit($request->request->all());
+        if (count($form->getErrors()) > 0) {
+            return $this->view($form->getErrors(), 400);
+        }
+        $employeeManager->completeEmployeeForm($employee);
+        $this->getDoctrine()->getManager()->persist($employee);
+        $this->getDoctrine()->getManager()->flush();
+        return $this->view("employee validated",201);
     }
 
 
