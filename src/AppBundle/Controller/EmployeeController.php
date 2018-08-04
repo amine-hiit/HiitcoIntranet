@@ -12,9 +12,11 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\EmployeeLanguage;
 use AppBundle\Entity\Language;
 use AppBundle\Entity\Project;
+use AppBundle\Entity\Setting;
 use AppBundle\Form\EmployeeLanguageType;
 use AppBundle\Form\EmployeeRegistrationType;
 use AppBundle\Form\ProjectType;
+use AppBundle\Form\SettingType;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use FOS\UserBundle\Form\Type\ChangePasswordFormType;
@@ -266,6 +268,8 @@ class EmployeeController extends Controller
         }
         return $this->render('@App/profil/form/'.$item.'.html.twig',['form' => $form->createView()]);
     }
+
+
 
 
 

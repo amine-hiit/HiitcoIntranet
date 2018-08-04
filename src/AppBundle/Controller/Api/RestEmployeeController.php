@@ -138,10 +138,10 @@ class RestEmployeeController extends FOSRestController
         if (count($form->getErrors()) > 0) {
             return $this->view($form->getErrors(), 400);
         }
-
+        $employee->setEnabled(true);
         $this->getDoctrine()->getManager()->persist($employee);
         $this->getDoctrine()->getManager()->flush();
-        return $this->view();
+        return $this->view("employee registred",201);
     }
 
 

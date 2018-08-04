@@ -96,9 +96,11 @@ class EmployeeType extends AbstractType
 
         //->add('employeeformation', FormationType::class);
 
-    }/**
- * {@inheritdoc}
- */
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
@@ -113,6 +115,5 @@ class EmployeeType extends AbstractType
     {
         return 'appbundle_employee';
     }
-
-
 }
+

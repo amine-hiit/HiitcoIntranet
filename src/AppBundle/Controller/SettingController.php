@@ -79,14 +79,20 @@ class SettingController extends Controller
      */
     public function parameterAction(Request $request)
     {
+        $setting = $this->get('app.setting.manager');
+        $parameters = $setting->getAll();
         if ($request->isMethod("POST")) {
             $cc = $this->get('craue_config');
             $parameter = $request->get('parameter');
             $value = $request->get('value');
-            $cc->set($request->get('parameter'), $request->get('value'));
-            return $this->json(['parameter' => $parameter,'value' => $cc->get($parameter)]);
+            if (is_array($value)) {
+                $value = serialize($value);
+            }
+            $cc->set($request->get('parameter'), $value);
+            return $this->json(['parameter' => $parameter,'value' => $setting->unserialize($cc->get($parameter))]);
         }
-        return $this->render('@App/setting/parameters.html.twig');
+        return $this->render('@App/setting/parameters.html.twig', ['parameters' => $parameters]);
 
     }
+
 }

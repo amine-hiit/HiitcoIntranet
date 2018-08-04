@@ -38,6 +38,16 @@ services:
         class: 'AppBundle\Manager\NotificationManager'
         public: true
 
+    app.employee.form:
+        class: 'AppBundle\Form\EmployeeRegistrationType'
+        public: true
+        arguments: ['@app.setting.manager']
+
+    app.setting.manager:
+        class: 'AppBundle\Manager\SettingManager'
+        public: true
+        arguments: ['@craue_config_default']
+
 
     # add more services, or override services that need manual wiring
     # AppBundle\Service\ExampleService:

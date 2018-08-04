@@ -2,7 +2,6 @@
 
 {% set title = "Mes documents demandés" %}
 {% set profile = "profile" %}
-{% set parameters = craue.all %}
 
 {% block content %}
 
@@ -29,10 +28,12 @@
                         </center>
                     </div>
                     <div class="box-body">
+                        <input data-role="tagsinput">
+                        <h2>{{ 'basic.parameters'|trans|capitalize }}</h2>
                         <ul class="list-unstyled">
                         {% for parameter,value in parameters %}
+                            {% if value is not iterable  %}
                             <li>
-                                {{ dump(parameter) }}
                                 <p>
                                     <span id="{{ parameter }}_value">{{ value|trans|capitalize }}</span>
                                     <a class="edit-parameter" id="edit-{{ parameter }}" href="#"><i class="fa fa-edit"></i></a>
@@ -64,7 +65,57 @@
                                     </div>
                                 </div>
                             </div>
+                            {% endif %}
                         {% endfor %}
+                        {% for parameter,value in parameters %}
+                            {% if value is  iterable  %}
+                                <li>
+                                    <h3>{{ parameter|trans|capitalize }}
+                                        <a class="edit-parameter" id="edit-{{ parameter }}" ><i class="fa fa-edit"></i></a>
+                                    </h3>
+                                    <p  id="{{ parameter }}-values">
+                                    {% for v in value %}{{ v|trans|upper }}, {% endfor %}
+                                    </p>
+                                </li>
+                                <li>
+                                    <div class="form-holder hidden" id="form-{{ parameter }}">
+                                        <div class="col-sm-12 col-xs-12">
+                                            <input class="hidden" name="id" value="">
+                                            <div class="row">
+                                                <div class="col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+
+                                                        <select multiple id="{{ parameter }}"  class="form-control"
+                                                                style="display: none;" data-role="tagsinput"
+                                                        >
+                                                            {% for v in value %}
+                                                                <option value=" {{ v }}" selected="selected">{{ v }}</option>
+                                                            {% endfor %}
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6 col-xs-6">
+                                                    <div class="form-group">
+                                                        <a  id ="cancel-edit-{{ parameter }}" class="btn bg-danger btn-flat cancel-edit"
+                                                            style="width: 100%";>{{'cancel'|trans|capitalize}}</a>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6 col-xs-6">
+                                                    <div class="form-group">
+                                                        <a  id ="submit-{{ parameter }}" class="btn bg-success btn-flat submit"
+                                                            style="width: 100%";>{{'submit'|trans|capitalize}}</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+
                         </ul>
                     </div>
                 </div>
@@ -73,9 +124,19 @@
     </section>
 {% endblock %}
 
+{% block stylesheet %}
+    <link rel="stylesheet" href="{{ asset('bower_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.css') }}">
+    <style>
+        .bootstrap-tagsinput {
+            width: 100%;
+        }
+    </style>
+
+{% endblock %}
 {% block script %}
     <script src="{{ asset('intra/js/collection.js')}}"></script>
     <script src="{{ asset('bower_components/select2/dist/js/select2.full.min.js') }}"></script>
+    <script src="{{ asset('bower_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.js') }}"></script>
     <script src="{{ asset('bower_components/bower_components/bootstrap-select/dist/js/bootstrap-select.min.js') }}"></script>
     <script>
         $(document).ready(function() {
@@ -96,6 +157,15 @@
                     method:'POST',
                     data: { parameter: parameter, value: value  },
                     success(data){
+                        if ($.isArray(data.value)){
+                            $('#'+data.parameter+'-values').empty()
+                            $.each(data.value, function(i, item) {
+                                $('#'+data.parameter+'-values').append(
+                                    item+', '
+                                )
+                            })
+                        return;
+                        }
                         $('#'+data.parameter+'_value').html(data.value)
                         $('#form-'+parameter).removeClass('hidden');
                     }

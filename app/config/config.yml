@@ -207,3 +207,4 @@ jms_serializer:
             KnpPager:
                 namespace_prefix: Knp\Component\Pager
                 path: %kernel.root_dir%/config/serializer/KnpPager
+
