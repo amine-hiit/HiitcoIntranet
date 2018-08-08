@@ -131,6 +131,8 @@ class VacationManager
 
     }
 
+
+
     public function adminValidation(Vacation &$vacation, $isValid, $refuseReason)
     {
         $admins = $this->em->getRepository('AppBundle:Employee')
@@ -269,12 +271,6 @@ class VacationManager
         $weekEndIncluded = true,
         $hollidayIncluded = true )
     {
-        if ($vacation->getDayPeriod() !== 'allDay') {
-            return $weekEndIncluded && $hollidayIncluded
-            && boolval($this->calculateWeekEndDaysNumberIncluded($vacation))
-            && boolval($this->calculateHolliDaysNumberIncluded($vacation)) ?
-                0 : 0.5;
-        }
 
         $endDate = $vacation->getEndDate();
         $startDate = $vacation->getStartDate();
@@ -285,6 +281,11 @@ class VacationManager
         if($startDate == $endDate && $this->isHolliDay($startDate))
             return 0;
 
+        if ($vacation->getDayPeriod() !== 'allDay') {
+            return boolval($this->calculateWeekEndDaysNumberIncluded($vacation))
+            || boolval($this->calculateHolliDaysNumberIncluded($vacation))?
+                0 : 0.5;
+        }
 
         $duration = $weekEndIncluded && $hollidayIncluded ? $endDate->diff($startDate)->days
             - $this->calculateWeekEndDaysNumberIncluded($vacation)
@@ -316,53 +317,32 @@ class VacationManager
                 return 0;
             else {
                 if ($vacation->getDayPeriod() !== 'allDay') {
-                    if ($monthIncluded) {
-                        return $weekEndIncluded && $hollidayIncluded
-                        && boolval($this->calculateWeekEndDaysNumberIncluded($vacation))
-                        && boolval($this->calculateHolliDaysNumberIncluded($vacation))
-                        && !($month->format("m") >= $vacation->getStartDate()->format("m")
-                            && $month->format("Y") >= $vacation->getStartDate()->format("m"))
-                            ? 0 : 0.5;
-                    } else {
-                        return $weekEndIncluded && $hollidayIncluded
-                        && boolval($this->calculateWeekEndDaysNumberIncluded($vacation))
-                        && boolval($this->calculateHolliDaysNumberIncluded($vacation))
-                        && !($month->format("m") > $vacation->getStartDate()->format("m")
-                            && $month->format("Y") >= $vacation->getStartDate()->format("m"))
-                            ? 0 : 0.5;
-                    }
+                    return( boolval($this->calculateWeekEndDaysNumberIncluded($vacation))
+                        || boolval($this->calculateHolliDaysNumberIncluded($vacation)))
+                    && !($month->format("m") > $vacation->getStartDate()->format("m")
+                        && $month->format("Y") >= $vacation->getStartDate()->format("m"))
+                        ? 0 : 0.5;
                 }
                 return $this->calculateDuration($vacation);
             }
-        }
-        else {
+        } else {
             if (strtotime($vacation->getStartDate()->format("Y-m-d"))
-                > strtotime($monthpp->format("Y-m-d")))
+                > strtotime($monthpp->format("Y-m-d"))){
                 return 0;
-            else {
+            } else {
                 if ($vacation->getDayPeriod() !== 'allDay') {
-                    if ($monthIncluded) {
-                        return $weekEndIncluded && $hollidayIncluded
-                        && boolval($this->calculateWeekEndDaysNumberIncluded($vacation))
-                        && boolval($this->calculateHolliDaysNumberIncluded($vacation))
-                        && !($month->format("m") >= $vacation->getStartDate()->format("m")
-                            && $month->format("Y") >= $vacation->getStartDate()->format("m"))
-                            ? 0 : 0.5;
-                    } else {
-                        return $weekEndIncluded && $hollidayIncluded
-                        && boolval($this->calculateWeekEndDaysNumberIncluded($vacation))
-                        && boolval($this->calculateHolliDaysNumberIncluded($vacation))
+                        return ( boolval($this->calculateWeekEndDaysNumberIncluded($vacation))
+                            || boolval($this->calculateHolliDaysNumberIncluded($vacation)))
                         && !($month->format("m") > $vacation->getStartDate()->format("m")
-                            && $month->format("Y") >= $vacation->getStartDate()->format("m"))
+                            && $month->format("Y") > $vacation->getStartDate()->format("m"))
                             ? 0 : 0.5;
-                    }
                 }
                 return $this->calculateDuration($vacation);
             }
         }
     }
 
-    public function calculateDaysUntilStartDate($vacation)
+    public function calculateDaysUntilStartDate(Vacation $vacation)
     {
         $now = new \DateTime();
         $startTime = strtotime($vacation->getStartDate()->format('d-m-Y'));
@@ -431,11 +411,14 @@ class VacationManager
 
     public function calculateHolliDaysNumberIncluded(Vacation $vacation)
     {
+
         $holliDaysNumber = 0;
         $startDate = $vacation->getStartDate();
         $endDate = $vacation->getEndDate();
-        //because the end date is not included
+        $endDate->modify('+1 day');
 
+
+        //because the end date is not included
         $period = new \DatePeriod($startDate,
             new \DateInterval('P1D'),
             $endDate);
@@ -446,6 +429,7 @@ class VacationManager
             }
         }
 
+        $endDate->modify('-1 day');
         return $holliDaysNumber;
     }
 

@@ -35,6 +35,7 @@ class EmployeeRegistrationType extends AbstractType
 
         $array = $this->setting->get('status');
         $status =['Choisir' => ''];
+
         foreach ($array as $value) {
             $status = array_merge($status, [$value => $value]);
         }
