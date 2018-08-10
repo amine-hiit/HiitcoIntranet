@@ -2,8 +2,12 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\ReligiousPaidVacation;
+use AppBundle\Form\ReligiousPaidVacationType;
+use AppBundle\Repository\ReligiousPaidVacationRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormError;
 use AppBundle\Entity\Vacation;
@@ -112,5 +116,64 @@ class VacationController extends Controller
         }
 
         return $this->redirect('/intranet/hrm/vacation-requests');
+    }
+
+    /**
+     * @Route("/intranet/hrm/vacation-setting", name="vacation_setting")
+     */
+    public function settingAction(Request $request)
+    {
+        $vm = $this->get('app.vacation.manager');
+        $religiousVacations = $this->getDoctrine()
+            ->getRepository(ReligiousPaidVacation::class)->findAll();
+        $religiousVacation = new ReligiousPaidVacation();
+        $religiousVacationForm = $this->createForm(ReligiousPaidVacationType::class, $religiousVacation);
+        if ($request->isMethod('POST')
+            && $religiousVacationForm->handleRequest($request)->isValid()) {
+            $vm->addReligiousVacation($religiousVacation);
+            return $this->redirectToRoute('vacation_setting');
+        }
+        return $this->render('@App/vacation/setting.html.twig',[
+            'religiousVacationForm' => $religiousVacationForm->createView(),
+            'religiousVacations' => $religiousVacations
+        ]);
+    }
+
+    /**
+     * @Route("/intranet/hrm/edit-religious-vacation/{id}", name="edit_religious_vacation")
+     */
+    public function editReligiousVacationAction(Request $request, $id)
+    {
+        $jms = $this->get('jms_serializer');
+        $vm = $this->get('app.vacation.manager');
+        $religiousVacation = $this->getDoctrine()
+            ->getRepository(ReligiousPaidVacation::class)->find($id);
+        $religiousVacationForm = $this->createForm(ReligiousPaidVacationType::class, $religiousVacation);
+
+        if ($request->isMethod('POST')
+            && $religiousVacationForm->handleRequest($request)->isValid()) {
+            $vm->addReligiousVacation($religiousVacation);
+
+            $religiousVacation->setReference($this->get('translator')->trans($religiousVacation->getReference()));
+
+            return $this->redirectToRoute('vacation_setting');
+        //return new JsonResponse($jms->serialize($religiousVacation,'json'));
+        }
+        return $this->render('@App/vacation/form/religious_vacation.html.twig',[
+            'religiousVacationForm' => $religiousVacationForm->createView(),
+        ]);
+    }
+    /**
+     * @Route("/intranet/hrm/delete-religious-vacation/{id}", name="delete_religious_vacation")
+     */
+    public function deleteReligiousVacationAction(Request $request,ReligiousPaidVacation $religiousPaidVacation)
+    {
+        if ($request->isMethod('DELETE')) {
+            $this->getDoctrine()->getManager()->remove($religiousPaidVacation);
+            $this->getDoctrine()->getManager()->flush();
+            return new Response('item deleted',202);
+        } else {
+            return new Response('http method not allowed',405);
+        }
     }
 }

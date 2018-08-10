@@ -22,10 +22,10 @@ class ExperienceType extends AbstractType
             ->add('position',TextType::class)
             ->add('description',TextareaType::class)
             ->add('startDate',DateType::class, array(
-                'format' => 'MM/dd/yyyy',
+                'format' => 'dd/MM/yyyy',
                 'widget' => 'single_text'))
             ->add('endDate',DateType::class, array(
-                'format' => 'MM/dd/yyyy',
+                'format' => 'dd/MM/yyyy',
                 'widget' => 'single_text'))
             ->add('city',TextType::class)
             ->add('country',TextType::class)

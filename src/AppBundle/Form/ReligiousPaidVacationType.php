@@ -2,33 +2,35 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Entity\ReligiousPaidVacation;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 
-class ProjectType extends AbstractType
+class ReligiousPaidVacationType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name',TextType::class)
-            ->add('date',DateType::class, array(
+        $builder->add('reference',ChoiceType::class,[
+            'choices' => ReligiousPaidVacation::RELIGIOUS_VACATIONS,
+        ])
+            ->add('startDate',DateType::class, array(
                 'format' => 'dd/MM/yyyy',
                 'widget' => 'single_text',
-                'required' => true))
-            ->add('description',TextareaType::class);
+                'required' => true)
+            );
     }/**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Project'
+            'data_class' => 'AppBundle\Entity\ReligiousPaidVacation'
         ));
     }
 
@@ -37,7 +39,7 @@ class ProjectType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_project';
+        return 'appbundle_religiouspaidvacation';
     }
 
 

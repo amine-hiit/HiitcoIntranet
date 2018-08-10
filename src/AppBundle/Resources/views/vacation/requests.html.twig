@@ -34,6 +34,8 @@
                                 congés </a>
                             <a type="button" class="btn btn-default btn-flat" href="/intranet/sold"> Mon solde </a>
                             <a type="button" class="btn btn-default btn-flat disabled"> Liste des demandes </a>
+                            <a type="button" class="btn btn-default btn-flat " href="/intranet/hrm/vacation-setting">  Parrametrage Congés   </a>
+
                         </center>
                         <div class="text-right">
                             <a type="button" href="/intranet/request-a-vacation" class="btn btn-success btn-flat">   Demander congé   </a>
@@ -74,6 +76,8 @@
                                 <th>Employé</th>
                                 <th>Date début</th>
                                 <th>Date fin</th>
+                                <th>Durée</th>
+                                <th>Période</th>
                                 <th>Raison</th>
                                 <th>valider</th>
                                 <th>refuser -Motif*</th>
@@ -87,6 +91,8 @@
                                     <td>{{ Vacation.employee.userName }}</td>
                                     <td>{{ Vacation.startDate | date("d/m/Y") }}</td>
                                     <td>{{ Vacation.endDate | date("d/m/Y") }}</td>
+                                    <td>{{ Vacation.duration ~' '~ 'day'|trans|capitalize}}</td>
+                                    <td>{{ Vacation.dayPeriod|trans|capitalize }}</td>
                                     <td>{{ Vacation.reason }}</td>
 
                                     {% if Vacation.validationStatus==0 %}
@@ -169,7 +175,7 @@
                     'searching': false,
                     'ordering': true,
                     'info': true,
-                    'autoWidth': false,
+                    'autoWidth': true,
                 });
             });
         });

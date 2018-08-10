@@ -43,7 +43,13 @@ class EmployeeRegistrationType extends AbstractType
 
 
         $builder->add('maritalStatus',ChoiceType::class, array(
-            'choices'  => $status,
+            'choices'  => array(
+                'select' => '' ,
+                'single' => 'Célibataire',
+                'married' => 'married',
+                'divorced' => 'divorced',
+                'widower' => 'widower',
+            ),
         ))
             ->add('cnssNumber',TextType::class,array(
                 'required' => true,

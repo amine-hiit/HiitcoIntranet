@@ -34,10 +34,10 @@ class FormationType extends AbstractType
     {
         $this->builder
             ->add('startDate',DateType::class, array(
-                'format' => 'MM/dd/yyyy',
+                'format' => 'dd/MM/yyyy',
                 'widget' => 'single_text'))
             ->add('endDate',DateType::class, array(
-                'format' => 'MM/dd/yyyy',
+                'format' => 'dd/MM/yyyy',
                 'widget' => 'single_text'))
             ->add('organization',TextType::class)
             ->add('country',TextType::class)

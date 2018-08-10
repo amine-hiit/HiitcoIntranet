@@ -45,7 +45,7 @@ class VacationType extends AbstractType
             ->add('refuseReason', TextareaType::class)
             ->add('startDate', DateType::class,
                 array(
-                    'format' => 'MM/dd/yyyy',
+                    'format' => 'dd/MM/yyyy',
                     'widget' => 'single_text',
                     'attr' => array(
                         'id' => 'vacation_start_date'
@@ -55,7 +55,7 @@ class VacationType extends AbstractType
             )
             ->add('endDate', DateType::class,
                 array(
-                    'format' => 'MM/dd/yyyy',
+                    'format' => 'dd/MM/yyyy',
                     'required' => false,
                     'widget' => 'single_text',
                     'attr' => array(

@@ -128,7 +128,7 @@ doc.validated.success: la demande est bien validée
 doc.ready.success: le document est bien disponible
 
 configuration: configuration
-parameters: parametres
+parameters: paramètres
 emails: emails
 
 role: rôle
@@ -167,3 +167,17 @@ start.date.greater.than.end.date.error : La date de début ne doit pas être sup
 vacation.balance.not.enough.error : Vous n'avez pas assez de solde de congé pour demander un congé de cette durée
 not.enough.days.until.start.day.error : Le congé doit être demandé 30 jour à l'avance
 now.greater.than.start.date.error : Vous ne pouvez pas demander un congé dont le début est avant aujourd'hui
+
+AID_AL_MAWLID: aid al mawlid
+AID_AL_FITR: aid al fitr
+AID_AL_ADHA: aid al adha
+FIRST_MOHARRAM: premier moharram
+add.religious.vacation.day: Ajouter un jour férié religieux
+religious.vacations.list: Liste des jours fériés religieux
+
+duration: durée
+allDay:  journée
+afternoon: après-midi
+morning: matin
+
+vacation.paramerters: paramètres congés

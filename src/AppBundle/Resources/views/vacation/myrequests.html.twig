@@ -34,10 +34,9 @@
                         <center>
                             <a type="button" class="btn btn-default btn-flat disabled"> Mes congés </a>
                             <a type="button" class="btn btn-default btn-flat" href="/intranet/sold"> Mon solde </a>
-
                             {% if is_granted('ROLE_HR') %}
-                                <a type="button" class="btn btn-default btn-flat " href="/intranet/hrm/vacation-requests">
-                                    Liste des demandes </a>
+                            <a type="button" class="btn btn-default btn-flat " href="/intranet/hrm/vacation-requests">Liste des demandes </a>
+                            <a type="button" class="btn btn-default btn-flat " href="/intranet/hrm/vacation-setting">  Parrametrage Congés   </a>
                             {% endif %}
                         </center>
                         <div class="text-right">

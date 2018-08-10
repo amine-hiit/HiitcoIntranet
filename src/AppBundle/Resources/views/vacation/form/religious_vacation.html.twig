@@ -1,0 +1,47 @@
+{{ form_start(religiousVacationForm,{'attr': {'action':'/intranet/hrm/edit-religious-vacation/' ~ religiousVacationForm.vars.value.id, 'method':'POST'}}) }}
+<div class="row">
+    <div class="col-sm-6 col-xs-6">
+        <div class="form-group">
+
+            <div class="input-group " style="width: 100%;">
+                {{ form_widget(religiousVacationForm.reference, {'attr':{
+                    'class':'form-control flat  ',
+                    'style': 'width: 100%;'
+                }}) }}
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xs-6">
+        <div class="form-group">
+
+            <div class="input-group date">
+                <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                </div>
+                {{ form_widget(religiousVacationForm.startDate, {'attr':{
+                    'class':'form-control pull-right datepicker'
+                }}) }}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+        <div class="col-sm-6 col-xs-6">
+            <div class="form-group">
+
+                <a id="cancel-religious-vacation-edit-{{ religiousVacationForm.vars.value.id }}"
+                        class="cancel-religious-vacation-edit btn bg-danger btn-flat  " style="width:100%;"
+                >{{ 'cancel'|trans|capitalize }}
+                </a>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xs-6">
+            <div class="form-group">
+                <button id="submit-religious-vacation-{{ religiousVacationForm.vars.value.id }}"
+                   class="submit-religious-vacation btn bg-navy btn-flat  " style="width:100%;"
+                >{{ 'submit'|trans|capitalize }}
+                </button>
+            </div>
+        </div>
+</div>
+{{ form_end(religiousVacationForm) }}

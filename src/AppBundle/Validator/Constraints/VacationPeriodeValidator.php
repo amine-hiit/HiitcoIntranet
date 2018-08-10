@@ -60,8 +60,7 @@ class VacationPeriodeValidator extends ConstraintValidator
 
         $startDate = $object->getStartDate();
         $dayPeriod = $object->getDayPeriod();
-        $endDate = $object->getEndDate();
-
+        $endDate = $object->getEndDate();;
         if(null === $endDate || $dayPeriod !== Vacation::ALL_DAY )
             $endDate = $object->setEndDate(clone($startDate));
 

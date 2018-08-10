@@ -3,6 +3,8 @@
 namespace AppBundle\Manager;
 
 use AppBundle\Entity\Notification;
+use AppBundle\Entity\ReligiousPaidVacation;
+use AppBundle\Repository\ReligiousPaidVacationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use AppBundle\Entity\Vacation;
 use AppBundle\Entity\Employee;
@@ -357,10 +359,25 @@ class VacationManager
 
     private function isHolliDay(\DateTime $day){
 
+        if ($this->isWeekEnd($day)) {
+            return false;
+        }
         foreach (self::HOLLIDAYS as $key => $value)
         {
             if ($day->format('d') == $value['d'] &&  $day->format('m') == $value['m'])
                 return true;
+        }
+
+        $religiousHollidays = $this->em->getRepository(ReligiousPaidVacation::class)->findAll();
+
+        foreach ($religiousHollidays as $holliday)
+        {
+
+            if ($holliday->getStartDate()->format('d') ===  $day->format('d')
+                && $holliday->getStartDate()->format('m') ===  $day->format('m')
+                && $holliday->getStartDate()->format('y') ===  $day->format('y')) {
+                return true;
+            }
         }
         return false;
     }
@@ -683,6 +700,18 @@ class VacationManager
 
     public function flush()
     {
+        $this->em->flush();
+    }
+
+    public function addReligiousVacation(ReligiousPaidVacation $religiousVacation)
+    {
+        if ( ReligiousPaidVacation::RELIGIOUS_VACATIONS['FIRST_MOHARRAM'] !== $religiousVacation->getReference() ){
+            $endDate = clone ($religiousVacation->getStartDate());
+            $religiousVacation->setEndDate($endDate->modify('+1 day'));
+        } else {
+            $religiousVacation->setEndDate(clone ($religiousVacation->getStartDate()));
+        }
+        $this->em->persist($religiousVacation);
         $this->em->flush();
     }
 }

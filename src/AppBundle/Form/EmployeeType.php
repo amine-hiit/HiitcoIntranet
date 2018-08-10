@@ -35,7 +35,7 @@ class EmployeeType extends AbstractType
                 'required' => true))
 
             ->add('birthday',DateType::class, array(
-                'format' => 'MM/dd/yyyy',
+                'format' => 'dd/MM/yyyy',
                 'widget' => 'single_text',
                 'required' => true))
             ->add('dependentChild', IntegerType::class ,array(
