@@ -233,7 +233,6 @@ class EmployeeManager
         $setPWEmail = $this->em->getRepository(EmailType::class)
             ->findBy(['label' => Email\Subject::SET_NEW_PASSWORD])[0];
 
-//        dump($this->router->generate('new-emplyee-password',['token' => $token],UrlGeneratorInterface::ABSOLUTE_URL));die;
         $setNewPasswordUrl = $this->router->generate('new-emplyee-password',['token' => $token],UrlGeneratorInterface::ABSOLUTE_URL);// http://localhost:8002/new-password/'.$token;
         $employeeFormUrl = 'http://localhost:8002'
             .$this->router->generate('employee-form');
@@ -244,7 +243,7 @@ class EmployeeManager
             [
                 'url' => $setNewPasswordUrl,
                 'userName' => $employee->getUsername(),
-                'action' => 'Clique ici'
+                'action' => 'Cliquez ici'
             ]
         );
 
@@ -252,7 +251,7 @@ class EmployeeManager
             $employeeFormEmail,
             $employee->getEmail(),            [
                 'url' => $employeeFormUrl,
-                'action' => 'Clique ici'
+                'action' => 'Cliquez ici'
             ]
         );
     }

@@ -49,6 +49,7 @@ class EmailManager
             $filesPaths
             );
         $mailer->send($message);
+        //dump($message);die;
     }
 
     public function create(
