@@ -88,6 +88,11 @@ services:
         public: true
 
 
+    app.fixture:
+        class: 'AppBundle\DataFixtures\AppFixtures'
+        public: true
+
+
     AppBundle\EventListener\SelectFilter:
         tags:
             - { name: doctrine.event_listener, event: postLoad }
