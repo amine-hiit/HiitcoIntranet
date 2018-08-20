@@ -1,0 +1,37 @@
+{{ form_start(form, {'attr': {'action':'/intranet/update/employeeLanguage/' ~ form.vars.value.id, 'method':'POST'}}) }}
+<div class='col-sm-12 col-xs-12'>
+    <div class="row">
+        <div class="col-sm-12 col-xs-12">
+            <div class='col-sm-4 col-xs-12'>
+                <div class='form-group' style="width: 90%;" >
+                    {{ form_label(form.language, 'language'|trans|capitalize) }}
+                    {{ form_widget(form.language, {'attr':{
+                        'class':'form-control select2 ',
+                    }}) }}
+                </div>
+            </div>
+            <div class='col-sm-6 col-xs-12'>
+                <div class='form-group' style="width: 90%;">
+                    {{ form_label(form.level, 'level'|trans|capitalize) }}
+                    {{ form_widget(form.level, {'attr':{
+                        'class':'form-control select2'
+                    }}) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6 col-xs-6">
+            <a id="update-employeeLanguage-cancel-{{ form.vars.value.id }}" class="btn btn-default flat" style="width: 100%">
+                {{ 'cancel'|trans|capitalize }}
+            </a>
+        </div>
+        <div class="col-sm-6 col-xs-6">
+            <a class="btn flat btn-default update-submit-action" style="width: 100%"
+               id="update-employeeLanguage-action-{{ form.vars.value.id }}">
+                {{ 'submit'|trans|capitalize }}
+            </a>
+        </div>
+    </div>
+</div>
+{{ form_end(form) }}

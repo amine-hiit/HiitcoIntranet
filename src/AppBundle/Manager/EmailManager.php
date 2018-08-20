@@ -42,13 +42,14 @@ class EmailManager
     {
         $mailer = $this->container->get('mailer');
         $message = $this->create(
-            'mo.amine.jabri@gmail.com',
+            $this->container->getParameter('mailer_user'),
             $to,
             $emailType,
             $args,
             $filesPaths
             );
         $mailer->send($message);
+        //dump($message);die;
     }
 
     public function create(
@@ -59,6 +60,9 @@ class EmailManager
         array $filesPaths = null
     )
     {
+        if (!is_array($to))
+            $to = [$to];
+
         $subject = $this->container->get('translator')->trans($emailType->getLabel());
         $template = $emailType->getTemplate();
 
@@ -67,7 +71,7 @@ class EmailManager
             $employeesByRoles = $this->container->get('app.employee.manager')
                 ->findEmployeesByRoles($emailType->getRoles());
             $employees = array_merge($employees,$employeesByRoles );
-        foreach ($employees as $employee)
+        foreach ($employees as $employee )
             $to[] = $employee->getEmail();
         }
 
@@ -84,7 +88,7 @@ class EmailManager
         $message = \Swift_Message::newInstance()
             ->setSubject($subject)
             ->setFrom($from)
-            ->setTo($to)
+            ->setTo(array_filter($to))
             ->setBody($rendredTemplate,'text/html')
         ;
 

@@ -72,14 +72,25 @@
                             <tbody>
                             {% for cooptation in cooptations %}
                                 <tr>
-                                    <td><a href="/intranet/employee/{{ cooptation.employee.id }}">
-                                                <img src="{{ asset(cooptation.employee.avatar.url) }}" width = "32" height="32" style="border-radius: 50%;" />
-                                            {{ cooptation.employee.username }}</a></td>
+                                    <td>
+                                        <a href="/intranet/employee/{{ cooptation.employee.id }}">
+                                                <img src="/intranet/file/avatar/{{
+                                                cooptation.employee.avatar is defined
+                                                and cooptation.employee.avatar is not null?
+                                                cooptation.employee.avatar.id
+                                                :'0' }}" width = "32" height="32" style="border-radius: 50%;"
+                                                />
+                                            {{ cooptation.employee.username }}
+                                        </a>
+                                    </td>
                                     <td>{{ cooptation.name }}</td>
                                     <td>{{ cooptation.profil }}</td>
                                     <td>{{ cooptation.phoneNumber }}</td>
                                     <td>{{ cooptation.email }}</td>
-                                    <td><a href={{ asset(cooptation.resumee.url) }}>voir</a></td>
+                                    <td><a href={{  url('download_file',
+                                            {type:'resume',id:cooptation.resumee.id}) }}>voir
+                                        </a>
+                                    </td>
                                 </tr>
                             {% endfor %}
                             </tbody>

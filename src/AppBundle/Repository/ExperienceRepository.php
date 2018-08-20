@@ -22,4 +22,39 @@ class ExperienceRepository extends \Doctrine\ORM\EntityRepository
             ->getResult()
             ;
     }
+
+    public function findAllQuery(
+        $orderBy = null,
+        $direction = 'desc'
+    )
+    {
+        $qb = $this->createQueryBuilder('e');
+
+        if ($orderBy)
+            $qb->orderBy('e.'.$orderBy, $direction);
+
+        return $qb->getQuery();
+    }
+
+
+    public function findAllByEmployeeQuery(
+        $orderBy = null,
+        $direction = 'desc',
+        Employee $employee = null
+    )
+    {
+
+
+        $qb = $this->createQueryBuilder('e');
+
+        if ($orderBy)
+            $qb->orderBy('e.'.$orderBy, $direction);
+        if (null !== $employee)
+            $qb->where('e.employee = :employee')
+                ->setParameter('employee', $employee);
+
+        return $qb->getQuery();
+    }
 }
+
+

@@ -33,10 +33,14 @@
                             <a type="button" class="btn btn-default btn-flat" href="/intranet/my-vacation-requests"> Mes
                                 congés </a>
                             <a type="button" class="btn btn-default btn-flat" href="/intranet/sold"> Mon solde </a>
-                            <a type="button" class="btn btn-default btn-flat" href="/intranet/request-a-vacation"> Demander
-                                congé </a>
                             <a type="button" class="btn btn-default btn-flat disabled"> Liste des demandes </a>
+                            <a type="button" class="btn btn-default btn-flat " href="/intranet/hrm/vacation-setting">  Parrametrage Congés   </a>
+
                         </center>
+                        <div class="text-right">
+                            <a type="button" href="/intranet/request-a-vacation" class="btn btn-success btn-flat">   Demander congé   </a>
+                        </div>
+
                     </div>
                     <div class="box-header">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -72,6 +76,8 @@
                                 <th>Employé</th>
                                 <th>Date début</th>
                                 <th>Date fin</th>
+                                <th>Durée</th>
+                                <th>Période</th>
                                 <th>Raison</th>
                                 <th>valider</th>
                                 <th>refuser -Motif*</th>
@@ -85,62 +91,64 @@
                                     <td>{{ Vacation.employee.userName }}</td>
                                     <td>{{ Vacation.startDate | date("d/m/Y") }}</td>
                                     <td>{{ Vacation.endDate | date("d/m/Y") }}</td>
+                                    <td>{{ Vacation.duration ~' '~ 'day'|trans|capitalize}}</td>
+                                    <td>{{ Vacation.dayPeriod|trans|capitalize }}</td>
                                     <td>{{ Vacation.reason }}</td>
 
-                                            {% if Vacation.validationStatus==0 %}
-                                                <td>
-                                                    <form method="post" action="/intranet/vacation-validation">
-                                                        <input type="hidden" name="id_" value="{{ Vacation.id }}"/>
-                                                        <input type="hidden" name="user_id" value="{{ Vacation.employee.id }}"/>
-                                                        <input type="submit" name="action" class="btn btn-success btn-flat btn-sm"
-                                                               role="button" value="accepter">
-                                                    </form>
-                                                </td>
-                                                <td>
-                                                    <form method="post" action="/intranet/vacation-validation">
-                                                        <input type="hidden" name="id_" value="{{ Vacation.id }}"/>
-                                                        <input type="hidden" name="user_id" value="{{ Vacation.employee.id }}"/>
-                                                        <input type="text" name="refuse_reason"/>
-                                                        <input type="submit" name="action"
-                                                               class="btn btn-danger btn-flat btn-sm myspace" role="button"
-                                                               value="refuser">
-                                                    </form>
-                                                </td>
-                                            {% elseif Vacation.validationStatus==1 %}
-                                                {% if is_granted('ROLE_DIRECTOR') %}
-                                                <td>
-                                                    <form method="post" action="/intranet/vacation-validation">
-                                                        <input type="hidden" name="id_" value="{{ Vacation.id }}"/>
-                                                        <input type="hidden" name="user_id" value="{{ Vacation.employee.id }}"/>
-                                                        <input type="submit" name="action" class="btn btn-success btn-flat btn-sm"
-                                                               role="button" value="accepter">
-                                                    </form>
-                                                </td>
-                                                <td>
-                                                    <form method="post" action="/intranet/vacation-validation">
-                                                        <input type="hidden" name="id_" value="{{ Vacation.id }}"/>
-                                                        <input type="hidden" name="user_id" value="{{ Vacation.employee.id }}"/>
-                                                        <input type="text" name="refuse_reason"/>
-                                                        <input type="submit" name="action"
-                                                               class="btn btn-danger btn-flat btn-sm myspace" role="button"
-                                                               value="refuser">
-                                                    </form>
-                                                </td>
-                                                {% elseif is_granted('ROLE_HR') %}
-                                                <td colspan="2"><span class="label label-warning flat">Non traitée par le directeur</span></td>
+                                    {% if Vacation.validationStatus==0 %}
+                                    <td>
+                                        <form method="post" action="/intranet/vacation-validation">
+                                            <input type="hidden" name="id_" value="{{ Vacation.id }}"/>
+                                            <input type="hidden" name="user_id" value="{{ Vacation.employee.id }}"/>
+                                            <input type="submit" name="action" class="btn btn-success btn-flat btn-sm"
+                                                   role="button" value="accepter">
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <form method="post" action="/intranet/vacation-validation">
+                                            <input type="hidden" name="id_" value="{{ Vacation.id }}"/>
+                                            <input type="hidden" name="user_id" value="{{ Vacation.employee.id }}"/>
+                                            <input type="text" name="refuse_reason"/>
+                                            <input type="submit" name="action"
+                                                   class="btn btn-danger btn-flat btn-sm myspace" role="button"
+                                                   value="refuser">
+                                        </form>
+                                    </td>
+                                    {% elseif Vacation.validationStatus==1 %}
+                                        {% if is_granted('ROLE_DIRECTOR') %}
+                                        <td>
+                                            <form method="post" action="/intranet/vacation-validation">
+                                                <input type="hidden" name="id_" value="{{ Vacation.id }}"/>
+                                                <input type="hidden" name="user_id" value="{{ Vacation.employee.id }}"/>
+                                                <input type="submit" name="action" class="btn btn-success btn-flat btn-sm"
+                                                       role="button" value="accepter">
+                                            </form>
+                                        </td>
+                                        <td>
+                                            <form method="post" action="/intranet/vacation-validation">
+                                                <input type="hidden" name="id_" value="{{ Vacation.id }}"/>
+                                                <input type="hidden" name="user_id" value="{{ Vacation.employee.id }}"/>
+                                                <input type="text" name="refuse_reason"/>
+                                                <input type="submit" name="action"
+                                                       class="btn btn-danger btn-flat btn-sm myspace" role="button"
+                                                       value="refuser">
+                                            </form>
+                                        </td>
+                                        {% elseif is_granted('ROLE_HR') %}
+                                        <td colspan="2"><span class="label label-warning flat">Non traitée par le directeur</span></td>
 
-                                                {% endif %}
-                                            {% elseif Vacation.validationStatus== 2 %}
-                                                <td colspan="2"><span class="label label-success flat">approuvée</span></td>
-                                            {% elseif Vacation.validationStatus== -1 %}
-                                                {% if Vacation.refuseReason is defined and Vacation.refuseReason is not null%}
-                                                    <td><span class="label label-danger flat ">refusée</span></td>
-                                                    <td> {{ Vacation.refuseReason }}</td>
+                                        {% endif %}
+                                    {% elseif Vacation.validationStatus== 2 %}
+                                        <td colspan="2"><span class="label label-success flat">approuvée</span></td>
+                                    {% elseif Vacation.validationStatus== -1 %}
+                                        {% if Vacation.refuseReason is defined and Vacation.refuseReason is not null%}
+                                            <td><span class="label label-danger flat ">refusée</span></td>
+                                            <td> {{ Vacation.refuseReason }}</td>
 
-                                                {% else %}
-                                                    <td colspan="2"><span class="label label-danger flat ">refusée</span></td>
-                                                {% endif %}
-                                            {% endif %}
+                                        {% else %}
+                                            <td colspan="2"><span class="label label-danger flat ">refusée</span></td>
+                                        {% endif %}
+                                    {% endif %}
                                 </tr>
                             {% endfor %}
                             </tbody>
@@ -157,21 +165,21 @@
 {% block script %}
     <script src="{{ asset('bower_components/datatables.net/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $('.sidebar-menu').tree();
+            $(function () {
+                $('#example2').DataTable({
+                    'paging': true,
+                    'lengthChange': true,
+                    'searching': false,
+                    'ordering': true,
+                    'info': true,
+                    'autoWidth': true,
+                });
+            });
+        });
+
+    </script>
 {% endblock %}
 
-
-{% block javascript %}
-    $(document).ready(function () {
-    $('.sidebar-menu').tree()
-    $(function () {
-    $('#example2').DataTable({
-    'paging': true,
-    'lengthChange': true,
-    'searching': false,
-    'ordering': true,
-    'info': true,
-    'autoWidth': false
-    })
-    })
-    })
-{% endblock %}

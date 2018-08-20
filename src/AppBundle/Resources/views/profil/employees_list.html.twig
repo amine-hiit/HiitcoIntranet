@@ -8,8 +8,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Liste des congés
-            <small></small>
+            {{ 'employees.list'|trans|capitalize }}            <small></small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-users"></i> Espace RH</a></li>
@@ -26,7 +25,7 @@
                 <div class="box">
                     <div class="box-header">
                         <center>
-                            <a type="button" class="btn btn-default btn-flat " href="/intranet/admin/register-new-employee">   Nouveau employé       </a>
+                            <a type="button" class="btn btn-default btn-flat " href="/intranet/admin/register-new-employee">   Nouvel employé       </a>
                             <a type="button" class="btn btn-default btn-flat disabled" href="/intranet/hrm/employees">  Liste des employés   </a>
                         </center>
                     </div>
@@ -71,13 +70,16 @@
                             {% for employee in employees %}
                                 <tr>
                                     <td>{{ employee.id }}</td>
-                                    <td><a href="/intranet/employee/{{ employee.id }}">
-                                            {% if employee.avatar is not empty %}
-                                                <img src="{{ asset(employee.avatar.url) }}" width = "32" height="32" style="border-radius: 50%;" />
-                                            {% else %}
-                                                <img src="{{ asset(default_avatar) }}" width = "32" height="32" style="border-radius: 50%;" />
-                                            {% endif %}
-                                            {{ employee.username }}</a>
+                                    <td>
+                                        <a href="/intranet/employee/{{ employee.id }}">
+                                            <img src="/intranet/file/avatar/{{
+                                            employee.avatar is defined
+                                            and employee.avatar is not null?
+                                            employee.avatar.id
+                                            :'0' }}" width = "32" height="32" style="border-radius: 50%;"
+                                            />
+                                            {{ employee.username }}
+                                        </a>
                                     </td>
                                     <td>{{ employee.email }}</td>
                                     {% if employee.valid %}
@@ -101,21 +103,19 @@
 {% block script %}
     <script src="{{ asset('bower_components/datatables.net/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
-{% endblock %}
-
-
-{% block javascript %}
-    $(document).ready(function () {
-    $('.sidebar-menu').tree()
-    $(function () {
-    $('#example2').DataTable({
-    'paging': true,
-    'lengthChange': true,
-    'searching': false,
-    'ordering': true,
-    'info': true,
-    'autoWidth': false
-    })
-    })
-    })
+    <script>
+        $(document).ready(function () {
+            $('.sidebar-menu').tree()
+            $(function () {
+                $('#example2').DataTable({
+                    'paging': true,
+                    'lengthChange': true,
+                    'searching': false,
+                    'ordering': true,
+                    'info': true,
+                    'autoWidth': false
+                })
+            })
+        })
+    </script>
 {% endblock %}

@@ -3,12 +3,15 @@
 namespace AppBundle\Manager;
 
 use AppBundle\Entity\Notification;
+use AppBundle\Entity\ReligiousPaidVacation;
+use AppBundle\Repository\ReligiousPaidVacationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use AppBundle\Entity\Vacation;
 use AppBundle\Entity\Employee;
 use PhpOffice\PhpSpreadsheet\Calculation\DateTime;
 use Psr\Log\LoggerInterface;
-
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class VacationManager
 {
@@ -61,8 +64,14 @@ class VacationManager
     private $logger;
 
     /**
+     * @var RouterInterface
+     */
+    private $router;
+
+    /**
      * VacationManager constructor.
      * @param EntityManagerInterface $em
+     * @param RouterInterface $router
      * @param NotificationManager $nm
      * @param EmailManager $emailManager
      * @param LoggerInterface $logger
@@ -71,9 +80,11 @@ class VacationManager
         EntityManagerInterface $em,
         NotificationManager $nm,
         EmailManager $emailManager,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        RouterInterface $router
     ) {
         $this->em = $em;
+        $this->router = $router;
         $this->nm = $nm;
         $this->emailManager = $emailManager;
         $this->logger = $logger;}
@@ -99,7 +110,7 @@ class VacationManager
 
     public function findOneById($vacationId)
     {
-        return $this->em->getRepository('AppBundle:Vacation')->findOneById($vacationId);
+        return $this->em->getRepository('AppBundle:Vacation')->find($vacationId);
 
     }
 
@@ -122,6 +133,8 @@ class VacationManager
 
     }
 
+
+
     public function adminValidation(Vacation &$vacation, $isValid, $refuseReason)
     {
         $admins = $this->em->getRepository('AppBundle:Employee')
@@ -137,14 +150,14 @@ class VacationManager
                 $this->generateNotification(
                     self::EMPLOYEE_NOTIF_ADMIN_ACCEPTATION,
                     [],
-                    'url',
+                    $this->router->generate('my_vacations_requests',[],UrlGeneratorInterface::ABSOLUTE_URL),
                     $employee
                 );
 
                 $this->generateNotification(
                     self::ADMIN_NOTIF_HRM_ACCEPTATION,
                     array('le service rh'),
-                    'url',
+                    $this->router->generate('approve',[],UrlGeneratorInterface::ABSOLUTE_URL),
                     $admins
                 );
             }catch (\Exception $exception){
@@ -152,19 +165,22 @@ class VacationManager
             }
         }
         elseif ('refuser' === $isValid) {
+
             $vacation->setValidationStatus('-1');
             $vacation->setRefuseReason($refuseReason);
             try {
                 $this->generateNotification(
                     self::EMPLOYEE_NOTIF_REFUSE,
                     [],
-                    'url',
+                    $this->router->generate('my_vacations_requests',[],UrlGeneratorInterface::ABSOLUTE_URL),
                     $employee);
+
             }catch (\Exception $exception){
                 $this->logger->error($exception->getMessage());
             }
-
         }
+        else
+          throw new \ErrorException("la validation soit par \"accperter\" ou par \"refuser\" ");
 
         $this->flush();
     }
@@ -186,13 +202,13 @@ class VacationManager
                 $this->generateNotification(
                     self::EMPLOYEE_NOTIF_HRM_ACCEPTATION,
                     ['Le responsable rh'],
-                    'url',
+                    $this->router->generate('my_vacations_requests',[],UrlGeneratorInterface::ABSOLUTE_URL),
                     $employee
                 );
                 $this->generateNotification(
                     self::ADMIN_NOTIF_HRM_ACCEPTATION,
                     ['Le responsable rh'],
-                    'url',
+                    $this->router->generate('approve',[],UrlGeneratorInterface::ABSOLUTE_URL),
                     $admins
                 );
             }catch (\Exception $exception){
@@ -207,14 +223,18 @@ class VacationManager
             $vacation->setValidationStatus('-1');
             $vacation->setRefuseReason($refuseReason);
 
-            $this->generateNotification(self::ADMIN_NOTIF_REFUSE,[], 'url', $admins);
+            $this->generateNotification(
+                self::ADMIN_NOTIF_REFUSE,
+                [],
+                $this->router->generate('approve',[],UrlGeneratorInterface::ABSOLUTE_URL),
+                $admins);
 
             try {
 
                 $this->generateNotification(
                     self::EMPLOYEE_NOTIF_REFUSE,
-                    [''],
-                    'url',
+                    [],
+                    $this->router->generate('my_vacations_requests',[],UrlGeneratorInterface::ABSOLUTE_URL),
                     $employee
                 );
             }catch (\Exception $exception){
@@ -253,12 +273,6 @@ class VacationManager
         $weekEndIncluded = true,
         $hollidayIncluded = true )
     {
-        if ($vacation->getDayPeriod() !== 'allDay') {
-            return $weekEndIncluded && $hollidayIncluded
-            && boolval($this->calculateWeekEndDaysNumberIncluded($vacation))
-            && boolval($this->calculateHolliDaysNumberIncluded($vacation)) ?
-                0 : 0.5;
-        }
 
         $endDate = $vacation->getEndDate();
         $startDate = $vacation->getStartDate();
@@ -269,6 +283,11 @@ class VacationManager
         if($startDate == $endDate && $this->isHolliDay($startDate))
             return 0;
 
+        if ($vacation->getDayPeriod() !== 'allDay') {
+            return boolval($this->calculateWeekEndDaysNumberIncluded($vacation))
+            || boolval($this->calculateHolliDaysNumberIncluded($vacation))?
+                0 : 0.5;
+        }
 
         $duration = $weekEndIncluded && $hollidayIncluded ? $endDate->diff($startDate)->days
             - $this->calculateWeekEndDaysNumberIncluded($vacation)
@@ -288,25 +307,6 @@ class VacationManager
         $monthIncluded = true
     )
     {
-        if ($vacation->getDayPeriod() !== 'allDay') {
-            if ($monthIncluded) {
-                return $weekEndIncluded && $hollidayIncluded
-                && boolval($this->calculateWeekEndDaysNumberIncluded($vacation))
-                && boolval($this->calculateHolliDaysNumberIncluded($vacation))
-                && !($month->format("m") >= $vacation->getStartDate()->format("m")
-                    && $month->format("Y") >= $vacation->getStartDate()->format("m"))
-                    ? 0 : 0.5;
-            } else {
-                return $weekEndIncluded && $hollidayIncluded
-                && boolval($this->calculateWeekEndDaysNumberIncluded($vacation))
-                && boolval($this->calculateHolliDaysNumberIncluded($vacation))
-                && !($month->format("m") > $vacation->getStartDate()->format("m")
-                    && $month->format("Y") >= $vacation->getStartDate()->format("m"))
-                    ? 0 : 0.5;
-            }
-        }
-
-
         if($vacation->getStartDate() == $vacation->getEndDate() && $this->isWeekEnd($vacation->getStartDate()))
             return 0;
 
@@ -318,21 +318,33 @@ class VacationManager
                 > strtotime($month->format("Y-m-d")))
                 return 0;
             else {
+                if ($vacation->getDayPeriod() !== 'allDay') {
+                    return( boolval($this->calculateWeekEndDaysNumberIncluded($vacation))
+                        || boolval($this->calculateHolliDaysNumberIncluded($vacation)))
+                    && !($month->format("m") > $vacation->getStartDate()->format("m")
+                        && $month->format("Y") >= $vacation->getStartDate()->format("m"))
+                        ? 0 : 0.5;
+                }
                 return $this->calculateDuration($vacation);
             }
-        }
-        else {
-
+        } else {
             if (strtotime($vacation->getStartDate()->format("Y-m-d"))
-                > strtotime($monthpp->format("Y-m-d")))
+                > strtotime($monthpp->format("Y-m-d"))){
                 return 0;
-            else {
+            } else {
+                if ($vacation->getDayPeriod() !== 'allDay') {
+                        return ( boolval($this->calculateWeekEndDaysNumberIncluded($vacation))
+                            || boolval($this->calculateHolliDaysNumberIncluded($vacation)))
+                        && !($month->format("m") > $vacation->getStartDate()->format("m")
+                            && $month->format("Y") > $vacation->getStartDate()->format("m"))
+                            ? 0 : 0.5;
+                }
                 return $this->calculateDuration($vacation);
             }
         }
     }
 
-    public function calculateDaysUntilStartDate($vacation)
+    public function calculateDaysUntilStartDate(Vacation $vacation)
     {
         $now = new \DateTime();
         $startTime = strtotime($vacation->getStartDate()->format('d-m-Y'));
@@ -347,10 +359,25 @@ class VacationManager
 
     private function isHolliDay(\DateTime $day){
 
+        if ($this->isWeekEnd($day)) {
+            return false;
+        }
         foreach (self::HOLLIDAYS as $key => $value)
         {
             if ($day->format('d') == $value['d'] &&  $day->format('m') == $value['m'])
                 return true;
+        }
+
+        $religiousHollidays = $this->em->getRepository(ReligiousPaidVacation::class)->findAll();
+
+        foreach ($religiousHollidays as $holliday)
+        {
+
+            if ($holliday->getStartDate()->format('d') ===  $day->format('d')
+                && $holliday->getStartDate()->format('m') ===  $day->format('m')
+                && $holliday->getStartDate()->format('y') ===  $day->format('y')) {
+                return true;
+            }
         }
         return false;
     }
@@ -401,11 +428,14 @@ class VacationManager
 
     public function calculateHolliDaysNumberIncluded(Vacation $vacation)
     {
+
         $holliDaysNumber = 0;
         $startDate = $vacation->getStartDate();
         $endDate = $vacation->getEndDate();
-        //because the end date is not included
+        $endDate->modify('+1 day');
 
+
+        //because the end date is not included
         $period = new \DatePeriod($startDate,
             new \DateInterval('P1D'),
             $endDate);
@@ -416,6 +446,7 @@ class VacationManager
             }
         }
 
+        $endDate->modify('-1 day');
         return $holliDaysNumber;
     }
 
@@ -525,6 +556,7 @@ class VacationManager
             $months = $this->calculateYearBalances($i, $employee);
             $years[$i] = $months;
         }
+
         return $years;
 
     }
@@ -568,6 +600,7 @@ class VacationManager
 
         $vacations = $this->findByStatusAndUser(2,$employee);
         foreach ($vacations as $vacation){
+
             $monthIniBalance -= $this->calculateDurationBeforeMonth(    $vacation,
                 $monthDate,
                 true,
@@ -624,7 +657,7 @@ class VacationManager
 
     public function generateNotification($notifType,array $args = null, $url, $employees)
     {
-        $this->nm->generateNotification($notifType, $args, '/intranet/my-docs', $employees);
+        $this->nm->generateNotification($notifType, $args, $url, $employees);
     }
 
     public function request(Vacation &$vacation)
@@ -636,40 +669,49 @@ class VacationManager
             $vacation->setEndDate($startDate);
 
         $notifConcerned = [];
-        $notifConcerned = array_merge($notifConcerned,$this->em->getRepository('AppBundle:Employee')
+        $notifConcerned = array_merge($notifConcerned,$this->em->getRepository(Employee::class)
             ->findByRole(Employee::ROLE_HR));
-        $notifConcerned = array_merge($notifConcerned,$this->em->getRepository('AppBundle:Employee')
+        $notifConcerned = array_merge($notifConcerned,$this->em->getRepository(Employee::class)
             ->findByRole(Employee::ROLE_ADMIN));
 
 
 
         try {
-
             $this->generateNotification(
                 self::VACATION_REQUEST_NOTIF,
                 array($vacation->getEmployee()->getUsername()),
-                'url',
+                $this->router->generate('approve',[],UrlGeneratorInterface::ABSOLUTE_URL),
                 $notifConcerned
             );
         }catch (\Exception $exception){
             $this->logger->error($exception->getMessage());
         }
 
-
         $this->persist($vacation);
         $this->flush();
     }
 
-    public function persist($vacation)
+    public function persist(Vacation $vacation)
     {
         //set duration attribute before persisting
         $vacation->setDuration($this->calculateDuration($vacation, true));
-
         $this->em->persist($vacation);
     }
 
     public function flush()
     {
+        $this->em->flush();
+    }
+
+    public function addReligiousVacation(ReligiousPaidVacation $religiousVacation)
+    {
+        if ( ReligiousPaidVacation::RELIGIOUS_VACATIONS['FIRST_MOHARRAM'] !== $religiousVacation->getReference() ){
+            $endDate = clone ($religiousVacation->getStartDate());
+            $religiousVacation->setEndDate($endDate->modify('+1 day'));
+        } else {
+            $religiousVacation->setEndDate(clone ($religiousVacation->getStartDate()));
+        }
+        $this->em->persist($religiousVacation);
         $this->em->flush();
     }
 }

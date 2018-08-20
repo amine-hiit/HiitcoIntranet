@@ -126,7 +126,7 @@
             <small></small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa  fa-home"></i> Accueil</a></li>
+            <li><a href="#"><i class="fa  fa-user"></i> Fiche collaborateur</a></li>
         </ol>
     </section>
 
@@ -215,7 +215,7 @@
                                                 {{ form_label(form.phoneNumber, 'phone.number'|trans|capitalize) }}
                                                 {{ form_widget(form.phoneNumber, {'attr':{
 
-                                                    'class':'form-control'
+                                                    'class':'form-control phoneNumber'
                                                 }}) }}
                                             </div>
 
@@ -249,7 +249,54 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="tab">
+                            {{ form_label(form.formations, 'employee.formations'|trans|capitalize) }}
+                            <div class="row">
+                                <div class="col-sm-12 col-xs-12">
+                                    <div id="formation-fields-list"
+                                         data-prototype=
+                                         "
+                                                    {% filter escape %}
+                                                    {% include '@App/profil/prototype/formation_prototype.html.twig' with { 'item': form.formations.vars.prototype } %}
+                                                    {% endfilter %}
+                                             "
+                                         data-widget-tags="{{ '<div class="formation"></div>'|e }}">
+                                    </div>
 
+                                    <a href="#"
+                                       class="add-formation-collection-widget"
+                                       data-list="#formation-fields-list"
+                                    >
+
+                                        {{ 'add.formation'|trans|capitalize }}
+                                    </a>
+                                </div>
+                            </div>
+
+
+                            {{ form_label(form.employee_languages, 'employee.languages'|trans|capitalize) }}
+                            <div class="row">
+                                <div class="col-sm-12 col-xs-12">
+                                    <div id="language-fields-list"
+                                         data-prototype=
+                                         "
+                                                    {% filter escape %}
+                                                    {% include '@App/profil/prototype/language_prototype.html.twig' with { 'item': form.employee_languages.vars.prototype } %}
+                                                    {% endfilter %}
+                                             "
+                                         data-widget-tags="{{ '<div class="language"></div>'|e }}">
+                                    </div>
+
+                                    <a href="#"
+                                       class="add-language-collection-widget"
+                                       data-list="#language-fields-list"
+                                    >
+                                        {{ 'add.formation'|trans|capitalize }}
+
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                         <div class="tab">
                             {{ form_label(form.experiences, 'experiences'|trans|capitalize) }}
                             <div class="row">
@@ -293,64 +340,15 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab">
-                            {{ form_label(form.employee_formations, 'employee.formations'|trans|capitalize) }}
-                            <div class="row">
-                                <div class="col-sm-12 col-xs-12">
-                                    <div id="formation-fields-list"
-                                         data-prototype=
-                                         "
-                                                    {% filter escape %}
-                                                    {% include '@App/profil/prototype/formation_prototype.html.twig' with { 'item': form.employee_formations.vars.prototype } %}
-                                                    {% endfilter %}
-                                             "
-                                         data-widget-tags="{{ '<div class="formation"></div>'|e }}">
-                                    </div>
-
-                                    <a href="#"
-                                       class="add-formation-collection-widget"
-                                       data-list="#formation-fields-list"
-                                    >
-
-                                        {{ 'add.formation'|trans|capitalize }}
-                                    </a>
-                                </div>
-                            </div>
-
-
-                            {{ form_label(form.employee_languages, 'employee.languages'|trans|capitalize) }}
-                            <div class="row">
-                                <div class="col-sm-12 col-xs-12">
-                                    <div id="language-fields-list"
-                                         data-prototype=
-                                         "
-                                                    {% filter escape %}
-                                                    {% include '@App/profil/prototype/language_prototype.html.twig' with { 'item': form.employee_languages.vars.prototype } %}
-                                                    {% endfilter %}
-                                             "
-                                         data-widget-tags="{{ '<div class="language"></div>'|e }}">
-                                    </div>
-
-                                    <a href="#"
-                                       class="add-language-collection-widget"
-                                       data-list="#language-fields-list"
-                                    >
-                                        {{ 'add.formation'|trans|capitalize }}
-
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- end tab-->
                     </div>
                 </div>
                 <!-- end row -->
                 <div style="float:right;">
                     <button type="button" id="prevBtn" class="btn bg-navy btn-flat " style="width: 200px;"
-                            onclick="nextPrev(-1)">Previous
+                            onclick="nextPrev(-1)">{{ 'previous'|trans|capitalize }}
                     </button>
                     <button type="button" id="nextBtn" class="btn bg-navy btn-flat " style="width: 200px;"
-                            onclick="nextPrev(1)">Next
+                            onclick="nextPrev(1)">{{ 'next'|trans|capitalize }}
                     </button>
                 </div>
                 <!-- Circles which indicates the steps of the form: -->
@@ -359,7 +357,10 @@
                     <span class="step"></span>
                     <span class="step"></span>
                 </div>
-                {% do form.employee_formations.setRendered %}
+                {% do form.maritalStatus.setRendered %}
+                {% do form.cnssNumber.setRendered %}
+                {% do form.civility.setRendered %}
+                {% do form.formations.setRendered %}
                 {% do form.projects.setRendered %}
                 {% do form.experiences.setRendered %}
                 {% do form.employee_languages.setRendered %}
@@ -369,7 +370,6 @@
         </div>
         <!-- /.box -->
     </section>
-    </div>
 
     <!-- /.content -->
     <!-- /.content-wrapper -->

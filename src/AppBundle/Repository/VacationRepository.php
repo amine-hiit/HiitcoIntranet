@@ -93,4 +93,42 @@ class VacationRepository extends EntityRepository
 	    ->getResult()
 	  ;
 	}
+
+    public function findAllQuery(
+        $orderBy = null,
+        $direction = 'desc'
+    )
+    {
+        $qb = $this->createQueryBuilder('v');
+
+        if ($orderBy)
+            $qb->orderBy('v.'.$orderBy, $direction);
+
+        return $qb->getQuery();
+    }
+
+    public function findAllByEmployeeQuery(
+        $orderBy = null,
+        $direction = 'desc',
+        Employee $employee = null,
+        $filters = []
+    )
+    {
+
+        $qb = $this->createQueryBuilder('v');
+
+        if ($orderBy)
+            $qb->orderBy('v.'.$orderBy, $direction);
+        if (null !== $employee)
+            $qb->where('v.employee = :employee')
+                ->setParameter('employee', $employee);
+        if($this->count($filters) > 0) {
+            foreach ($filters as $filter => $value)
+                $qb->andWhere('v.'.$filter.' = \''.$value.'\'');
+
+        }
+
+        return $qb->getQuery();
+    }
+    
 }

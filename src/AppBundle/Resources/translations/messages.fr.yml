@@ -19,7 +19,7 @@ dependent.child: enfants dépendants
 cnss.number: cnss
 start.date: date du début
 avatar: avatar
-current.position: position courante
+current.position: position actuelle
 status: status
 employee.formations: Formations
 experiences: expériences
@@ -46,12 +46,18 @@ current.password: mot de passe actuel
 new.password: nouveau mot de passe
 new.password.verification: vérification du nouveau mot de passe
 change.password: changer mot de passe
+
 update: modifier
+edit: modifier
 delete: supprimer
 cancel: annuler
 submit: envoyer
 validate: valider
-set.ready: mettre disponible
+set.ready: délivrer
+choose: choisir
+other: autre
+next: suivant
+previous: précédent
 
 new.experience: nouvelle expérience
 new.project: nouvelle projets
@@ -105,7 +111,10 @@ Oct: octobre
 Nov: novembre
 Dec: decembre
 
+year: année
 month: mois
+day: jour
+
 balance.at.first: solde au début
 vacation.requests.duration: durée de congés demandés
 balance.left: solde restant
@@ -119,7 +128,7 @@ doc.validated.success: la demande est bien validée
 doc.ready.success: le document est bien disponible
 
 configuration: configuration
-parameters: parametres
+parameters: paramètres
 emails: emails
 
 role: rôle
@@ -134,3 +143,42 @@ set.new.password: saisir nouveau mot de passe
 cooptation.request: demande de cooptation
 fill.employee.form: invitation pour remplir la fiche collaborateur
 other.email.type: autre réference d'email
+
+speciality: spécialité
+diploma: diplôlme
+
+
+native: langue maternelle
+begginer: débutant
+intermediate: moyen
+advanced: avancé
+
+my.vacations: mes congés
+my.vacation.balance: mon solde de congé
+vacation.list: Liste des congé
+
+employees.list: Liste des employés
+
+project: projet
+new.project: nouveau projet
+
+unique.vacation.date.error : Vous avez déjà une demande de congé dans cette periode
+start.date.greater.than.end.date.error : La date de début ne doit pas être supérieur que celle de la fin
+vacation.balance.not.enough.error : Vous n'avez pas assez de solde de congé pour demander un congé de cette durée
+not.enough.days.until.start.day.error : Le congé doit être demandé 30 jour à l'avance
+now.greater.than.start.date.error : Vous ne pouvez pas demander un congé dont le début est avant aujourd'hui
+
+AID_AL_MAWLID: aid al mawlid
+AID_AL_FITR: aid al fitr
+AID_AL_ADHA: aid al adha
+FIRST_MOHARRAM: premier moharram
+add.religious.vacation.day: Ajouter un jour férié religieux
+religious.vacations.list: Liste des jours fériés religieux
+
+duration: durée
+allDay:  journée
+afternoon: après-midi
+morning: matin
+
+vacation.paramerters: paramètres congés
+basic.parameters: paramètres basiques

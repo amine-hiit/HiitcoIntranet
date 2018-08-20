@@ -1,8 +1,12 @@
 <?php
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Avatar;
+use AppBundle\Entity\Employee;
+use AppBundle\Entity\File;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Debug\Exception\ContextErrorException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Entity\Vacation;
@@ -15,10 +19,55 @@ class FileController extends Controller
 
 
     /**
+     * @Route("/intranet/file/{type}/{id}", name = "download_file", requirements={
+     *     "id" = "\d+",
+     *     "type" = "avatar|resume|pdf|document"
+     * })
+     *
+     */
+
+    public function downloadAction(Request $request,$type,$id)
+    {
+
+        $response = new Response();
+
+        $type = ucfirst($type);
+        /**
+         * @var  File $file
+         */
+        $file = $this->getDoctrine()->getRepository('AppBundle\\Entity\\'.$type)->find($id);
+        $response->headers->set('Content-Type', $file->getMimeType());
+
+        if (null !== $file) {
+            try {
+                $fileContent = file_get_contents($this->get('kernel')->getRootDir() .'/../web/'.$file->getUrl());
+                $response->setContent($fileContent);
+                return $response;
+            } catch (\Exception $e) {
+                return new Response('content not found', 404);
+            }
+        }
+        else{
+            if ($type === 'Avatar'){
+                $fileContent = file_get_contents(
+                    $this->get('kernel')->getRootDir() .'/../web/img/avatar/default-avatar.png'
+                );
+                $response->setContent($fileContent);
+                return $response;
+            }
+            return new Response("file does not exist",404);
+        }
+    }
+
+
+    /**
      * @Route("/intranet/hrm/export/vacation-requests", name = "premier_test")
      */
-    public function xlsExportAxtion()
+    public function xlsExportAction()
     {
+
+
+
         $lm = $this->get('app.vacation.manager');
         $listVacation = $lm->findAll();
         $newSpreadsheet = $this->get('phpoffice.spreadsheet')->createSpreadsheet();

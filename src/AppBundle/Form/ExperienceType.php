@@ -2,6 +2,8 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Entity\Employee;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -20,10 +22,10 @@ class ExperienceType extends AbstractType
             ->add('position',TextType::class)
             ->add('description',TextareaType::class)
             ->add('startDate',DateType::class, array(
-                'format' => 'MM/dd/yyyy',
+                'format' => 'dd/MM/yyyy',
                 'widget' => 'single_text'))
             ->add('endDate',DateType::class, array(
-                'format' => 'MM/dd/yyyy',
+                'format' => 'dd/MM/yyyy',
                 'widget' => 'single_text'))
             ->add('city',TextType::class)
             ->add('country',TextType::class)

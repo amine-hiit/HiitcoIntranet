@@ -1,0 +1,143 @@
+{% set profileOwner = form.vars.value == app.user %}
+{% if is_granted('ROLE_HR') or profileOwner %}
+<div class="row">
+    <div class='col-sm-12 col-xs-12'>
+    {{ form_start(form, {'attr': {'action':'/intranet/update/employee/' ~ form.vars.value.id, 'method':'POST'}}) }}
+
+        <div class="row">
+            <div class='col-sm-6 col-xs-12'>
+                <div class='form-group'>
+                    {{ form_label(form.birthday, 'birthday'|trans|capitalize) }}
+                    <div class='input-group date'>
+                        <div class='input-group-addon'>
+                            <i class='fa fa-calendar'></i>
+                        </div>
+                        {{ form_widget(form.birthday, {'attr':{
+                            'class':'form-control pull-right datepicker'
+                        }}) }}
+                    </div>
+                </div>
+            </div>
+            <div class='col-sm-6 col-xs-12'>
+                <div class='form-group'>
+                    {{ form_label(form.firstName, 'first.name'|trans|capitalize) }}
+                    {{ form_widget(form.firstName, {'attr':{
+                        'class':'form-control'
+                    }}) }}
+                </div>
+            </div>
+        </div>
+
+        {% if is_granted('ROLE_HR') %}
+
+        <div class="row">
+            <div class='col-sm-6 col-xs-12'>
+                <div class='form-group'>
+                    {{ form_label(form.maritalStatus, 'marital.status'|trans|capitalize) }}
+                    {{ form_widget(form.maritalStatus, {'attr':{
+                        'class':'form-control'
+                    }}) }}
+                </div>
+            </div>
+            <div class='col-sm-6 col-xs-12'>
+                <div class='form-group'>
+                    {{ form_label(form.cnssNumber, 'cnss.number'|trans|capitalize) }}
+                    {{ form_widget(form.cnssNumber, {'attr':{
+                        'class':'form-control'
+                    }}) }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class='col-sm-6 col-xs-12'>
+                <div class='form-group'>
+                    {{ form_label(form.civility, 'civility'|trans|capitalize) }}
+                    {{ form_widget(form.civility, {'attr':{
+
+                        'class':'form-control'
+                    }}) }}
+                </div>
+            </div>
+            <div class='col-sm-6 col-xs-12'>
+                <div class='form-group'>
+                    {{ form_label(form.username, 'user.name'|trans|capitalize) }}
+                    {{ form_widget(form.username, {'attr':{
+                        'class':'form-control'
+                    }}) }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class='col-sm-6 col-xs-12'>
+                <div class='form-group'>
+                    {{ form_label(form.lastName, 'last.name'|trans|capitalize) }}
+                    {{ form_widget(form.lastName, {'attr':{
+                        'class':'form-control'
+                    }}) }}
+                </div>
+            </div>
+            <div class='col-sm-6 col-xs-12'>
+                <div class='form-group'>
+                    {{ form_label(form.dependentChild, 'dependent.child'|trans|capitalize) }}
+                    {{ form_widget(form.dependentChild, {'attr':{
+                        'class':'form-control'
+                    }}) }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class='col-sm-6 col-xs-12'>
+                <div class='form-group'>
+                    {{ form_label(form.address, 'address'|trans|capitalize) }}
+                    {{ form_widget(form.address, {'attr':{
+                        'class':'form-control'
+                    }}) }}
+                </div>
+            </div>
+            <div class='col-sm-6 col-xs-12'>
+                <div class='form-group'>
+                    {{ form_label(form.phoneNumber, 'phone.number'|trans|capitalize) }}
+                    {{ form_widget(form.phoneNumber, {'attr':{
+
+                        'class':'form-control'
+                    }}) }}
+                </div>
+            </div>
+        </div>
+        {% else %}
+            {% do form.maritalStatus.setRendered %}
+            {% do form.cnssNumber.setRendered %}
+            {% do form.civility.setRendered %}
+            {% do form.username.setRendered %}
+            {% do form.lastName.setRendered %}
+            {% do form.phoneNumber.setRendered %}
+            {% do form.address.setRendered %}
+            {% do form.dependentChild.setRendered %}
+        {% endif %}
+
+            {% do form.employee_languages.setRendered %}
+            {% do form.formations.setRendered %}
+            {% do form.projects.setRendered %}
+            {% do form.experiences.setRendered %}
+            {% do form.avatar.setRendered %}
+        <div class="row">
+            <div class="col-sm-6 col-xs-6">
+                <a type="button" class="btn btn-default flat"
+                   style="width: 100%" data-dismiss="modal">
+                    {{ 'cancel'|trans|capitalize }}
+                </a>
+            </div>
+            <div class="col-sm-6 col-xs-6">
+                <a id="submit-edit-form"  type="button" class="btn btn-default flat"
+                   style="width: 100%">
+                    {{ 'submit'|trans|capitalize }}
+                </a>
+            </div>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+</div>
+ {% endif %}
+
+

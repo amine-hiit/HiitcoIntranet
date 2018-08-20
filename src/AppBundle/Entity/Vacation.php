@@ -4,6 +4,9 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use AppBundle\Validator\Constraints\VacationPeriode;
+use Swagger\Annotations as SWG;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * Vacation
@@ -31,6 +34,7 @@ class Vacation
 
     /**
      * @var string
+     * @SWG\Property(description="accept only vacation or absence")
      * @ORM\Column(name="type", type="string")
      */
     private $type;

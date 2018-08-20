@@ -40,13 +40,13 @@
 
             </div>
 
-            <!-- /.box-header -->
 
 
-            <div class="list-group notifications">
-
-            </div>
-
+            <div class="list-group">
+                <div class="notifications">
+                </div>
+                <div class="list-group-item"> <a id="see-more">{% trans %}see more{% endtrans %}</a>
+                </div>
             <!-- /.box-body -->
             <div class="box-footer">
             </div>
@@ -59,11 +59,8 @@
 
 
 {% block script %}
-    <script src="../../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    <script src="{{ asset('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
+    <script src="{{ asset('bower_components/infinite-scroll/dist/infinite-scroll.pkgd.js') }}"></script>
+
     <!-- Intranet scripts-->
-    <script src="{{ asset('intra/js/notification.js') }}"></script>
 {% endblock %}
-
-
-  {% block javascript %}
-  {% endblock %}

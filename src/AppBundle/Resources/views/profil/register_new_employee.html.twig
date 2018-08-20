@@ -1,6 +1,5 @@
 {% extends "default/layout.html.twig" %}
-
-{% set title = "Inscrire un nouveau employé" %}
+{% set title = "Inscrire un nouvel employé" %}
 {% set profile = "profile" %}
 
 {% block stylesheet %}
@@ -10,138 +9,114 @@
             color: red;
         }
     </style>
-
 {% endblock %}
 
-
 {% block content %}
-
-
-    <!-- Main content -->
     <section class="content-header">
-
         <h1>
-            Inscrire un nouveau employé:
+            Inscrire un nouvel employé:
             <small></small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa  fa-home"></i> Espace RH</a></li>
             <li><a href="#">  Employés</a></li>
-            <li><a href="#"> Nouveau employé</a></li>
+            <li><a href="#"> Nouvel employé</a></li>
         </ol>
     </section>
-
     <section class="content">
-        <div class="col-sm-12 col-xs-12 ">
-            <div class="box box-info">
-                {{ form_start(form) }}
+        <div class="row">
+            <div class="col-sm-12 col-xs-12 ">
+                <div class="box box-info">
+                    {{ form_start(form) }}
 
-                <div class="box-header with-border">
-                    <center>
-                        <a type="button" class="btn btn-default btn-flat disabled" href="/intranet/admin/register-new-employee">   Nouveau employé       </a>
-                        <a type="button" class="btn btn-default btn-flat " href="/intranet/hrm/employees">  Liste des employés   </a>
-                    </center>
-                </div>
-                <div class="box-body">
-                    <div class="col-sm-6 col-xs-12">
-                        <div class="form-group" >
-                            {{ form_label(form.username, 'user.name'|trans|capitalize) }}
-                            {{ form_widget(form.username, {'attr':{
-
-                                'class':'form-control'
-                            }}) }}
-                        </div>
-                        <div class="form-group" >
-                            {{ form_label(form.email, 'email'|trans|capitalize) }}
-                            {{ form_widget(form.email, {'attr':{
-
-                                'class':'form-control'
-                            }}) }}
-                        </div>
-                        <div class="form-group" >
-                            {{ form_label(form.plainPassword.first, 'password'|trans|capitalize) }}
-                            {{ form_widget(form.plainPassword.first, {'attr':{
-
-                                'class':'form-control'
-                            }}) }}
-                        </div>
-                        <div class="form-group" >
-                            {{ form_label(form.plainPassword.second, 'password.verification'|trans|capitalize) }}
-                            {{ form_widget(form.plainPassword.second, {'attr':{
-
-                                'class':'form-control'
-                            }}) }}
-                        </div>
-                        <div class="form-group">
-                            {{ form_label(form.currentPosition, 'current.position'|trans|capitalize) }}
-                            {{ form_widget(form.currentPosition, {'attr':{
-
-                                'class':'form-control'
-                            }}) }}
-                        </div>
+                    <div class="box-header with-border">
+                        <center>
+                            <a type="button" class="btn btn-default btn-flat disabled" href="/intranet/admin/register-new-employee">   Nouvel employé       </a>
+                            <a type="button" class="btn btn-default btn-flat " href="/intranet/hrm/employees">  Liste des employés   </a>
+                        </center>
                     </div>
-
-                    <div class="col-sm-6 col-xs-12">
-                        <div class="form-group ">
-                            {{ form_label(form.civility, 'civility'|trans|capitalize) }}
-                            {{ form_widget(form.civility, {'attr':{
-                                'class':'form-control'
-                            }}) }}
-                        </div>
-                        <div class="form-group ">
-                            {{ form_label(form.maritalStatus, 'marital.status'|trans|capitalize) }}
-                            {{ form_widget(form.maritalStatus, {'attr':{
-
-                                'class':'form-control'
-                            }}) }}
-                        </div>
-                        <div class="form-group">
-                            {{ form_label(form.cnssNumber, 'cnss.number'|trans|capitalize) }}
-                            {{ form_widget(form.cnssNumber, {'attr':{
-
-                                'class':'form-control'
-                            }}) }}
-                        </div>
-                        <div class="form-group ">
-                            {{ form_label(form.startDate, 'start.date'|trans|capitalize) }}
-                            <div class="input-group date">
-                                <div class="input-group-addon">
-                                    <i class="fa fa-calendar"></i>
-                                </div>
-                                {{ form_widget(form.startDate, {'attr':{
-
-                                    'class':'form-control pull-right datepicker'
+                    <div class="box-body">
+                        <div class="col-sm-6 col-xs-12">
+                            <div class="form-group" >
+                                {{ form_label(form.username, 'user.name'|trans|capitalize) }}
+                                {{ form_widget(form.username, {'attr':{
+                                    'class':'form-control'
+                                }}) }}
+                            </div>
+                            <div class="form-group" >
+                                {{ form_label(form.email, 'email'|trans|capitalize) }}
+                                {{ form_widget(form.email, {'attr':{
+                                    'class':'form-control'
+                                }}) }}
+                            </div>
+                            <div class="form-group" >
+                                {{ form_label(form.plainPassword.first, 'password'|trans|capitalize) }}
+                                {{ form_widget(form.plainPassword.first, {'attr':{
+                                    'class':'form-control'
+                                }}) }}
+                            </div>
+                            <div class="form-group" >
+                                {{ form_label(form.plainPassword.second, 'password.verification'|trans|capitalize) }}
+                                {{ form_widget(form.plainPassword.second, {'attr':{
+                                    'class':'form-control'
+                                }}) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.currentPosition, 'current.position'|trans|capitalize) }}
+                                {{ form_widget(form.currentPosition, {'attr':{
+                                    'class':'form-control'
                                 }}) }}
                             </div>
                         </div>
-                        <div class="form-group">
-                            {{ form_label(form.status, 'status'|trans|capitalize) }}
-                            {{ form_widget(form.status, {'attr':{
-
-                                'class':'form-control'
-                            }}) }}
+                        <div class="col-sm-6 col-xs-12">
+                            <div class="form-group ">
+                                {{ form_label(form.civility, 'civility'|trans|capitalize) }}
+                                {{ form_widget(form.civility, {'attr':{
+                                    'class':'form-control'
+                                }}) }}
+                            </div>
+                            <div class="form-group ">
+                                {{ form_label(form.maritalStatus, 'marital.status'|trans|capitalize) }}
+                                {{ form_widget(form.maritalStatus, {'attr':{
+                                    'class':'form-control'
+                                }}) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.cnssNumber, 'cnss.number'|trans|upper) }}
+                                {{ form_widget(form.cnssNumber, {'attr':{
+                                    'class':'form-control'
+                                }}) }}
+                            </div>
+                            <div class="form-group ">
+                                {{ form_label(form.startDate, 'start.date'|trans|capitalize) }}
+                                <div class="input-group date">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    {{ form_widget(form.startDate, {'attr':{
+                                        'class':'form-control pull-right datepicker'
+                                    }}) }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.status, 'status'|trans|capitalize) }}
+                                {{ form_widget(form.status, {'attr':{
+                                    'class':'form-control'
+                                }}) }}
+                            </div>
                         </div>
-
                     </div>
-                </div>
-                <div class="box-footer">
-                    <div class="col-sm-12 col-xs-12">
-
-                        <input type="submit" class="btn bg-navy btn-flat pull-right" value="Envoyer" />
-
+                    <div class="box-footer">
+                        <div class="col-sm-12 col-xs-12">
+                            <input type="submit" class="btn bg-navy btn-flat pull-right" value="Envoyer" />
+                        </div>
                     </div>
+                    {{ form_end(form) }}
                 </div>
-                {{ form_end(form) }}
             </div>
         </div>
     </section>
-
-
-    <!-- /.content -->
-    <!-- /.content-wrapper -->
-
 {% endblock %}
-
 
 {% block script %}
     {# <script src="{{ asset('https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')}}"></script>#}

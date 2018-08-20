@@ -3,15 +3,18 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Validator\Constraints\StartDate;
+use Doctrine\Common\Collections\ArrayCollection;
 use FOS\UserBundle\Model\User as BaseUser;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation\Groups;
+use JMS\Serializer\Annotation as Serializer;
 
 
 /**
  * Employee
  *
+ * @StartDate(comparedToCurrentDay="before")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\EmployeeRepository")
  * @ORM\Table(name="employee")
  */
@@ -29,11 +32,18 @@ class Employee extends BaseUser
      */
     protected $id;
 
+    protected $username;
+
+    protected $email;
+
+    protected $plainPassword;
+
     /**
      * @var bool
-     * @ORM\Column(name="valid", type="boolean", nullable=false, )
+     * @ORM\Column(name="valid", type="boolean", nullable=false )
      */
     private $valid = false;
+
 
     /**
      * @var string
@@ -53,22 +63,6 @@ class Employee extends BaseUser
      * @ORM\Column(name="civility" , type="string", nullable=true)
      */
     private $civility;
-
-    /**
-     * @return string
-     */
-    public function getCivility()
-    {
-        return $this->civility;
-    }
-
-    /**
-     * @param string $civility
-     */
-    public function setCivility($civility)
-    {
-        $this->civility = $civility;
-    }
 
     /**
      * @var \DateTime
@@ -113,6 +107,11 @@ class Employee extends BaseUser
     /**
      * @var string
      * @ORM\Column(name="phone_number" , type="string", nullable=true)
+     * @Assert\Regex(
+     *     pattern="/0[756][0-9]{8,8}$/",
+     *     match=true,
+     *     message="Your name cannot contain a number"
+     * )
      */
     private $phoneNumber;
 
@@ -140,8 +139,6 @@ class Employee extends BaseUser
      */
     private $status;
 
-
-
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      * @ORM\OneToMany(targetEntity="EmployeeNotification", mappedBy="employee",cascade={"remove"})
@@ -150,42 +147,10 @@ class Employee extends BaseUser
     private $notifications;
 
     /**
-     * @return mixed
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return \Doctrine\Common\Collections\ArrayCollection
-     */
-    public function getNotifications()
-    {
-        return $this->notifications;
-    }
-
-    /**
-     * @param \Doctrine\Common\Collections\ArrayCollection $notifications
-     */
-    public function setNotifications($notifications)
-    {
-        $this->notifications = $notifications;
-    }
-
-    /**
      * @var \Doctrine\Common\Collections\ArrayCollection
-     * @ORM\OneToMany(targetEntity="EmployeeFormation", mappedBy="employee", cascade={"persist","remove"})
+     * @ORM\OneToMany(targetEntity="Formation", mappedBy="employee", cascade={"persist","remove"})
      */
-    private $employeeFormations;
+    private $formations;
 
     /**
      * @var EmployeeLanguage
@@ -227,7 +192,8 @@ class Employee extends BaseUser
     public function __construct()
     {
         parent::__construct();
-        // your own logic
+        $this->notifications = new ArrayCollection();
+        $this->employeeLanguages = new ArrayCollection();
     }
 
 
@@ -606,40 +572,40 @@ class Employee extends BaseUser
 
 
     /**
-     * Add employeeFormation.
+     * Add formation.
      *
-     * @param \AppBundle\Entity\EmployeeFormation $employeeFormation
+     * @param \AppBundle\Entity\Formation $formation
      *
      * @return Employee
      */
-    public function addEmployeeFormation(\AppBundle\Entity\EmployeeFormation $employeeFormation)
+    public function addFormation(\AppBundle\Entity\Formation $formation)
     {
-        $employeeFormation->setEmployee($this);
-        $this->employeeFormations[] = $employeeFormation;
+        $formation->setEmployee($this);
+        $this->formations[] = $formation;
 
         return $this;
     }
 
     /**
-     * Remove employeeFormation.
+     * Remove formation.
      *
-     * @param \AppBundle\Entity\EmployeeFormation $employeeFormation
+     * @param \AppBundle\Entity\Formation $fFormation
      *
      * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removeEmployeeFormation(\AppBundle\Entity\EmployeeFormation $employeeFormation)
+    public function removeFormation(\AppBundle\Entity\Formation $formation)
     {
-        return $this->employeeFormations->removeElement($employeeFormation);
+        return $this->formations->removeElement($formation);
     }
 
     /**
-     * Get employeeFormations.
+     * Get formations.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getEmployeeFormations()
+    public function getFormations()
     {
-        return $this->employeeFormations;
+        return $this->formations;
     }
 
 
@@ -790,4 +756,53 @@ class Employee extends BaseUser
     {
         return $this->cooptations;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getNotifications()
+    {
+        return $this->notifications;
+    }
+
+    /**
+     * @param \Doctrine\Common\Collections\ArrayCollection $notifications
+     */
+    public function setNotifications($notifications)
+    {
+        $this->notifications = $notifications;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCivility()
+    {
+        return $this->civility;
+    }
+
+    /**
+     * @param string $civility
+     */
+    public function setCivility($civility)
+    {
+        $this->civility = $civility;
+    }
 }
+

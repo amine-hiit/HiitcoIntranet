@@ -49,6 +49,26 @@ class EmployeeNotificationRepository extends \Doctrine\ORM\EntityRepository
         }
     }
 
+    public function findAllByEmployeeQuery(
+        $orderBy = null,
+        $direction = 'desc',
+        Employee $employee = null,
+        $filters = []
+    ){
+        $qb = $this->createQueryBuilder('en')
+            ->innerJoin('en.notification', 'n')
+            ->where('en.employee = :employee')
+            ->setParameter('employee', $employee);
+        if (is_array($filters) && $this->count($filters) > 0) {
+
+            foreach ($filters as $filter => $value) {
+                $qb->andWhere('n.'.$filter.'=.value')
+                    ->setParameter('value', $value);
+            }
+        }
+        return $qb->getQuery()->getResult();
+    }
+
     public function findLastTeenByEmployee(Employee $employee)
     {
         $qb = $this->createQueryBuilder('en')

@@ -1,0 +1,107 @@
+AppBundle\Entity\Employee:
+    exclusion_policy: ALL
+    xml_root_name: employee
+    properties:
+        id:
+            expose: true
+            groups: [test, basic_info, detail, list, default]
+        valid :
+            expose: true
+            groups: [basic_info, detail, list]
+
+        username:
+            expose: true
+            groups: [basic_info, detail, list, register]
+
+        firstName:
+            expose: true
+            groups: [basic_info, detail, list, employeeForm]
+
+        lastName:
+            expose: true
+            groups: [basic_info, detail, list, employeeForm]
+
+        email:
+            expose: true
+            groups: [basic_info, detail, list, register]
+
+        plainPassword:
+            expose: true
+            groups: [register]
+
+        civility:
+            expose: true
+            groups: [basic_info, detail, register]
+
+        birthday:
+            expose: true
+            groups: [basic_info, detail, employeeForm]
+
+        maritalStatus:
+            expose: true
+            groups: [basic_info, detail, register]
+
+        dependentChild:
+            expose: true
+            groups: [basic_info, detail, employeeForm]
+
+        photoId:
+            expose: true
+            groups: [basic_info, detail]
+
+        cnssNumber:
+            expose: true
+            groups: [basic_info, detail, register]
+
+        phoneNumber:
+            expose: true
+            groups: [basic_info, detail, employeeForm]
+
+        address:
+            expose: true
+            groups: [basic_info, detail, employeeForm]
+
+        startDate:
+            expose: true
+            groups: [basic_info, detail, register]
+
+        currentPosition:
+            expose: true
+            groups: [basic_info, detail, register]
+
+        status:
+            expose: true
+            groups: [basic_info, detail, register]
+
+        notifications:
+            expose: false
+
+        formations:
+            expose: true
+            groups: [detail, employeeForm]
+
+        employeeLanguages:
+            expose: true
+            groups: [detail, employeeForm]
+
+        experiences:
+            expose: true
+            groups: [detail, employeeForm]
+
+        projects:
+            expose: true
+            groups: [detail, employeeForm]
+
+        cooptations:
+            expose: false
+
+        avatar:
+            type: AppBundle\Entity\Avatar
+            expose: true
+            groups: [detail, list, default, employeeForm]
+
+        Employee:
+            type: AppBundle\Entity\Employee
+            expose: true
+            groups: [list, default]
+

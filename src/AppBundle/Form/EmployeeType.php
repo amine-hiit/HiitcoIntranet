@@ -27,9 +27,15 @@ class EmployeeType extends AbstractType
                 'disabled' => true))
             ->add('lastName',TextType::class, array(
                 'required' => true))
+            ->add('maritalStatus',TextType::class, array(
+                'required' => true))
+            ->add('cnssNumber',TextType::class, array(
+                'required' => true))
+            ->add('civility',TextType::class, array(
+                'required' => true))
 
             ->add('birthday',DateType::class, array(
-                'format' => 'MM/dd/yyyy',
+                'format' => 'dd/MM/yyyy',
                 'widget' => 'single_text',
                 'required' => true))
             ->add('dependentChild', IntegerType::class ,array(
@@ -41,9 +47,10 @@ class EmployeeType extends AbstractType
 
 
             ->add('avatar',     AvatarType::class)
-            ->add('employee_formations', CollectionType::class, array(
-                'entry_type' => EmployeeFormationType::class,
+            ->add('formations', CollectionType::class, array(
+                'entry_type' => FormationType::class,
                 'allow_add' => true,
+                'required'=>true,
                 'delete_empty' => true,
                 'allow_delete' => true,
                 'prototype' => true,
@@ -88,11 +95,13 @@ class EmployeeType extends AbstractType
 
 
 
-        //->add('employeeformation', EmployeeFormationType::class);
+        //->add('employeeformation', FormationType::class);
 
-    }/**
- * {@inheritdoc}
- */
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
@@ -107,6 +116,5 @@ class EmployeeType extends AbstractType
     {
         return 'appbundle_employee';
     }
-
-
 }
+

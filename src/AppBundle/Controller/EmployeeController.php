@@ -9,7 +9,14 @@
 namespace AppBundle\Controller;
 
 
+use AppBundle\Entity\EmployeeLanguage;
+use AppBundle\Entity\Language;
+use AppBundle\Entity\Project;
+use AppBundle\Entity\Setting;
+use AppBundle\Form\EmployeeLanguageType;
 use AppBundle\Form\EmployeeRegistrationType;
+use AppBundle\Form\ProjectType;
+use AppBundle\Form\SettingType;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use FOS\UserBundle\Form\Type\ChangePasswordFormType;
@@ -23,13 +30,10 @@ use FOS\UserBundle\Form\Type\ResettingFormType;
 use AppBundle\Entity\Employee;
 use AppBundle\Entity\Formation;
 use AppBundle\Entity\Experience;
-use AppBundle\Entity\EmployeeFormation;
 
 use AppBundle\Form\EmployeeType;
 use AppBundle\Form\FormationType;
 use AppBundle\Form\ExperienceType;
-use AppBundle\Form\EmployeeFormationType;
-
 class EmployeeController extends Controller
 {
 
@@ -45,12 +49,9 @@ class EmployeeController extends Controller
         $form->handleRequest($request);
 
         if( $form->isSubmitted() ){
-
-            if($form->isValid()){
-                $employee->addRole("ROLE_EMPLOYEE");
-                $employeeManager->registerNewEmployee($employee);
-                $this->addFlash('success',$this->trans('flash.employee.registred'));
-            }
+            $employee->addRole("ROLE_EMPLOYEE");
+            $employeeManager->registerNewEmployee($employee);
+            $this->addFlash('success',$this->trans('flash.employee.registred'));
 
             return $this->redirect($this->generateUrl('employees-list'));
         }
@@ -76,7 +77,7 @@ class EmployeeController extends Controller
 
     /**
      * @Route("/intranet/new-password", name="new-password")
-         * @Route("/new-password/{token}", name="new-emplyee-password")
+     * @Route("/new-password/{token}", name="new-emplyee-password")
      */
     public function newPasswordAction(Request $request, $token)
     {
@@ -135,7 +136,7 @@ class EmployeeController extends Controller
     public function emplyeeProfileAction(Request $request, Employee $employee)
     {
 
-        $employeemanager = $this->get('app.employee.manager');
+        $employeeManager = $this->get('app.employee.manager');
 
 
         if(!$employee->isValid())
@@ -144,35 +145,60 @@ class EmployeeController extends Controller
             ));
 
         $user = $this->get('security.token_storage')->getToken()->getUser();
+        $languages = $this->getDoctrine()->getRepository(EmployeeLanguage::class)->findAll();
+        $lastFormations = $employeeManager->findEmployeeLastFormation($employee);
+        $formations = $employeeManager->findEmployeeAllFormations($employee);
+        $experiences = $employeeManager->findEmployeeAllExperiences($employee);
+        $projects = $employeeManager->findEmployeeAllProjects($employee);
 
-        $lastFormations = $employeemanager->findEmployeeLastFormation($employee);
-        $formations = $employeemanager->findEmployeeAllFormations($employee);
-        $experiences = $employeemanager->findEmployeeAllExperiences($employee);
 
 
-
-        $employeeFormation =  $employeemanager->createEmployeeFormation();
+        $employeeFormation =  $employeeManager->createEmployeeFormation();
         $experience = new Experience();
+        $language = new EmployeeLanguage();
+        $project = new Project();
 
-        $employeeFormationForm = $this->get('form.factory')->create(EmployeeFormationType::class, $employeeFormation);
+        $employeeFormationForm = $this->get('form.factory')->create(FormationType::class, $employeeFormation);
         $experienceForm = $this->get('form.factory')->create(ExperienceType::class, $experience);
+        $languageForm = $this->get('form.factory')->create(EmployeeLanguageType::class, $language);
+        $projectForm = $this->get('form.factory')->create(ProjectType::class, $project);
 
         /* to be deleted from controller and used in manager */
         if ($request->isMethod('POST'))
         {
             if ($employeeFormationForm->handleRequest($request)->isValid())
             {
-                $employeemanager->setUserToAttribute($employeeFormation, $employee );
-                $employeemanager->persistAttribute($employeeFormation);
-                $employeemanager->updateEmployee($employee);
+                dump('ici');die;
+                $employeeManager->setUserToAttribute($employeeFormation, $employee );
+                $employeeManager->persistAttribute($employeeFormation);
+                $employeeManager->updateEmployee($employee);
 
                 return $this->redirect('/intranet/employee/'.$employee->getId());
             }
+
+            else if ($languageForm->handleRequest($request)->isValid())
+            {
+                $employeeManager->setUserToAttribute($language, $employee );
+                $employeeManager->persistAttribute($language);
+                $employeeManager->updateEmployee($employee);
+
+                return $this->redirect('/intranet/employee/'.$employee->getId());
+            }
+
             else if ($experienceForm->handleRequest($request)->isValid())
             {
-                $employeemanager->setUserToAttribute($experience, $employee );
-                $employeemanager->persistAttribute($experience);
-                $employeemanager->updateEmployee($employee);
+                $employeeManager->setUserToAttribute($experience, $employee );
+                $employeeManager->persistAttribute($experience);
+                $employeeManager->updateEmployee($employee);
+
+                return $this->redirect('/intranet/employee/'.$employee->getId());
+            }
+
+            else if ($projectForm->handleRequest($request)->isValid())
+            {
+                $employeeManager->setUserToAttribute($project, $employee );
+                $employeeManager->persistAttribute($project);
+                $employeeManager->updateEmployee($employee);
 
                 return $this->redirect('/intranet/employee/'.$employee->getId());
             }
@@ -180,18 +206,21 @@ class EmployeeController extends Controller
 
         return  $this->render('@App/profil/employee.html.twig', array(
             'formationForm' =>$employeeFormationForm->createView(),
+            'projectForm' =>$projectForm->createView(),
+            'languageForm' =>$languageForm->createView(),
             'experienceForm' => $experienceForm->createView(),
             'employee' => $employee,
             'profileOwner' => ($employee->getId()===$user->getId()),
             'lastFormations' => $lastFormations,
             'formations' => $formations,
+            'projects' => $projects,
+            'languages' => $languages,
             'experiences' => $experiences
         ));
     }
 
-    private function trans($id){
-        return $this->get('translator')->trans($id);
-    }
+
+
 
 
     /**
@@ -210,11 +239,48 @@ class EmployeeController extends Controller
                 $employeeManager->completeEmployeeForm($user);
                 return $this->redirect('/intranet/employee/'.$user->getId());
             }
+            else {
+                foreach($form->getErrors() as $error) {
+                    $this->addFlash('trans',$this->trans($error->getMessage()));
+                }
+            }
         }
         return $this->render('@App/profil/employee_form_.html.twig', array(
             'form' => $form->createView(),
         ));
     }
 
+    /**
+     * @Route("/intranet/update/{item}/{id}", name="update-profile-item", requirements={
+     *     "item"="project|formation|experience|language|employee|employeeLanguage"
+     * })
+     */
+    public function updateItem($item, $id = 0, Request $request)
+    {
+
+        $class = '\\AppBundle\\Entity\\'.ucfirst($item);
+        $type = '\\AppBundle\\Form\\'.ucfirst($item).'Type';
+
+        $data = $this->getDoctrine()->getRepository($class)->find($id);
+        $form = $this->createForm($type, $data);
+        if($request->isMethod('POST')) {
+            $form->handleRequest($request);
+            if ($form->isValid()){
+                $this->get('app.employee.manager')->update($data);
+            }
+            return $this->redirectToRoute('employee-profil',['employee' => $this->getUser()->getId()]);
+        }
+        return $this->render('@App/profil/form/'.$item.'.html.twig',['form' => $form->createView()]);
+    }
+
+
+
+
+
+    private function trans($id){
+        return $this->get('translator')->trans($id);
+    }
+
 }
+
 

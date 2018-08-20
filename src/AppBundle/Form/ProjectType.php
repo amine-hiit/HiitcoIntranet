@@ -18,7 +18,7 @@ class ProjectType extends AbstractType
     {
         $builder->add('name',TextType::class)
             ->add('date',DateType::class, array(
-                'format' => 'MM/dd/yyyy',
+                'format' => 'dd/MM/yyyy',
                 'widget' => 'single_text',
                 'required' => true))
             ->add('description',TextareaType::class);

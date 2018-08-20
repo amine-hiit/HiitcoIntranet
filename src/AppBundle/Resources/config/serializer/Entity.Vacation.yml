@@ -1,0 +1,34 @@
+AppBundle\Entity\Vacation:
+    exclusion_policy: all
+    xml_root_name: vacation
+    properties:
+        id:
+            expose: true
+            groups: [detail, default]
+        type:
+            expose: true
+            groups: [detail, default, request]
+        reason:
+            expose: true
+            groups: [detail, default, request]
+        refuseReason:
+            expose: true
+            groups: [detail, default]
+        startDate:
+            expose: true
+            groups: [detail, default, request]
+        endDate:
+            expose: true
+            groups: [detail, default, request]
+        dayPeriod:
+            expose: true
+            groups: [detail, default, request]
+        duration:
+            expose: true
+            groups: [detail, default]
+        validationStatus:
+            expose: true
+            groups: [detail, default]
+        employee:
+            expose: true
+            groups: [list]

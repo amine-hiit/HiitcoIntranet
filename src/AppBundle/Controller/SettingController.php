@@ -38,10 +38,8 @@ class SettingController extends Controller
         $id = $request->get('id');
         if (null != $id){
             $email = $this->getDoctrine()->getRepository(EmailType::class)->find($id);
-            //dump($email->getEmployees());die;
             $form = $this->createForm(EmailTypeType::class,$email);
             $form->handleRequest($request);
-            //$this->getDoctrine()->getManager()->persist($email);
 
             if($form->isSubmitted()){
                 $this->getDoctrine()->getManager()->persist($email);
@@ -73,7 +71,28 @@ class SettingController extends Controller
      */
     public function testAction(Request $request)
     {
-        $roles = ['ROLE_EMPLOYEE','ROLE_HR'];
-        dump($this->get('app.employee.manager')->findEmployeesByRoles($roles));die;
+
     }
+
+    /**
+     * @Route("/intranet/admin/parameters", name="parameters")
+     */
+    public function parameterAction(Request $request)
+    {
+        $setting = $this->get('app.setting.manager');
+        $parameters = $setting->getAll();
+        if ($request->isMethod("POST")) {
+            $cc = $this->get('craue_config');
+            $parameter = $request->get('parameter');
+            $value = $request->get('value');
+            if (is_array($value)) {
+                $value = serialize($value);
+            }
+            $cc->set($request->get('parameter'), $value);
+            return $this->json(['parameter' => $parameter,'value' => $setting->unserialize($cc->get($parameter))]);
+        }
+        return $this->render('@App/setting/parameters.html.twig', ['parameters' => $parameters]);
+
+    }
+
 }

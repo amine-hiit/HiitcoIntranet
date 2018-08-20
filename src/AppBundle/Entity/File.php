@@ -24,25 +24,32 @@ abstract class File
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
      */
-    private $name;
+    protected $name;
 
     /**
      * @var string|null
      *
      * @ORM\Column(name="url", type="string", length=255, nullable=true)
      */
-    private $url;
+    protected $url;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="mime_type", type="string", length=255, nullable=true)
+     */
+    protected $mimeType;
 
 
 
-    private $file;
+    protected $file;
 
 
 
@@ -131,6 +138,7 @@ abstract class File
         }
         $this->name = time().rand().'.'. ExtensionGuesser::getInstance()
                 ->guess($this->file->getClientMimeType());
+        $this->mimeType = $this->file->getClientMimeType();
         $this->url = $this->getUploadDir().'/'.$this->name;
         $this->file->move($this->getUploadRootDir(), $this->name);
 
@@ -141,4 +149,28 @@ abstract class File
 
     abstract public function getUploadDir();
 
+
+    /**
+     * Set mimeType.
+     *
+     * @param string|null $mimeType
+     *
+     * @return File
+     */
+    public function setMimeType($mimeType = null)
+    {
+        $this->mimeType = $mimeType;
+
+        return $this;
+    }
+
+    /**
+     * Get mimeType.
+     *
+     * @return string|null
+     */
+    public function getMimeType()
+    {
+        return $this->mimeType;
+    }
 }
