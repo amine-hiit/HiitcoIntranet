@@ -11,6 +11,27 @@ use AppBundle\Entity\Employee;
  */
 class NotificationRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findAllByEmployeeQuery(
+        $orderBy = null,
+        $direction = 'desc',
+        Employee $employee = null,
+        $filters = []
+    )
+    {
 
+        $qb = $this->createQueryBuilder('n');
 
+        if ($orderBy)
+            $qb->orderBy('n.'.$orderBy, $direction);
+        if (null !== $employee)
+            $qb->where('n.employee = :employee')
+                ->setParameter('employee', $employee);
+        if($this->count($filters) > 0) {
+            foreach ($filters as $filter => $value)
+                $qb->andWhere('v.'.$filter.' = \''.$value.'\'');
+
+        }
+
+        return $qb->getQuery();
+    }
 }

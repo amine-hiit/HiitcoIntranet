@@ -4,15 +4,11 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\ReligiousPaidVacation;
 use AppBundle\Form\ReligiousPaidVacationType;
-use AppBundle\Repository\ReligiousPaidVacationRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Form\FormError;
 use AppBundle\Entity\Vacation;
 use AppBundle\Form\VacationType;
-use AppBundle\Manager\VacationManager;
 use Symfony\Component\HttpFoundation\Response;
 
 class VacationController extends Controller

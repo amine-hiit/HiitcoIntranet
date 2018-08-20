@@ -18,6 +18,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Routing\RouterInterface;
 
+
 class EmployeeManager
 {
 
@@ -233,7 +234,8 @@ class EmployeeManager
         $setPWEmail = $this->em->getRepository(EmailType::class)
             ->findBy(['label' => Email\Subject::SET_NEW_PASSWORD])[0];
 
-        $setNewPasswordUrl = $this->router->generate('new-emplyee-password',['token' => $token],UrlGeneratorInterface::ABSOLUTE_URL);// http://localhost:8002/new-password/'.$token;
+        $setNewPasswordUrl = $this->router->generate('new-emplyee-password',['token' => $token],
+            UrlGeneratorInterface::ABSOLUTE_URL);
         $employeeFormUrl = 'http://localhost:8002'
             .$this->router->generate('employee-form');
 

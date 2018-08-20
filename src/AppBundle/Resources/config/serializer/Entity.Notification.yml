@@ -1,0 +1,16 @@
+AppBundle\Entity\Notification:
+    exclusion_policy: ALL
+    xml_root_name: notification
+    properties:
+        id:
+            expose: true
+            groups: [list]
+        createdAt:
+            expose: true
+            groups: [list]
+        url:
+            expose: true
+            groups: [list]
+        message:
+            expose: true
+            groups: [list]

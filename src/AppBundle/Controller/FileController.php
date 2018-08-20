@@ -6,6 +6,7 @@ use AppBundle\Entity\Employee;
 use AppBundle\Entity\File;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Debug\Exception\ContextErrorException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Entity\Vacation;
@@ -38,9 +39,13 @@ class FileController extends Controller
         $response->headers->set('Content-Type', $file->getMimeType());
 
         if (null !== $file) {
-            $fileContent = file_get_contents($this->get('kernel')->getRootDir() .'/../web/'.$file->getUrl());
-            $response->setContent($fileContent);
-            return $response;
+            try {
+                $fileContent = file_get_contents($this->get('kernel')->getRootDir() .'/../web/'.$file->getUrl());
+                $response->setContent($fileContent);
+                return $response;
+            } catch (\Exception $e) {
+                return new Response('content not found', 404);
+            }
         }
         else{
             if ($type === 'Avatar'){

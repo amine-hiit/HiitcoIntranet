@@ -107,12 +107,11 @@ class RestVacationController extends FOSRestController
     {
 
         $vm = $this->get('app.vacation.manager');
-        $vacation = $vm->findOneById($vacation->getId());
         $validation = $request->request->get('validation');
         $refuseReason = $request->request->get('refuseReason');
 
         if (null !== $vacation) {
-            return $this->view("validation field is required", 400);
+        //    return $this->view("validation field is required", 400);
         }
 
         if ("refuser" !== $validation && "accepter" !== $validation) {
@@ -145,14 +144,7 @@ class RestVacationController extends FOSRestController
      * @Rest\View(
      *     serializerGroups = {"default","list"})
      * )
-     * @SWG\Response(
-     *     response=201,
-     *     description="list vacation by id",
-     *     @SWG\Schema(
-     *         @SWG\Items(ref=@Model(type=Vacation::class, groups={"default","list"}))
-     *      )
-     * )
-     * @SWG\Response(
+‹    * @SWG\Response(
      *     response=404,
      *     description="not found",
      * )

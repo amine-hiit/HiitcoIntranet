@@ -50,6 +50,7 @@ class EmployeeType extends AbstractType
             ->add('formations', CollectionType::class, array(
                 'entry_type' => FormationType::class,
                 'allow_add' => true,
+                'required'=>true,
                 'delete_empty' => true,
                 'allow_delete' => true,
                 'prototype' => true,

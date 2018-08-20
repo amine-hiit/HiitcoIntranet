@@ -1,31 +1,65 @@
 "use strict";
 $().ready(function(){
 
-    var _index = 0;
+    let _index = 0;
     load_unseen_notification_number();
-    load_teen_notifications(_index);
+    load_menu_notifications();
+    load_next_teen_notifications();
 
-
-    function load_teen_notifications( _index)
+    function load_next_teen_notifications()
     {
-        var index = {
-            'index': _index,
-        };
         $.ajax({
-            url:"/intranet/teen-notifications",
+            url:"/intranet/api/notifications?page="+_index,
             method:"GET",
             dataType:"json",
             success:function(data)
             {
-                var notifications = JSON.parse(data);
-                var htmlNotificationList = [];
-                for (var indice in  notifications) {
+                let notifications = data ;
+                if (data.length > 0){
+                    let htmlNotificationList = [];
+                    for (let indice in  notifications) {
+                        let isSeen = notifications[indice].seen;
+                        let seen = isSeen?'':'unseen';
+                        let notificationId = notifications[indice].notification.id;
+                        let message = notifications[indice].notification.message;
+                        let url = notifications[indice].notification.url;
 
-                    var isSeen = notifications[indice].seen;
-                    var seen = isSeen?'':'unseen';
-                    var notificationId = notifications[indice].notification.id;
-                    var message = notifications[indice].notification.message;
-                    var url = notifications[indice].notification.url;
+                        htmlNotificationList.push(`
+                        <a id = "${ notificationId }" href="${ url }" class="list-group-item ${ seen }">
+                        ${ message }
+                        </a>`
+                        );
+                    }
+
+                    $('.notifications').append(
+                        htmlNotificationList
+                    );
+                    _index++;
+                } else {
+                    $('#see-more').remove();
+                }
+            }
+        });
+    }
+
+
+
+    function load_menu_notifications()
+    {
+        $.ajax({
+            url:"/intranet/api/notifications?page="+_index,
+            method:"GET",
+            dataType:"json",
+            success:function(data)
+            {
+                let notifications = data;
+                let htmlNotificationList = [];
+                for (let indice in  notifications) {
+                    let isSeen = notifications[indice].seen;
+                    let seen = isSeen?'':'unseen';
+                    let notificationId = notifications[indice].notification.id;
+                    let message = notifications[indice].notification.message;
+                    let url = notifications[indice].notification.url;
 
                     htmlNotificationList.push(`
                         <a id = "${ notificationId }" href="${ url }" class="list-group-item ${ seen }">
@@ -33,21 +67,10 @@ $().ready(function(){
                         </a>`
                     );
                 }
-                if (_index == 0){
-                    $('.notifications').html(
-                        htmlNotificationList
-                    );
-                }
-                $('#notifications-menu').html(
-                    htmlNotificationList
-                );
-
-            },
-            data:index
-
+                $('#notifications-menu').html(htmlNotificationList);
+            }
         });
     }
-
 
     function load_unseen_notification_number()
     {
@@ -68,15 +91,17 @@ $().ready(function(){
 
         });
     }
-    load_unseen_notification_number();
-
 
     $('#notification-link').click(function () {
-        load_teen_notifications(0);
+        load_menu_notifications();
     });
 
+    $('#see-more').click(function (e) {
+        load_next_teen_notifications();
+    })
+
     $('.notifications').on('click','a',function () {
-        var notification = {
+        let notification = {
             'id': $(this).attr('id'),
         };
         $.ajax({
@@ -89,29 +114,15 @@ $().ready(function(){
             },
             error:function ()
             {
-                alert('not cool man');
+                alert('error');
             },
             data: notification
         });
     });
-
-
-
-
-
-
-
-
 
     setInterval(function(){
         load_unseen_notification_number();
     }, 5000);
 
 });
-
-/*
-<li id = "${ notificationId }"class="${ seen }">
-<a href="#"><i class="fa fa-users text-aqua">
-</i>${notifications[indice].notification.message} </a></li>
-*/
 

@@ -239,6 +239,11 @@ class EmployeeController extends Controller
                 $employeeManager->completeEmployeeForm($user);
                 return $this->redirect('/intranet/employee/'.$user->getId());
             }
+            else {
+                foreach($form->getErrors() as $error) {
+                    $this->addFlash('trans',$this->trans($error->getMessage()));
+                }
+            }
         }
         return $this->render('@App/profil/employee_form_.html.twig', array(
             'form' => $form->createView(),

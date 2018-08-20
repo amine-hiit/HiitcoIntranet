@@ -21,13 +21,12 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new AppBundle\AppBundle(),
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
-
+	    new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
 
             new JMS\SerializerBundle\JMSSerializerBundle(),
             new Yectep\PhpSpreadsheetBundle\PhpSpreadsheetBundle(),
-            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new Craue\ConfigBundle\CraueConfigBundle(),
             new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
 
@@ -41,8 +40,9 @@ class AppKernel extends Kernel
             $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
-
+//	    $bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
             if ('dev' === $this->getEnvironment()) {
+//    		$bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
                 $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
                 $bundles[] = new Symfony\Bundle\WebServerBundle\WebServerBundle();
             }

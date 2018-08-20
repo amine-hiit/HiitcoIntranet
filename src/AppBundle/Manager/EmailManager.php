@@ -42,7 +42,7 @@ class EmailManager
     {
         $mailer = $this->container->get('mailer');
         $message = $this->create(
-            'mo.amine.jabri@gmail.com',
+            $this->container->getParameter('mailer_user'),
             $to,
             $emailType,
             $args,
@@ -71,7 +71,7 @@ class EmailManager
             $employeesByRoles = $this->container->get('app.employee.manager')
                 ->findEmployeesByRoles($emailType->getRoles());
             $employees = array_merge($employees,$employeesByRoles );
-        foreach ($employees as $employee)
+        foreach ($employees as $employee )
             $to[] = $employee->getEmail();
         }
 
